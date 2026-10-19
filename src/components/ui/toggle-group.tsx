@@ -5,11 +5,14 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 import { cn } from "@/lib/utils";
 
 /**
- * The segmented switch bank — a row (or column) of joined keys in one
+ * The segmented switch bank — a horizontal row of joined keys in one
  * bevel, where each key toggles or mutually-excludes (`type="single"` is
  * the classic radio-strip look). Real buttons throughout: click, Space and
- * Enter all toggle; the selected key sits sunken — the press stayed down,
- * no animation.
+ * Enter all toggle; the selected key sits sunken with an accent tint —
+ * the press stayed down, no animation.
+ *
+ * Stack it with `className="flex-col"` for a vertical bank; the bevel
+ * `items-stretch` makes every key the same width.
  *
  * `type="single"`: value is one item's value or empty string. `type=
  * "multiple"`: value is an array. Controlled and uncontrolled like
@@ -114,7 +117,7 @@ function ToggleGroup({
         role="group"
         data-type={type}
         className={cn(
-          "w-fit items-stretch gap-0.5 border border-ink bg-surface p-0.5 shadow-out",
+          "flex flex-row items-stretch w-fit gap-0.5 border border-ink bg-surface p-0.5 shadow-out",
           className,
         )}
         {...props}
@@ -151,8 +154,9 @@ function ToggleGroupItem({
         "focus-etched flex select-none items-center justify-center whitespace-nowrap border border-ink px-2.5 py-1 text-sm text-ink",
         "enabled:cursor-pointer disabled:cursor-not-allowed disabled:text-ink-muted",
         pressed
-          // stayed down: the bevel inverts like a pressed key, instantly
-          ? "shadow-in bg-surface-2"
+          // stayed down: the bevel inverts like a pressed key — and the
+          // accent tint keeps "on" readable against the sunken surface
+          ? "shadow-in bg-accent-soft text-accent-strong"
           : "shadow-out bg-surface enabled:hover:bg-surface-2",
         className,
       )}

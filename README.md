@@ -381,10 +381,13 @@ hover/`aria-pressed` behave like `data-pressed` buttons.
 <ToggleGroup type="multiple" defaultValue={["bold"]}>…</ToggleGroup>
 ```
 
-`type="single"` callbacks see a `string` (empty when nothing is selected);
-`type="multiple"` sees `string[]`. Stack with `className="flex-col"` for a
-vertical bank. Note: items are plain tabbable buttons (no roving
-tabindex) — fine for humane group sizes.
+The group is a horizontal row by default; `className="flex-col"` turns it
+into a vertical bank where `items-stretch` gives every key the same width.
+Selected keys invert their bevel like a pressed key and carry an accent
+tint so "on" stays readable in either theme. `type="single"` callbacks
+see a `string` (empty when nothing is selected); `type="multiple"` sees
+`string[]`. Note: items are plain tabbable buttons (no roving tabindex)
+— fine for humane group sizes.
 
 ### `<Separator>`
 
