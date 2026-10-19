@@ -413,7 +413,9 @@ toast.info("Saved", "Your document is on the disk.");     // 5s default
 toast.error("Merge conflict", "Resolve it by hand.", { duration: 0 });
 ```
 
-`duration` is milliseconds — `0` sticks until the ✕ key. `variant` is
+`duration` is milliseconds — `0` sticks until the ✕ key. Hovering a
+toast holds its timer; leaving restarts the full duration, so nothing
+dies while it's being read. `variant` is
 `info` (accent rail) or `error` (danger rail), mirroring `Dialog`; error
 toasts assert with `role="alert"`. The provider is a client component —
 mount it around your app or page.

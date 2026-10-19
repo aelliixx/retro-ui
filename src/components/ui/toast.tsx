@@ -8,9 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-
-import { cn } from "@/lib/utils";
+} from "react";import { cn } from "@/lib/utils";
 
 /**
  * The notification stack — balloons from the tray, minus the balloon
@@ -26,8 +24,10 @@ import { cn } from "@/lib/utils";
  * toast.error("Merge conflict", "Resolve it by hand.", { duration: 0 });
  * ```
  *
- * `duration` is milliseconds; `0` sticks until dismissed. The stack is a
- * polite live region (`error` toasts assert with `role="alert"`).
+ * `duration` is milliseconds; `0` sticks until dismissed. A pointer parked
+ * on a toast holds its timer — leaving restarts the full duration — so a
+ * toast never dies while someone is reading it. The stack is a polite
+ * live region (`error` toasts assert with `role="alert"`).
  */
 
 type ToastVariant = "info" | "error";
@@ -135,17 +135,24 @@ function Toast({
   item: ToastItem;
   onDismiss: (id: number) => void;
 }) {
+  // a pointer parked on the toast holds the timer; when it leaves, the
+  // full duration restarts — a toast shouldn't die while people read it
+  const [hovered, setHovered] = useState(false);
+
   useEffect(() => {
-    if (item.duration <= 0) return;
+    if (item.duration <= 0 || hovered) return;
     const timer = setTimeout(() => onDismiss(item.id), item.duration);
     return () => clearTimeout(timer);
-  }, [item, onDismiss]);
+  }, [item, onDismiss, hovered]);
 
   return (
     <div
       data-slot="toast"
       data-variant={item.variant}
+      data-hovered={hovered || undefined}
       role={item.variant === "error" ? "alert" : "status"}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
       className={cn(
         "pointer-events-auto relative border border-ink bg-surface p-3 pr-9 text-ink shadow-out",
         // the variant rail — a solid cut down the left edge
