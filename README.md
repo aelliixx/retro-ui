@@ -455,23 +455,37 @@ Controlled (`open` + `onOpenChange`) or uncontrolled (`defaultOpen`).
 Like Tabs' panels, the content stays mounted while closed but `hidden`,
 so form state inside survives toggling.
 
-### `<Skeleton>`
+### `<Skeleton>` (Radix Themes API)
 
-The loading tile — the era's placeholder: a sunken block wearing the
-fine checkerboard dither, standing in for content not yet on the disk.
-Deliberately static — the wait is honest, no shimmer.
+"Replaces content with a same-shape placeholder that indicates a loading
+state" — the era's take: a sunken block wearing the fine checkerboard
+dither, static (no shimmer; Radix's pulse is swapped for honesty).
+
+Wraps live content with `loading` (default `true`): the shell renders
+*onto* the child (no wrapper node), so the placeholder is exactly the
+child's shape; the child stays mounted but hidden — dimensions and
+layout preserved — and is disabled (`inert`, `tabIndex={-1}`,
+`aria-hidden`). `loading={false}` renders the children untouched.
 
 ```tsx
-<div className="flex flex-col gap-1.5">
-  <Skeleton className="h-3 w-full" />
-  <Skeleton className="h-3 w-4/5" />
-  <Skeleton className="h-3 w-2/3" />
-</div>
+<Skeleton loading={loading}>
+  <Switch defaultChecked />
+</Skeleton>
+
+{/* bare text children are supported, with text-metric normalization —
+    wrap the text node itself, not its parent, so the placeholder is the
+    same shape as the words */}
+<p>
+  Logs: <Skeleton loading={loading}>Cache hits 1,024 · misses 3</Skeleton>
+</p>
+
+{/* bare usage: a generic tile, sized via className */}
+<Skeleton className="h-3 w-2/3" />
 ```
 
-Size it with `className` (`h-3 w-full` for a text line, `h-10 w-10` for
-an avatar well) and lay several out to sketch the pending layout.
-`aria-hidden` by default — the placeholder is decorative.
+Shell paint lives in the `.retro-skeleton` rules in `globals.css` and
+deliberately beats the wrapped element's own bevels. Base element: span
+(like Radix).
 
 ### `<PasswordToggleField>`
 

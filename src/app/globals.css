@@ -368,3 +368,53 @@
     }
   }
 }
+
+/* ------------------------------------------------------------------------- */
+/* skeleton — placeholder shell in the Radix Themes manner: the wrapper      */
+/* takes the children's dimensions (they stay mounted but hidden) and the    */
+/* flat dither replaces their paint. Unlayered on purpose — the shell must   */
+/* win over whatever bevels the wrapped element itself carries.              */
+/* ------------------------------------------------------------------------- */
+.retro-skeleton {
+  border: 1px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: var(--shadow-in) !important;
+  outline: none !important;
+  color: transparent !important;
+  text-decoration-color: transparent !important;
+  background-color: var(--surface-2) !important;
+  /* our placeholder paint: the fine checkerboard dither (radix pulses
+     here; our waits are static) — it must survive the background-image
+     reset a foreign child's CSS might otherwise impose */
+  background-image: repeating-conic-gradient(
+    color-mix(in srgb, var(--ink) 7%, transparent) 0% 25%,
+    transparent 0% 50%
+  ) !important;
+  background-size: 4px 4px !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* content is laid out but invisible — the dimensions survive, the look
+   does not */
+.retro-skeleton > *,
+.retro-skeleton::before,
+.retro-skeleton::after {
+  visibility: hidden !important;
+}
+
+/* bare-text shells: line-height 0 + Arial so the tile is the same height
+   as the text it replaces (the metrics-bbox trick radix themes uses) */
+.retro-skeleton[data-inline-skeleton] {
+  line-height: 0;
+  font-family: Arial, sans-serif !important;
+}
+
+/* a bare <Skeleton /> stays a workable tile even un-sized: display:block
+   so width/height utilities mean anything, min-height so it is never
+   zero — min-height (not height) so consumer sizing still rules */
+.retro-skeleton:empty {
+  display: block;
+  min-height: 0.75rem;
+}

@@ -1559,53 +1559,77 @@ function CollapsibleSection() {
 }
 
 function SkeletonSection() {
+  const [loading, setLoading] = useState(true);
   return (
     <Section label="Skeleton">
       <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
         <Cell
-          label="text lines — sizes sketch the pending layout"
+          label="wrapping content — shell keeps the child's shape; inert while loading"
+          code={`const [loading, setLoading] = useState(true);
+
+<div className="flex items-center gap-4">
+  <Skeleton loading={loading}>
+    <Switch defaultChecked />
+  </Skeleton>
+  <Button onClick={() => setLoading(!loading)}>
+    {loading ? "Load" : "Unload"}
+  </Button>
+</div>`}
+        >
+          <div className="flex items-center gap-4">
+            <Skeleton loading={loading}>
+              <Switch defaultChecked />
+            </Skeleton>
+            <Button variant="secondary" onClick={() => setLoading(!loading)}>
+              {loading ? "Load" : "Unload"}
+            </Button>
+          </div>
+        </Cell>
+        <Cell
+          label="with text — wrap the text node itself, not its parent"
+          code={`<p>
+  Edit text here:&nbsp;
+  <Skeleton loading={loading}>{text}</Skeleton>
+</p>`}
+        >
+          <div className="flex w-full max-w-xs flex-col gap-2">
+            <p className="max-w-xs text-sm text-ink">
+              <Skeleton loading={loading}>
+                Cache hits 1,024 · misses 3
+              </Skeleton>
+            </p>
+            <Skeleton loading={loading}>
+              <p className="max-w-xs text-sm text-ink">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Pellentesque felis tellus, efficitur id convallis a, viverra
+                eget libero.
+              </p>
+            </Skeleton>
+          </div>
+        </Cell>
+        <Cell
+          label="sized tiles — lines, avatar well, block pane"
           code={`<div className="flex flex-col gap-1.5">
   <Skeleton className="h-3 w-full" />
   <Skeleton className="h-3 w-4/5" />
   <Skeleton className="h-3 w-2/3" />
-</div>`}
+</div>
+
+<Skeleton className="h-10 w-10" />`}
         >
-          <div className="flex w-64 flex-col gap-1.5">
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-4/5" />
-            <Skeleton className="h-3 w-2/3" />
-          </div>
-        </Cell>
-        <Cell
-          label="avatar well + two lines"
-          code={`<div className="flex items-center gap-3">
-  <Skeleton className="h-10 w-10" />
-  <div className="flex flex-1 flex-col gap-1.5">
-    <Skeleton className="h-3 w-2/3" />
-    <Skeleton className="h-3 w-1/2" />
-  </div>
-</div>`}
-        >
-          <div className="flex w-full max-w-xs items-center gap-3">
-            <Skeleton className="h-10 w-10" />
-            <div className="flex flex-1 flex-col gap-1.5">
+          <div className="flex w-full max-w-xs flex-col items-start gap-3">
+            <div className="flex w-full flex-col gap-1.5">
+              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-4/5" />
               <Skeleton className="h-3 w-2/3" />
-              <Skeleton className="h-3 w-1/2" />
             </div>
-          </div>
-        </Cell>
-        <Cell
-          label="block pane standing in for Card content"
-          code={`<div className="border border-ink bg-surface p-3">
-  <p className="mb-2 language text-sm">README.TXT</p>
-  <Skeleton className="h-24 w-full" />
-</div>`}
-        >
-          <div className="w-64 border border-ink bg-surface p-3 shadow-out">
-            <p className="mb-2 font-mono text-xs uppercase text-ink-muted">
-              README.TXT
-            </p>
-            <Skeleton className="h-24 w-full" />
+            <div className="flex w-full items-center gap-3">
+              <Skeleton className="h-10 w-10" />
+              <div className="flex flex-1 flex-col gap-1.5">
+                <Skeleton className="h-3 w-2/3" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
+            </div>
           </div>
         </Cell>
       </div>
