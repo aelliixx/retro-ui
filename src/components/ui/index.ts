@@ -13,6 +13,7 @@ export { Dialog, dialogVariants, type DialogProps } from "./dialog";
 export { Field, useFieldIds, type FieldProps, type FieldIds } from "./field";
 export { PasswordToggleField, type PasswordToggleFieldProps } from "./password-toggle-field";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area";
+export { Skeleton, type SkeletonProps } from "./skeleton";
 export { ToastProvider, useToast, type ToastOptions, type ToastVariant } from "./toast";
 export { Toggle, type ToggleProps } from "./toggle";
 export { Input, inputVariants, type InputProps } from "./input";

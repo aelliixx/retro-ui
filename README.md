@@ -9,7 +9,7 @@ Current components: **Button · Field · Input · PasswordToggleField ·
 Textarea · Checkbox · Switch · Toggle · Slider · RadioGroup · Select ·
 Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Accordion ·
 Collapsible · MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator ·
-ScrollArea · Toast**.
+ScrollArea · Skeleton · Toast**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -454,6 +454,24 @@ together: `aria-expanded` + `aria-controls`, click/Space/Enter, and
 Controlled (`open` + `onOpenChange`) or uncontrolled (`defaultOpen`).
 Like Tabs' panels, the content stays mounted while closed but `hidden`,
 so form state inside survives toggling.
+
+### `<Skeleton>`
+
+The loading tile — the era's placeholder: a sunken block wearing the
+fine checkerboard dither, standing in for content not yet on the disk.
+Deliberately static — the wait is honest, no shimmer.
+
+```tsx
+<div className="flex flex-col gap-1.5">
+  <Skeleton className="h-3 w-full" />
+  <Skeleton className="h-3 w-4/5" />
+  <Skeleton className="h-3 w-2/3" />
+</div>
+```
+
+Size it with `className` (`h-3 w-full` for a text line, `h-10 w-10` for
+an avatar well) and lay several out to sketch the pending layout.
+`aria-hidden` by default — the placeholder is decorative.
 
 ### `<PasswordToggleField>`
 

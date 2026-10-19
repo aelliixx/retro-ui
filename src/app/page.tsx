@@ -40,6 +40,7 @@ import {
   ScrollArea,
   Select,
   Separator,
+  Skeleton,
   Slider,
   Switch,
   Tabs,
@@ -1557,6 +1558,61 @@ function CollapsibleSection() {
   );
 }
 
+function SkeletonSection() {
+  return (
+    <Section label="Skeleton">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="text lines — sizes sketch the pending layout"
+          code={`<div className="flex flex-col gap-1.5">
+  <Skeleton className="h-3 w-full" />
+  <Skeleton className="h-3 w-4/5" />
+  <Skeleton className="h-3 w-2/3" />
+</div>`}
+        >
+          <div className="flex w-64 flex-col gap-1.5">
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-4/5" />
+            <Skeleton className="h-3 w-2/3" />
+          </div>
+        </Cell>
+        <Cell
+          label="avatar well + two lines"
+          code={`<div className="flex items-center gap-3">
+  <Skeleton className="h-10 w-10" />
+  <div className="flex flex-1 flex-col gap-1.5">
+    <Skeleton className="h-3 w-2/3" />
+    <Skeleton className="h-3 w-1/2" />
+  </div>
+</div>`}
+        >
+          <div className="flex w-full max-w-xs items-center gap-3">
+            <Skeleton className="h-10 w-10" />
+            <div className="flex flex-1 flex-col gap-1.5">
+              <Skeleton className="h-3 w-2/3" />
+              <Skeleton className="h-3 w-1/2" />
+            </div>
+          </div>
+        </Cell>
+        <Cell
+          label="block pane standing in for Card content"
+          code={`<div className="border border-ink bg-surface p-3">
+  <p className="mb-2 language text-sm">README.TXT</p>
+  <Skeleton className="h-24 w-full" />
+</div>`}
+        >
+          <div className="w-64 border border-ink bg-surface p-3 shadow-out">
+            <p className="mb-2 font-mono text-xs uppercase text-ink-muted">
+              README.TXT
+            </p>
+            <Skeleton className="h-24 w-full" />
+          </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function PasswordSection() {
   return (
     <Section label="PasswordToggleField">
@@ -1872,6 +1928,7 @@ export default function PlaygroundPage() {
             <ToggleGroupSection />
             <SeparatorSection />
             <CollapsibleSection />
+            <SkeletonSection />
             <PasswordSection />
             <ScrollAreaSection />
             <ToastSection />
@@ -1880,7 +1937,7 @@ export default function PlaygroundPage() {
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 27 components</span>
+            <span className={PANE}>Ready — 28 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark
