@@ -1,68 +1,365 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Field,
+  Input,
+} from "@/components/ui";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+/* ------------------------------------------------------------------------- */
+/* playground helpers                                                        */
+/* ------------------------------------------------------------------------- */
+
+function Section({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <fieldset
+      className={
+        "rounded-sm border-2 border-ink px-4 pb-4 pt-2 " + (className ?? "")
+      }
+    >
+      <legend className="px-1.5 font-mono text-xs uppercase tracking-[0.18em] text-ink-muted">
+        {label}
+      </legend>
+      {children}
+    </fieldset>
+  );
+}
+
+function Cell({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={"flex flex-col items-start gap-2 " + (className ?? "")}>
+      {children}
+      <span className="font-mono text-[11px] text-ink-muted">{label}</span>
+    </div>
+  );
+}
+
+/** Decorative 90s window chrome — purely visual, hidden from a11y tree. */
+function WindowButtons({ className }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={"flex items-center gap-1.5 " + (className ?? "")}
+    >
+      <span className="flex h-4 w-4 items-end justify-center border-2 border-ink bg-surface pb-0.5">
+        <span className="h-0.5 w-1.5 bg-ink" />
+      </span>
+      <span className="flex h-4 w-4 items-center justify-center border-2 border-ink bg-surface">
+        <span className="h-1.5 w-1.5 border border-ink" />
+      </span>
+      <span className="relative flex h-4 w-4 items-center justify-center border-2 border-ink bg-surface">
+        <span className="absolute h-0.5 w-2 rotate-45 bg-ink" />
+        <span className="absolute h-0.5 w-2 -rotate-45 bg-ink" />
+      </span>
+    </div>
+  );
+}
+
+function CodeWell({ children }: { children: React.ReactNode }) {
+  return (
+    <Card variant="inset" className="rounded-sm">
+      <pre className="overflow-x-auto p-4 font-mono text-sm leading-relaxed text-ink">
+        <code>{children}</code>
+      </pre>
+    </Card>
+  );
+}
+
+const TOKENS = [
+  "bg",
+  "surface",
+  "surface-2",
+  "ink",
+  "ink-muted",
+  "accent",
+  "accent-soft",
+  "danger",
+  "ring",
+] as const;
+
+/* ------------------------------------------------------------------------- */
+/* sections                                                                  */
+/* ------------------------------------------------------------------------- */
+
+function Intro() {
+  return (
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-3xl font-bold tracking-tight">retro/ui</h1>
+        <span className="rounded-sm border-2 border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
+          v0.1.0
+        </span>
+      </div>
+      <p className="max-w-prose text-ink-muted">
+        A small React + Tailwind component library styled after 90s desktop
+        UIs — hard borders, sunken wells and honest shadows — rebuilt with
+        modern tokens, light/dark theming and full{" "}
+        <code className="font-mono text-sm text-ink">className</code>{" "}
+        composition via tailwind-merge.
+      </p>
+      <CodeWell>{`import { Button, Card, Field, Input } from "@/components/ui";`}</CodeWell>
+    </section>
+  );
+}
+
+function ButtonsSection() {
+  const [pressed, setPressed] = useState(false);
+
+  return (
+    <Section label="Button">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell label='variant="primary"'>
+          <Button variant="primary">Save changes</Button>
+        </Cell>
+        <Cell label='variant="secondary" (default)'>
+          <Button>Cancel</Button>
+        </Cell>
+        <Cell label='variant="outline"'>
+          <Button variant="outline">Browse files…</Button>
+        </Cell>
+        <Cell label='variant="ghost"'>
+          <Button variant="ghost">Skip for now</Button>
+        </Cell>
+        <Cell label='variant="destructive"'>
+          <Button variant="destructive">Delete forever</Button>
+        </Cell>
+        <Cell label="disabled">
+          <Button disabled>Unavailable</Button>
+        </Cell>
+        <Cell label="sizes: sm / md / lg">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button size="sm">Compact</Button>
+            <Button size="md">Default</Button>
+            <Button size="lg">Command</Button>
+          </div>
+        </Cell>
+        <Cell label="data-pressed toggle (click me)">
+          <Button
+            aria-pressed={pressed}
+            data-pressed={pressed || undefined}
+            onClick={() => setPressed((p) => !p)}
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+            {pressed ? "Caps lock: on" : "Caps lock: off"}
+          </Button>
+        </Cell>
+        <Cell label="composed via className">
+          <Button
+            variant="secondary"
+            className="rounded-none border-dashed text-accent shadow-none"
+          >
+            Inline override
+          </Button>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function FieldsSection() {
+  return (
+    <Section label="Field + Input">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Field
+          label="Username"
+          required
+          hint="3–20 characters, letters and digits."
+        >
+          <Input placeholder="ada_lovelace" />
+        </Field>
+        <Field label="Recovery email" error="That doesn't look like an email.">
+          <Input type="email" defaultValue="ada@lovel" />
+        </Field>
+        <Field label="Machine name" hint="Shown on your local network.">
+          <Input defaultValue="WIN98-WORKSTATION" disabled />
+        </Field>
+        <Field label="Access key" hint="We never phone home.">
+          <Input type="password" placeholder="••••••••" />
+        </Field>
+
+        {/* composition demo: Card + Field + Input + Button */}
+        <div className="sm:col-span-2">
+          <Card className="max-w-md">
+            <CardHeader variant="titlebar">
+              <CardTitle>Sign in</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <Field label="Username" required>
+                <Input placeholder="ada_lovelace" autoComplete="username" />
+              </Field>
+              <Field label="Password" required>
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                />
+              </Field>
+              <Button variant="primary" className="mt-1 w-full">
+                Sign in
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function CardsSection() {
+  return (
+    <Section label="Card">
+      <div className="grid gap-6 pt-2 sm:grid-cols-2">
+        <Cell label='default (raised) with header + footer'>
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Display properties</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Standard raised card: 2px ink border, hard offset shadow,
+                header and footer rails.
+              </CardDescription>
+            </CardContent>
+            <CardFooter className="justify-end">
+              <Button size="sm" variant="ghost">
+                Discard
+              </Button>
+              <Button size="sm" variant="primary">
+                Apply
+              </Button>
+            </CardFooter>
+          </Card>
+        </Cell>
+        <Cell label='titlebar header (hatch + small caps)'>
+          <Card className="w-full">
+            <CardHeader variant="titlebar">
+              <CardTitle>C:\SYSTEM\README.TXT</CardTitle>
+              <WindowButtons />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-ink-muted">
+                The titlebar header is the signature move — hatched
+                background, uppercase title, and room for decorative window
+                chrome.
+              </p>
+            </CardContent>
+          </Card>
+        </Cell>
+        <Cell label='variant="flat"'>
+          <Card variant="flat" className="w-full">
+            <CardContent>
+              <p className="text-sm text-ink-muted">
+                Flat variant: same border and surface, zero depth. Good inside
+                dense layouts.
+              </p>
+            </CardContent>
+          </Card>
+        </Cell>
+        <Cell label='variant="inset" (well)'>
+          <Card variant="inset" className="w-full">
+            <CardContent>
+              <p className="font-mono text-sm text-ink">
+                Sunken wells hold content the way text inputs do — inset
+                shadow, muted surface.
+              </p>
+            </CardContent>
+          </Card>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function TokensSection() {
+  return (
+    <Section label="Design tokens">
+      <p className="max-w-prose pt-2 text-sm text-ink-muted">
+        Every color is a CSS variable — override{" "}
+        <code className="font-mono text-ink">:root</code> /{" "}
+        <code className="font-mono text-ink">.dark</code> in{" "}
+        <code className="font-mono text-ink">globals.css</code> to re-brand the
+        entire library. Components also merge your{" "}
+        <code className="font-mono text-ink">className</code>, so any Tailwind
+        utility wins over the defaults.
+      </p>
+      <div className="grid grid-cols-3 gap-4 pt-4 sm:grid-cols-5 lg:grid-cols-9">
+        {TOKENS.map((token) => (
+          <div key={token} className="flex flex-col gap-1.5">
+            <div
+              className="h-12 w-full rounded-sm border-2 border-ink"
+              style={{ backgroundColor: `var(--${token})` }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <span className="font-mono text-[11px] text-ink-muted">
+              --{token}
+            </span>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------------- */
+/* page                                                                      */
+/* ------------------------------------------------------------------------- */
+
+export default function PlaygroundPage() {
+  return (
+    <div className="min-h-screen bg-desktop bg-dither p-4 sm:p-8 lg:p-12">
+      <main className="mx-auto w-full max-w-4xl">
+        <Card>
+          <CardHeader
+            variant="titlebar"
+            className="flex-wrap justify-between gap-2"
           >
-            Documentation
-          </a>
-        </div>
+            <CardTitle className="min-w-0 truncate">
+              retro/ui — component playground
+            </CardTitle>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <WindowButtons className="hidden sm:flex" />
+            </div>
+          </CardHeader>
+
+          <CardContent className="flex flex-col gap-10 p-4 sm:p-6">
+            <Intro />
+            <ButtonsSection />
+            <FieldsSection />
+            <CardsSection />
+            <TokensSection />
+          </CardContent>
+
+          <CardFooter className="flex-wrap justify-between gap-2 font-mono text-xs text-ink-muted">
+            <span>4 components loaded</span>
+            <span className="hidden sm:inline">
+              light / dark · tokens in globals.css
+            </span>
+          </CardFooter>
+        </Card>
       </main>
     </div>
   );

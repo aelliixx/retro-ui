@@ -1,26 +1,167 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------------- */
+/* retro/ui — design tokens                                                  */
+/*                                                                           */
+/* Every color, font and depth value is a plain CSS variable. Override them  */
+/* in :root / .dark to re-brand the whole library without touching a single  */
+/* component.                                                                */
+/* ------------------------------------------------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  /* surfaces */
+  --bg: #eef0f4;
+  --surface: #f8f9fb;
+  --surface-2: #e4e8ef;
+  --desktop: #0e7f74;
+
+  /* ink (text + hard borders) */
+  --ink: #1b1f27;
+  --ink-muted: #5b6472;
+  --border-muted: #c9cfda;
+
+  /* accent — workstation teal */
+  --accent: #0f766e;
+  --accent-strong: #0b5d57;
+  --accent-ink: #ffffff;
+  --accent-soft: #d5ece8;
+
+  /* danger */
+  --danger: #b91c1c;
+  --danger-strong: #991b1b;
+  --danger-ink: #ffffff;
+  --danger-soft: #fbe4e4;
+
+  /* focus + selection */
+  --ring: #0d9488;
+  --selection: #99f6e4;
+  --selection-ink: #0b3a35;
+
+  /* depth — the hard offset shadow color */
+  --shadow-color: #1b1f27;
 }
 
+.dark {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #10131a;
+  --surface: #171b24;
+  --surface-2: #1f2532;
+  --desktop: #0b3f3a;
+
+  /* ink */
+  --ink: #e7eaf1;
+  --ink-muted: #9aa3b5;
+  --border-muted: #2c3345;
+
+  /* accent */
+  --accent: #2dd4bf;
+  --accent-strong: #5eead4;
+  --accent-ink: #052e2a;
+  --accent-soft: #123f3a;
+
+  /* danger */
+  --danger: #f87171;
+  --danger-strong: #fca5a5;
+  --danger-ink: #2b0806;
+  --danger-soft: #3b1412;
+
+  /* focus + selection */
+  --ring: #2dd4bf;
+  --selection: #134e4a;
+  --selection-ink: #d7f5ef;
+
+  /* depth */
+  --shadow-color: #05070b;
+}
+
+/* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
+   `border-ink`, `shadow-hard` … exist. `inline` keeps the var() reference at
+   the point of use, so flipping .dark re-themes instantly. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-desktop: var(--desktop);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-border-muted: var(--border-muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-strong: var(--danger-strong);
+  --color-danger-ink: var(--danger-ink);
+  --color-danger-soft: var(--danger-soft);
+  --color-ring: var(--ring);
+  --color-selection: var(--selection);
+  --color-selection-ink: var(--selection-ink);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+
+  /* depth scale — hard offsets, no blur */
+  --shadow-hard-xs: 2px 2px 0 0 var(--shadow-color);
+  --shadow-hard-sm: 3px 3px 0 0 var(--shadow-color);
+  --shadow-hard: 4px 4px 0 0 var(--shadow-color);
+  --shadow-sunk: inset 2px 2px 0 0
+    color-mix(in srgb, var(--shadow-color) 22%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  ::selection {
+    background-color: var(--selection);
+    color: var(--selection-ink);
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------------- */
+/* retro textures — pure CSS, theme-aware                                    */
+/* ------------------------------------------------------------------------- */
+
+/* diagonal ticking, as on window title bars */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--ink) 9%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+/* fine checkerboard dither, as on old desktops */
+@utility bg-dither {
+  background-image: repeating-conic-gradient(
+    color-mix(in srgb, var(--ink) 7%, transparent) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}
+
+/* faint blueprint grid */
+@utility bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--ink) 8%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ink) 8%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
 }
