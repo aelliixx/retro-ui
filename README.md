@@ -6,8 +6,9 @@ two-tone bevels — rebuilt with modern design tokens, light/dark theming, and
 full `className` composition.
 
 Current components: **Button · Field · Input · Textarea · Checkbox ·
-RadioGroup · Select · Progress · LoadingIcon · Tooltip · Card · Dialog ·
-Avatar · Accordion · MenuBar · NavigationMenu**.
+Switch · Slider · RadioGroup · Select · Progress · LoadingIcon · Tooltip ·
+Card · Dialog · Avatar · Accordion · MenuBar · NavigationMenu · Tabs ·
+ToggleGroup · Separator**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -311,6 +312,90 @@ focuses the panel's first link. Radix-compatible open-state API: `value` /
 Panels are `role="group"` labelled by their trigger; the active page link
 takes `aria-current="page"`. Use `MenuBar` for app-style action menus and
 `NavigationMenu` for site/section navigation with content panels.
+
+### `<Tabs>`
+
+The file-folder tab control. Real `tablist`/`tab`/`tabpanel` ARIA with a
+roving tabindex — Arrow keys (and Home/End) walk the triggers and moving
+focus selects (automatic activation). Inactive panels stay mounted but
+`hidden`, so form state inside them survives switching.
+
+```tsx
+<Tabs defaultValue="view">
+  <TabsList>
+    <TabsTrigger value="view">View</TabsTrigger>
+    <TabsTrigger value="general">General</TabsTrigger>
+  </TabsList>
+  <TabsContent value="view">…</TabsContent>
+  <TabsContent value="general">…</TabsContent>
+</Tabs>
+```
+
+The selected trigger merges with its panel — no bottom border, overlapping
+the top hairline — the classic carving for a selected folder tab. Trigger
+and panel ids derive from the tab `value`, which should be unique and
+free of `: . ,` characters (anything else becomes `"tab"` in the DOM id).
+
+### `<Switch>`
+
+The power toggle — `<button role="switch">` with a sunken track and a
+square beveled knob that jumps between the rail ends instantly (no slide
+animation). Same management contract as `Checkbox`: `checked` +
+`onCheckedChange` or `defaultChecked`, click/Space/Enter to flip,
+`disabled` supported.
+
+```tsx
+<Switch checked={on} onCheckedChange={setOn} />
+```
+
+### `<Slider>`
+
+A native `<input type="range">` in the workstation skin: sunken groove
+track, hard-stop accent fill up to the knob (solid blocks — no soft
+blend), square beveled thumb. All native behavior stays native — drag,
+arrow keys, PageUp/Down, Home/End, forms.
+
+```tsx
+<Field label="Refresh rate" hint="Applies after reboot">
+  <Slider min={0} max={120} defaultValue={60} />
+</Field>
+```
+
+`onValueChange` mirrors `onChange` with the number (works controlled or
+uncontrolled). Give it an accessible name (`aria-label` or a wrapping
+`Field`). Horizontal only for now — native vertical ranges are still a
+compatibility mess; the skin lives in the `.retro-slider` utility.
+
+### `<ToggleGroup>`
+
+The segmented switch bank — joined keys in one bevel, like the toolbar or
+radio-strip patterns. Selected keys sit sunken (the press stayed down);
+hover/`aria-pressed` behave like `data-pressed` buttons.
+
+```tsx
+<ToggleGroup type="single" value={mode} onValueChange={setMode}>
+  <ToggleGroupItem value="wrap">Wrap</ToggleGroupItem>
+  <ToggleGroupItem value="hex">Hex</ToggleGroupItem>
+</ToggleGroup>
+
+<ToggleGroup type="multiple" defaultValue={["bold"]}>…</ToggleGroup>
+```
+
+`type="single"` callbacks see a `string` (empty when nothing is selected);
+`type="multiple"` sees `string[]`. Stack with `className="flex-col"` for a
+vertical bank. Note: items are plain tabbable buttons (no roving
+tabindex) — fine for humane group sizes.
+
+### `<Separator>`
+
+The carved divider — a two-tone groove (dark line over its light
+highlight), dented into the surface like the era drew them.
+
+```tsx
+<Separator className="my-2" />            {/* horizontal */}
+<Separator orientation="vertical" />       {/* flex row: give it stretch */}
+<Separator decorative />                   {/* bare div, no separator role */}
+```
 
 ### `<RadioGroup>`
 

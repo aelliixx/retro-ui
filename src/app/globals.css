@@ -275,3 +275,80 @@
   );
   background-size: 4px 4px;
 }
+
+/* ------------------------------------------------------------------------- */
+/* slider — a native <input type="range"> in the workstation skin            */
+/*                                                                           */
+/* Sunken groove track with a hard-stop accent fill up to the knob (set from */
+/* React as --slider-fill; two solid blocks, no soft blend) and a square     */
+/* beveled thumb. WebKit needs the runnable-track shim to opt out of the     */
+/* native look; Firefox does it with appearance + its own progress pseudo.   */
+/* ------------------------------------------------------------------------- */
+@utility retro-slider {
+  appearance: none;
+  height: 1.25rem;
+  background: transparent;
+
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    border: 1px solid var(--ink);
+    background:
+      linear-gradient(
+        to right,
+        var(--accent) var(--slider-fill, 0%),
+        var(--well) var(--slider-fill, 0%)
+      );
+    box-shadow: inset 1px 1px 0 0 var(--bevel-dark);
+  }
+
+  /* square raised knob, hand-centered over the 6px groove */
+  &::-webkit-slider-thumb {
+    appearance: none;
+    height: 14px;
+    width: 8px;
+    margin-top: -5px;
+    border: 1px solid var(--ink);
+    background: var(--surface);
+    box-shadow: var(--shadow-out);
+  }
+
+  &::-moz-range-track {
+    height: 4px;
+    border: 1px solid var(--ink);
+    background: var(--well);
+  }
+
+  &::-moz-range-progress {
+    height: 4px;
+    background: var(--accent);
+  }
+
+  &::-moz-range-thumb {
+    height: 14px;
+    width: 8px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    background: var(--surface);
+    box-shadow: var(--shadow-out);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    &::-webkit-slider-runnable-track,
+    &::-moz-range-track {
+      background: var(--surface-2);
+    }
+
+    &::-moz-range-progress {
+      background: var(--surface-2);
+    }
+
+    &::-webkit-slider-thumb,
+    &::-moz-range-thumb {
+      background: var(--surface-2);
+      box-shadow: none;
+      color: var(--ink-muted);
+    }
+  }
+}

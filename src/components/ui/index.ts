@@ -20,6 +20,34 @@ export {
   type NavigationMenuTriggerProps,
   type NavigationMenuLinkProps,
 } from "./navigation-menu";
+export {
+  Separator,
+  type SeparatorProps,
+} from "./separator";
+export {
+  Slider,
+  type SliderProps,
+} from "./slider";
+export {
+  Switch,
+  type SwitchProps,
+} from "./switch";
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  type TabsProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+} from "./tabs";
+export {
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupItemProps,
+  type ToggleGroupType,
+} from "./toggle-group";
 export { Progress, progressVariants, type ProgressProps } from "./progress";
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from "./radio-group";
 export { Select, selectVariants, type SelectProps } from "./select";

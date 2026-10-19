@@ -34,7 +34,16 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Separator,
+  Slider,
+  Switch,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Textarea,
+  ToggleGroup,
+  ToggleGroupItem,
   Tooltip,
 } from "@/components/ui";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -1152,6 +1161,294 @@ function NavigationMenuSection() {
   );
 }
 
+function TabsSection() {
+  return (
+    <Section label="Tabs">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          className="sm:col-span-2"
+          label="arrow keys walk + select; panels keep state while hidden"
+          code={`<Tabs defaultValue="view">
+  <TabsList>
+    <TabsTrigger value="view">View</TabsTrigger>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="effects">Effects</TabsTrigger>
+  </TabsList>
+  <TabsContent value="view">…</TabsContent>
+  <TabsContent value="general">…</TabsContent>
+  <TabsContent value="effects">…</TabsContent>
+</Tabs>`}
+        >
+          <Tabs defaultValue="view" className="w-full max-w-md">
+            <TabsList>
+              <TabsTrigger value="view">View</TabsTrigger>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="effects">Effects</TabsTrigger>
+            </TabsList>
+            <TabsContent value="view">
+              <p className="text-sm text-ink">
+                Web view renders pages in sequence; continuous view stacks
+                them vertically like an endless fax.
+              </p>
+            </TabsContent>
+            <TabsContent value="general">
+              <label className="flex cursor-pointer items-center gap-2 text-sm">
+                <Checkbox defaultChecked />
+                Restore windows on login
+              </label>
+            </TabsContent>
+            <TabsContent value="effects">
+              <label className="flex cursor-pointer items-center gap-2 text-sm">
+                <Switch defaultChecked />
+                CRT phosphor glow
+              </label>
+            </TabsContent>
+          </Tabs>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function SwitchSliderSection() {
+  const [on, setOn] = useState(false);
+  const [fill, setFill] = useState(64);
+  return (
+    <Section label="Switch · Slider">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="uncontrolled — knobs jump, no slide"
+          code={`<Switch defaultChecked />
+<Switch />
+<Switch disabled defaultChecked />`}
+        >
+          <div className="flex items-center gap-4">
+            <Switch defaultChecked />
+            <Switch />
+            <Switch disabled defaultChecked />
+          </div>
+        </Cell>
+        <Cell
+          label="controlled + onCheckedChange"
+          code={`const [on, setOn] = useState(false);
+
+<Switch checked={on} onCheckedChange={setOn} />
+<span>Turbo: {on ? "on" : "off"}</span>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <Switch checked={on} onCheckedChange={setOn} />
+            <span className="font-mono text-[11px] text-ink-muted">
+              Turbo: {on ? "on" : "off"}
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label="label-wrapped; disabled"
+          code={`<label className="flex items-center gap-2 text-sm">
+  <Switch defaultChecked />
+  Turbo mode
+</label>
+<Switch disabled defaultChecked />`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <label className="flex cursor-pointer items-center gap-2 text-sm">
+              <Switch defaultChecked />
+              Turbo mode
+            </label>
+            <Switch disabled defaultChecked />
+          </div>
+        </Cell>
+        <Cell
+          label="bare slider — native range, hard-stop fill"
+          code={`<Slider defaultValue={64} />`}
+        >
+          <Slider defaultValue={64} aria-label="Volume" />
+        </Cell>
+        <Cell
+          label="controlled + onValueChange + min/max"
+          code={`const [fill, setFill] = useState(64);
+
+<Slider
+  aria-label="Defrag level"
+  min={0}
+  max={200}
+  defaultValue={64}
+  onValueChange={setFill}
+/>
+<span>Fill: {fill}</span>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <Slider
+              aria-label="Defrag level"
+              min={0}
+              max={200}
+              step={1}
+              value={fill}
+              onValueChange={setFill}
+            />
+            <span className="font-mono text-[11px] text-ink-muted">
+              value: {fill}
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label="in a Field, with a disabled rail"
+          code={`<Field hint="Applies after reboot">
+  <Slider aria-label="Refresh rate" defaultValue={60} />
+</Field>
+<Slider disabled defaultValue={75} aria-label="Locked" />`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <Field hint="Applies after reboot">
+              <Slider aria-label="Refresh rate" defaultValue={60} />
+            </Field>
+            <Slider disabled defaultValue={75} aria-label="Locked" />
+          </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function ToggleGroupSection() {
+  const [mode, setMode] = useState("");
+  const [keys, setKeys] = useState<string[]>(["bold"]);
+  return (
+    <Section label="ToggleGroup">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label='type="single" — the radio-strip: one key down at a time'
+          code={`const [mode, setMode] = useState("");
+
+<ToggleGroup
+  type="single"
+  value={mode}
+  onValueChange={setMode}
+  aria-label="Text align"
+>
+  <ToggleGroupItem value="wrap">Wrap</ToggleGroupItem>
+  <ToggleGroupItem value="hex">Hex</ToggleGroupItem>
+  <ToggleGroupItem value="raw">Raw</ToggleGroupItem>
+</ToggleGroup>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <ToggleGroup
+              type="single"
+              value={mode}
+              onValueChange={setMode}
+              aria-label="Text align"
+            >
+              <ToggleGroupItem value="wrap">Wrap</ToggleGroupItem>
+              <ToggleGroupItem value="hex">Hex</ToggleGroupItem>
+              <ToggleGroupItem value="raw">Raw</ToggleGroupItem>
+            </ToggleGroup>
+            <span className="font-mono text-[11px] text-ink-muted">
+              mode: {mode || "—"}
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label='type="multiple" — independent keys toggle freely'
+          code={`const [keys, setKeys] = useState(["bold"]);
+
+<ToggleGroup
+  type="multiple"
+  value={keys}
+  onValueChange={setKeys}
+  aria-label="Text style"
+>
+  <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+  <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+  <ToggleGroupItem value="mono">Mono</ToggleGroupItem>
+</ToggleGroup>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <ToggleGroup
+              type="multiple"
+              value={keys}
+              onValueChange={setKeys}
+              aria-label="Text style"
+            >
+              <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+              <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+              <ToggleGroupItem value="mono">Mono</ToggleGroupItem>
+            </ToggleGroup>
+            <span className="font-mono text-[11px] text-ink-muted">
+              keys: {keys.join(" ") || "—"}
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label="vertical arrangement via container classes"
+          code={`<ToggleGroup
+  aria-label="Sidebar handles"
+  defaultValue="left"
+  className="flex-col"
+>
+  <ToggleGroupItem value="left">Left</ToggleGroupItem>
+  <ToggleGroupItem value="right">Right</ToggleGroupItem>
+</ToggleGroup>`}
+        >
+          <ToggleGroup
+            aria-label="Sidebar handles"
+            defaultValue="left"
+            className="flex-col"
+          >
+            <ToggleGroupItem value="left">Left</ToggleGroupItem>
+            <ToggleGroupItem value="right">Right</ToggleGroupItem>
+          </ToggleGroup>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function SeparatorSection() {
+  return (
+    <Section label="Separator">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="horizontal groove (default)"
+          code={`<p>File menu</p>
+<Separator className="my-2 w-40" />
+<p>…uses the sunken two-tone groove</p>`}
+        >
+          <div className="w-48">
+            <p className="text-sm">Format</p>
+            <Separator className="my-2 w-40" />
+            <p className="text-sm text-ink-muted">Two-tone groove — dark
+            line over its light highlight</p>
+          </div>
+        </Cell>
+        <Cell
+          label='orientation="vertical" — needs a stretching flex row'
+          code={`<div className="flex h-12 items-stretch gap-3">
+  <span>Toolbar</span>
+  <Separator orientation="vertical" />
+  <span>Palette</span>
+</div>`}
+        >
+          <div className="flex h-12 items-stretch gap-3 border border-ink bg-surface p-2 shadow-out">
+            <span className="text-sm">Toolbar</span>
+            <Separator orientation="vertical" />
+            <span className="text-sm">Palette</span>
+          </div>
+        </Cell>
+        <Cell
+          label="decorative — skipped by screen readers"
+          code={`<Separator decorative className="w-40" />`}
+        >
+          <div className="w-48">
+            <label className="text-sm">Overwrite mode</label>
+            <Separator decorative className="my-2 w-40" />
+            <span className="text-sm text-ink-muted">purely visual rule</span>
+          </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function TooltipSection() {
   return (
     <Section label="Tooltip">
@@ -1284,12 +1581,16 @@ export default function PlaygroundPage() {
             <AccordionSection />
             <MenuBarSection />
             <NavigationMenuSection />
+            <TabsSection />
+            <SwitchSliderSection />
+            <ToggleGroupSection />
+            <SeparatorSection />
             <TooltipSection />
             <TokensSection />
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 17 components</span>
+            <span className={PANE}>Ready — 22 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark
