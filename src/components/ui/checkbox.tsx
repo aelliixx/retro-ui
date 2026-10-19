@@ -46,6 +46,7 @@ function Checkbox({
     <button
       type="button"
       role="checkbox"
+      data-slot="checkbox"
       disabled={disabled}
       aria-checked={(indeterminate && !value) ? "mixed" : value}
       data-state={indeterminate && !value ? "indeterminate" : value ? "checked" : "unchecked"}

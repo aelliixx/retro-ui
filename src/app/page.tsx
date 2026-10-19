@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Avatar,
   Button,
   Card,
   CardContent,
@@ -11,10 +16,17 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Dialog,
   Field,
   Input,
   LoadingIcon,
+  Menu,
+  MenuBar,
+  MenuItem,
+  MenuSeparator,
   Progress,
+  Radio,
+  RadioGroup,
   Select,
   Textarea,
   Tooltip,
@@ -151,7 +163,7 @@ function Intro() {
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="font-pixel text-3xl">retro/ui</h1>
         <span className="border border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
-          v0.2.0
+          v0.3.0
         </span>
       </div>
       <p className="max-w-prose text-ink-muted">
@@ -432,6 +444,61 @@ function CheckboxSection() {
   );
 }
 
+function RadioGroupSection() {
+  const [picked, setPicked] = useState("100");
+
+  return (
+    <Section label="RadioGroup">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Cell
+          label="uncontrolled + disabled member"
+          code={`<RadioGroup label="Scaling" defaultValue="100">
+  <Radio value="100">100% (small fonts)</Radio>
+  <Radio value="125">125%</Radio>
+  <Radio value="150" disabled>150% (needs sign-out)</Radio>
+</RadioGroup>`}
+        >
+          <RadioGroup label="Scaling" defaultValue="100">
+            <Radio value="100">100% (small fonts)</Radio>
+            <Radio value="125">125%</Radio>
+            <Radio value="150" disabled>150% (needs sign-out)</Radio>
+          </RadioGroup>
+        </Cell>
+        <Cell
+          label="controlled + onValueChange"
+          code={`const [picked, setPicked] = useState("crt");
+
+<RadioGroup
+  label="Defrag mode"
+  value={picked}
+  onValueChange={setPicked}
+>
+  <Radio value="crt">CRT-friendly (interleaved)</Radio>
+  <Radio value="fast">Optimize for speed</Radio>
+  <Radio value="full">Full optimization</Radio>
+</RadioGroup>
+<span>{picked}</span>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <RadioGroup
+              label="Defrag mode"
+              value={picked}
+              onValueChange={setPicked}
+            >
+              <Radio value="crt">CRT-friendly (interleaved)</Radio>
+              <Radio value="fast">Optimize for speed</Radio>
+              <Radio value="full">Full optimization</Radio>
+            </RadioGroup>
+            <span className="font-mono text-[11px] text-ink-muted">
+              picked: {picked}
+            </span>
+          </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function SelectSection() {
   return (
     <Section label="Select">
@@ -691,6 +758,260 @@ function CardsSection() {
   );
 }
 
+function DialogSection() {
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+  return (
+    <Section label="Dialog">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Cell
+          label='variant="info" (controlled)'
+          code={`const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>About…</Button>
+
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  variant="info"
+  title="About retro/ui"
+  actions={<Button variant="primary" onClick={() => setOpen(false)}>OK</Button>}
+>
+  16 components, tokens for light and dark,
+  and bevels all the way down.
+</Dialog>`}
+        >
+          <Dialog
+            open={infoOpen}
+            onOpenChange={setInfoOpen}
+            variant="info"
+            title="About retro/ui"
+            actions={
+              <Button
+                variant="primary"
+                onClick={() => setInfoOpen(false)}
+              >
+                OK
+              </Button>
+            }
+          >
+            16 components, tokens for light and dark, and bevels all the way
+            down.
+          </Dialog>
+          <Button variant="secondary" onClick={() => setInfoOpen(true)}>
+            About…
+          </Button>
+        </Cell>
+        <Cell
+          label='variant="error" + destructive action'
+          code={`const [open, setOpen] = useState(false);
+
+<Button variant="outline" onClick={() => setOpen(true)}>
+  Empty recycle bin…
+</Button>
+
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  variant="error"
+  title="Empty C:\\RECYCLED?"
+  actions={<>
+    <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button variant="destructive" onClick={() => setOpen(false)}>
+      Empty bin
+    </Button>
+  </>}
+>
+  This removes 1,337 files. They do not go to
+  a safe place. They simply stop existing.
+</Dialog>`}
+        >
+          <Dialog
+            open={errorOpen}
+            onOpenChange={setErrorOpen}
+            variant="error"
+            title="Empty C:\\RECYCLED?"
+            actions={
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => setErrorOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => setErrorOpen(false)}
+                >
+                  Empty bin
+                </Button>
+              </>
+            }
+          >
+            This removes 1,337 files. They do not go to a safe place. They
+            simply stop existing.
+          </Dialog>
+          <Button variant="outline" onClick={() => setErrorOpen(true)}>
+            Empty recycle bin…
+          </Button>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function AccordionSection() {
+  return (
+    <Section label="Accordion">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Cell
+          label="items stay open independently"
+          code={`<Accordion className="w-full max-w-sm">
+  <AccordionItem open>
+    <AccordionTrigger>Getting started</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+  <AccordionItem>
+    <AccordionTrigger>Theming</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+</Accordion>`}
+        >
+          <Accordion className="w-full max-w-sm">
+            <AccordionItem open>
+              <AccordionTrigger>Getting started</AccordionTrigger>
+              <AccordionContent>
+                Every component is a plain file in
+                {" "}
+                <code className="font-mono">src/components/ui</code> — import
+                from the barrel and pass <code className="font-mono">className</code>{" "}
+                for overrides.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionTrigger>Theming</AccordionTrigger>
+              <AccordionContent>
+                Tokens live in <code className="font-mono">globals.css</code>;
+                override <code className="font-mono">:root</code> /{" "}
+                <code className="font-mono">.dark</code> to re-brand everything,
+                bevel tokens included.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionTrigger>Keyboard &amp; focus</AccordionTrigger>
+              <AccordionContent>
+                Items are native <code className="font-mono">details</code>{" "}
+                elements — Tab reaches the trigger, Enter toggles, and the
+                dotted focus rectangle is drawn inside the row.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+/** smiley tile drawn inline so the demo needs no network */
+const DEMO_AVATAR_SRC =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23008080'/%3E%3Ccircle cx='16' cy='13' r='3.5' fill='%23fcfdff'/%3E%3Cpath d='M9 20 Q16 27 23 20' stroke='%23fcfdff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E";
+
+function AvatarSection() {
+  return (
+    <Section label="Avatar">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="sizes + default initials"
+          code={`<Avatar size="sm" name="Ada Lovelace" />
+<Avatar size="md" name="Ada Lovelace" />
+<Avatar size="lg" name="Ada Lovelace" />
+{/* fallback initials derived from name */}`}
+        >
+          <div className="flex items-end gap-4">
+            <Avatar size="sm" name="Ada Lovelace" />
+            <Avatar size="md" name="Ada Lovelace" />
+            <Avatar size="lg" name="Ada Lovelace" />
+          </div>
+        </Cell>
+        <Cell
+          label="presence pip"
+          code={`<Avatar name="Ada Lovelace" status="online" />   {/* teal */}
+<Avatar name="Ada Lovelace" status="away" />     {/* selection */}
+<Avatar name="Ada Lovelace" status="busy" />     {/* danger */}
+<Avatar name="Ada Lovelace" status="offline" />  {/* muted */}`}
+        >
+          <div className="flex items-end gap-4">
+            <Avatar name="Ada Lovelace" status="online" />
+            <Avatar name="Ada Lovelace" status="away" />
+            <Avatar name="Ada Lovelace" status="busy" />
+            <Avatar name="Ada Lovelace" status="offline" />
+          </div>
+        </Cell>
+        <Cell
+          label="image + broken-url fallback"
+          code={`<Avatar name="Ada Lovelace" src={demoImage} />
+<Avatar name="Ada Lovelace" src="/missing.png" />  {/* initials */}
+<Avatar name="Ada Lovelace" fallback="★" />        {/* custom node */}`}
+        >
+          <div className="flex items-end gap-4">
+            <Avatar name="Ada Lovelace" src={DEMO_AVATAR_SRC} />
+            <Avatar name="Ada Lovelace" src="/missing.png" />
+            <Avatar name="Ada Lovelace" fallback="★" />
+          </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function MenuBarSection() {
+  return (
+    <Section label="MenuBar">
+      <div className="grid gap-6 pt-2">
+        <Cell
+          label="hover or focus opens; shortcut + separator + disabled item"
+          code={`<MenuBar label="Main menu">
+  <Menu label="File">
+    <MenuItem shortcut="Ctrl+N">New</MenuItem>
+    <MenuItem shortcut="Ctrl+O">Open…</MenuItem>
+    <MenuSeparator />
+    <MenuItem disabled>Print…</MenuItem>
+  </Menu>
+  <Menu label="Edit">
+    <MenuItem shortcut="Ctrl+Z">Undo</MenuItem>
+    <MenuItem shortcut="Ctrl+C">Copy</MenuItem>
+  </Menu>
+  <Menu label="Help" align="end">
+    <MenuItem>About retro/ui</MenuItem>
+  </Menu>
+</MenuBar>`}
+        >
+          <MenuBar label="Main menu" className="w-full max-w-sm">
+            <Menu label="File">
+              <MenuItem shortcut="Ctrl+N">New</MenuItem>
+              <MenuItem shortcut="Ctrl+O">Open…</MenuItem>
+              <MenuSeparator />
+              <MenuItem shortcut="Ctrl+S">Save</MenuItem>
+              <MenuSeparator />
+              <MenuItem disabled>Print…</MenuItem>
+            </Menu>
+            <Menu label="Edit">
+              <MenuItem shortcut="Ctrl+Z">Undo</MenuItem>
+              <MenuItem shortcut="Ctrl+C">Copy</MenuItem>
+              <MenuSeparator />
+              <MenuItem shortcut="Ctrl+V">Paste</MenuItem>
+            </Menu>
+            <Menu label="Help" align="end" className="ml-auto">
+              <MenuItem>About retro/ui</MenuItem>
+            </Menu>
+          </MenuBar>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function TooltipSection() {
   return (
     <Section label="Tooltip">
@@ -814,15 +1135,20 @@ export default function PlaygroundPage() {
             <ButtonsSection />
             <FieldsSection />
             <CheckboxSection />
+            <RadioGroupSection />
             <SelectSection />
             <IndicatorsSection />
             <CardsSection />
+            <DialogSection />
+            <AvatarSection />
+            <AccordionSection />
+            <MenuBarSection />
             <TooltipSection />
             <TokensSection />
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 10 components</span>
+            <span className={PANE}>Ready — 16 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark

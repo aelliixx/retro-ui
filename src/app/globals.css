@@ -266,3 +266,12 @@
     );
   background-size: 24px 24px;
 }
+
+/* modal backdrop — hard black dither, no blur, the way the era dimmed windows */
+@utility bg-backdrop {
+  background-image: repeating-conic-gradient(
+    rgb(0 0 0 / 45%) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}

@@ -5,8 +5,9 @@ carved group boxes, sunken input wells, hatched title bars and honest
 two-tone bevels — rebuilt with modern design tokens, light/dark theming, and
 full `className` composition.
 
-Current components: **Button · Field · Input · Textarea · Checkbox · Select ·
-Progress · LoadingIcon · Tooltip · Card**.
+Current components: **Button · Field · Input · Textarea · Checkbox ·
+RadioGroup · Select · Progress · LoadingIcon · Tooltip · Card · Dialog ·
+Avatar · Accordion · MenuBar**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -53,7 +54,8 @@ animated shadow:
   Pressure points: Button press, Input wells, Card wells, status-bar panes.
 
 Textures: `bg-hatch` (title-bar ticking), `bg-dither`,
-`bg-grid`. Keyboard focus renders as a dotted rectangle inside the control
+`bg-grid`, `bg-backdrop` (the modal dim — hard black dither). Keyboard focus
+renders as a dotted rectangle inside the control
 (`focus-etched`), controlled by `--focus`.
 
 ## Overriding components
@@ -190,6 +192,110 @@ and is announced via `role="alert"`.
   title.
 - `inset` = sunken well (matches `<Input>`), good for code blocks and
   terminal-style content.
+
+### `<Dialog>`
+
+A modal message window on the native `<dialog>` element — focus trapping,
+Escape-to-close and page blocking come from the platform. Two presets:
+`variant="info"` (teal *i* roundel) and `variant="error"` (red ✗ roundel);
+pass `icon` to replace either, or `noIcon` for plain text.
+
+```tsx
+const [open, setOpen] = useState(false);
+<Button onClick={() => setOpen(true)}>Delete…</Button>
+
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  variant="error"
+  title="Empty C:\RECYCLED?"
+  actions={<Button variant="destructive" onClick={() => setOpen(false)}>Empty bin</Button>}
+>
+  This removes 1,337 files.
+</Dialog>
+```
+
+Controlled (`open` + `onOpenChange`) or uncontrolled (`defaultOpen`).
+Escape and the ✕ button fire `onOpenChange(false)` — keep `open` synced.
+`actions` render bottom-right on the footer rail; `title` doubles as the
+a11y label; the backdrop dims with `bg-backdrop` (hard black dither).
+
+### `<Avatar>`
+
+Square, beveled presence tile (no circles here), with the era's presence pip:
+
+```tsx
+<Avatar name="Ada Lovelace" />                       // initials "AL"
+<Avatar name="Ada Lovelace" src={url} status="online" />
+```
+
+Renders `src` when it loads; on a missing/broken image it falls back to
+initials derived from `name` (or a custom `fallback` node). `status` —
+`online` / `away` / `busy` / `offline` — adds a corner pip mapped to
+`--accent` / `--selection` / `--danger` / `--ink-muted`; the pip is
+decorative (`aria-hidden`), and the tile itself carries
+`role="img"` + `aria-label={name}`. Sizes via `size-6/8/10` className
+overrides.
+
+### `<Accordion>`
+
+Disclosure stack built on native `<details>/<summary>` — no state, no
+animation, keyboard toggling for free. Each item toggles independently
+(multiple can be open at once); set `open` on `<AccordionItem>` to start
+expanded.
+
+```tsx
+<Accordion>
+  <AccordionItem open>
+    <AccordionTrigger>Getting started</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+The trigger's folder-arrow snaps 90° open — instant, like everything else
+here. Row hover is the pressed-silver surface.
+
+### `<MenuBar>`
+
+The classic menu strip with pull-down lists — pure CSS, no state: menus open
+on hover *or keyboard focus* (era-authentic hover-preview), and each item is
+a real `<button>`, so Tab walks into the list and Enter fires it.
+
+```tsx
+<MenuBar label="Main menu">
+  <Menu label="File">
+    <MenuItem shortcut="Ctrl+N">New</MenuItem>   {/* display only */}
+    <MenuItem shortcut="Ctrl+O">Open…</MenuItem>
+    <MenuSeparator />
+    <MenuItem disabled>Print…</MenuItem>
+  </Menu>
+  <Menu label="Help" align="end">…</Menu>
+</MenuBar>
+```
+
+Deliberate limitations (documented, not hidden): `menubar`/`menu` roles are
+omitted because arrow-key roving can't be honored without JS, and keyboard
+focus is what keeps a list open — move focus away and it closes.
+
+### `<RadioGroup>`
+
+A carved group box of real radio inputs — native semantics, keyboard roving
+and form participation for free.
+
+```tsx
+<RadioGroup label="Scaling" defaultValue="100">
+  <Radio value="100">100% (small fonts)</Radio>
+  <Radio value="125">125%</Radio>
+  <Radio value="150" disabled>150% (needs sign-out)</Radio>
+</RadioGroup>
+```
+
+Radios must render inside the group (they share its auto-generated `name`).
+Wrap each `<Radio>` in a plain `<label>` to give it text. Controlled
+(`value` + `onValueChange`) or uncontrolled (`defaultValue`). Disabling the
+group disables every nested radio natively; the roundel is the standard
+sunken bevel, mint-dot when checked.
 
 ## Adding components
 
