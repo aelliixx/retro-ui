@@ -201,6 +201,26 @@
   }
 }
 
+/* stylable dropdown for <Select>. Customizable-select in one utility:
+   engines that know `base-select` get a fully in-page picker we can theme
+   (ink borders, sunken bevel, token colors); older engines keep the native
+   OS list and can't spell the new value, so `appearance: none` survives. */
+@utility select-base {
+  appearance: none;
+
+  @supports (appearance: base-select) {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    /* the UA draws its own arrow in base-select mode — ours is DOM */
+    &::picker-icon {
+      display: none;
+    }
+  }
+}
+
 /* diagonal ticking — the title-bar texture of record */
 @utility bg-hatch {
   background-image: repeating-linear-gradient(

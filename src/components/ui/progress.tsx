@@ -5,7 +5,7 @@ const progressVariants = cn(
 );
 
 type ProgressProps = React.ComponentProps<"div"> & {
-  /** current value (0–max); sections clip cleanly mid-block */
+  /** current value (0–max); the fill line runs flush into the end wall */
   value?: number;
   max?: number;
 };
@@ -27,7 +27,7 @@ function Progress({ className, value = 0, max = 100, ...props }: ProgressProps) 
       <div
         data-slot="progress-fill"
         style={{ width: `${pct}%` }}
-        className="h-full overflow-hidden bg-[image:repeating-linear-gradient(90deg,var(--accent)_0_0.6rem,transparent_0.6rem_0.8rem)]"
+        className="h-full bg-accent"
       />
     </div>
   );

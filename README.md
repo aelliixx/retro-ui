@@ -114,7 +114,14 @@ A styled native `<select>` — real options, keyboard + assistive-tech
 behavior for free — wrapped in a relative container that paints the chevron.
 `className` lands on the wrapper (use it for `w-*` / `h-*`; the select fills
 it); `Field`-wrapping wires label/id/aria straight through to the inner
-select. `appearance-none` + custom chevron.
+select.
+
+The dropdown list is themed too (`select-base` utility): engines with
+customizable-select (`appearance: base-select` — current Chromium and
+friends) get a fully in-page picker with the retro chrome — ink border,
+sunken bevel, token colors, hover/checked option states; older engines just
+keep the native OS list. Options are styled via the select element, so a
+plain `<option>` needs no classes of its own.
 
 ### `<Progress>`
 
@@ -122,7 +129,7 @@ select. `appearance-none` + custom chevron.
 <Progress value={64} />
 ```
 
-Sunken track + segmented teal blocks (the sections clip cleanly mid-block).
+Sunken track with a solid teal fill line that runs flush into the end wall.
 `role="progressbar"`, `aria-valuemin/max/now` wired; `data-state="complete"`
 at 100%. `value` / `max` props, size via className (`h-3`, `h-5`, …).
 
