@@ -46,6 +46,9 @@
   --selection: #99f6e4;
   --selection-ink: #0b3a35;
 
+  /* tooltip bubble — the classic softened yellow */
+  --tooltip: #ffffe1;
+
   /* bevel edges — the two faces of every carve */
   --bevel-light: #f8fafc;
   --bevel-dark: #8d95a3;
@@ -83,6 +86,9 @@
   --selection: #134e4a;
   --selection-ink: #d7f5ef;
 
+  /* tooltip bubble */
+  --tooltip: #3d3a26;
+
   /* bevel edges */
   --bevel-light: #333c4c;
   --bevel-dark: #05070c;
@@ -113,6 +119,7 @@
   --color-focus: var(--focus);
   --color-selection: var(--selection);
   --color-selection-ink: var(--selection-ink);
+  --color-tooltip: var(--tooltip);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
@@ -168,6 +175,29 @@
   &:focus-visible {
     outline: 1px dotted var(--focus);
     outline-offset: -3px;
+  }
+}
+
+/* 1.2s step flip — the hourglass ticks between upright and inverted, no easing */
+@utility animate-hourglass {
+  animation: hourglass-flip 1.2s step-end infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes hourglass-flip {
+  0% {
+    rotate: 0deg;
+  }
+
+  50% {
+    rotate: 180deg;
+  }
+
+  100% {
+    rotate: 360deg;
   }
 }
 

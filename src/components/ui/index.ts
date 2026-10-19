@@ -1,4 +1,10 @@
 export { Button, buttonVariants, type ButtonProps } from "./button";
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, cardVariants } from "./card";
+export { Checkbox, checkboxVariants, type CheckboxProps } from "./checkbox";
 export { Field, type FieldProps } from "./field";
 export { Input, inputVariants, type InputProps } from "./input";
+export { LoadingIcon, type LoadingIconProps } from "./loading-icon";
+export { Progress, progressVariants, type ProgressProps } from "./progress";
+export { Select, selectVariants, type SelectProps } from "./select";
+export { Textarea, textareaVariants, type TextareaProps } from "./textarea";
+export { Tooltip, tooltipVariants, type TooltipProps } from "./tooltip";

@@ -5,7 +5,8 @@ carved group boxes, sunken input wells, hatched title bars and honest
 two-tone bevels — rebuilt with modern design tokens, light/dark theming, and
 full `className` composition.
 
-Current components: **Button · Field · Input · Card** (more coming).
+Current components: **Button · Field · Input · Textarea · Checkbox · Select ·
+Progress · LoadingIcon · Tooltip · Card**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -34,7 +35,8 @@ Re-branding = editing one token block. No component has a hardcoded color.
   --bevel-light: #f8fafc;  /* raised edge (top-left face of a carve)  */
   --bevel-dark: #8d95a3;   /* sunken edge (bottom-right face)         */
   --focus: #171a20;        /* dotted focus rectangle                  */
-  /* …bg, surface, surface-2, well, ink, ink-muted, danger, selection… */
+  /* …bg, surface, surface-2, well, ink, ink-muted, danger, tooltip,
+     selection… */
 }
 .dark { /* same names, dark values */ }
 ```
@@ -87,13 +89,64 @@ Native `<button>` props pass through. Behavior notes:
   `aria-pressed` in React when using it as a toggle button.
 - **Focus** — dotted etched rectangle (`--focus`).
 
-### `<Input>`
+### `<Input>` / `<Textarea>`
 
-Native `<input>` props pass through. Behavior notes:
+Native `<input>` / `<textarea>` props pass through. Behavior notes:
 
 - sunken well by default (`--well` interior, `shadow-in`), dotted focus
   rectangle, `aria-invalid` switches the border to `--danger`, `disabled`
-  uses the muted well.
+  uses the muted well, teal caret.
+- `Textarea` is `resize-y` with a `min-h-20` floor.
+
+### `<Checkbox>`
+
+A `role="checkbox"` button — native keyboard activation, no `input` element
+under the hood. Tri-state via `indeterminate` (dash glyph, reports
+`aria-checked="mixed"`, resolves to checked on next activate). Works
+controlled (`checked` + `onCheckedChange`) or uncontrolled
+(`defaultChecked`). Label it by wrapping in a `<label>` or pointing `htmlFor`
+at its id. Styling hooks: `data-state` (`checked` / `unchecked` /
+`indeterminate`). Great for label-wrapping since buttons are labelable.
+
+### `<Select>`
+
+A styled native `<select>` — real options, keyboard + assistive-tech
+behavior for free — wrapped in a relative container that paints the chevron.
+`className` lands on the wrapper (use it for `w-*` / `h-*`; the select fills
+it); `Field`-wrapping wires label/id/aria straight through to the inner
+select. `appearance-none` + custom chevron.
+
+### `<Progress>`
+
+```tsx
+<Progress value={64} />
+```
+
+Sunken track + segmented teal blocks (the sections clip cleanly mid-block).
+`role="progressbar"`, `aria-valuemin/max/now` wired; `data-state="complete"`
+at 100%. `value` / `max` props, size via className (`h-3`, `h-5`, …).
+
+### `<LoadingIcon>`
+
+The classic busy-hourglass that *flips* every 1.2s (instant, stepped — no
+easing), and holds still under `prefers-reduced-motion`. Announces
+`"Loading…"` to screen readers by default; pass `label={null}` when visible
+loading text surrounds it. Size via className (`size-3`, `size-6`, …).
+
+### `<Tooltip>`
+
+```tsx
+<Tooltip content="Saves to C:\ARCHIVE">
+  <Button variant="outline">Archive</Button>
+</Tooltip>
+```
+
+The classic yellow bubble (`--tooltip`), 1px ink border, instant show on
+hover **or keyboard focus** — pure CSS, no portal, no delay. `side`
+(`"top"` default / `"bottom"`) positions it; fine-tune via `className`.
+Always wrap a **focusable** trigger so keyboard users get the content too;
+for non-icon content the tooltip supplements, never replaces, the trigger's
+label.
 
 ### `<Field>`
 
