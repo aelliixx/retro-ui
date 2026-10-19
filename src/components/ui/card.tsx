@@ -44,9 +44,9 @@ function CardHeader({
       className={cn(
         "flex items-center gap-2 border-b border-ink px-4 py-3",
         variant === "titlebar" && [
-          "bg-titlebar",
-          // title bars speak in small, bold, white type
-          "[&_[data-slot=card-title]]:text-xs [&_[data-slot=card-title]]:font-bold [&_[data-slot=card-title]]:uppercase [&_[data-slot=card-title]]:tracking-[0.14em] [&_[data-slot=card-title]]:text-white",
+          "bg-surface-2 bg-hatch",
+          // title bars speak in small, bold caps
+          "[&_[data-slot=card-title]]:text-xs [&_[data-slot=card-title]]:font-bold [&_[data-slot=card-title]]:uppercase [&_[data-slot=card-title]]:tracking-[0.14em]",
         ],
         className,
       )}

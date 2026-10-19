@@ -128,7 +128,7 @@ function Intro() {
       </div>
       <p className="max-w-prose text-ink-muted">
         A small React + Tailwind component library styled after 90s desktop
-        UIs — carved group boxes, sunken input wells and gradient title bars
+        UIs — carved group boxes, sunken input wells and hatched title bars
         — rebuilt with modern tokens, light/dark theming and full{" "}
         <code className="font-mono text-sm text-ink">className</code>{" "}
         composition via tailwind-merge.
@@ -265,7 +265,7 @@ function CardsSection() {
             </CardFooter>
           </Card>
         </Cell>
-        <Cell label='titlebar header (gradient + small caps)'>
+        <Cell label='titlebar header (hatch + small caps)'>
           <Card className="w-full">
             <CardHeader variant="titlebar">
               <CardTitle>C:\SYSTEM\README.TXT</CardTitle>
@@ -273,8 +273,8 @@ function CardsSection() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-ink-muted">
-                The titlebar header is the signature move — classic
-                left-to-right gradient, small caps title, and room for
+                The titlebar header is the signature move — hatched
+                background, small caps title, and room for
                 beveled window chrome.
               </p>
             </CardContent>

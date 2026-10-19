@@ -49,10 +49,6 @@
   /* bevel edges — the two faces of every carve */
   --bevel-light: #f8fafc;
   --bevel-dark: #8d95a3;
-
-  /* title bar gradient (dark → light, left → right) */
-  --titlebar-a: #0b5d57;
-  --titlebar-b: #12a094;
 }
 
 .dark {
@@ -90,10 +86,6 @@
   /* bevel edges */
   --bevel-light: #333c4c;
   --bevel-dark: #05070c;
-
-  /* title bar gradient */
-  --titlebar-a: #063833;
-  --titlebar-b: #0e887c;
 }
 
 /* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
@@ -179,16 +171,7 @@
   }
 }
 
-/* horizontal title-bar gradient — dark on the left, light on the right */
-@utility bg-titlebar {
-  background-image: linear-gradient(
-    90deg,
-    var(--titlebar-a),
-    var(--titlebar-b)
-  );
-}
-
-/* diagonal ticking */
+/* diagonal ticking — the title-bar texture of record */
 @utility bg-hatch {
   background-image: repeating-linear-gradient(
     135deg,

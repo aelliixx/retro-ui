@@ -1,7 +1,7 @@
 # retro/ui
 
 A small React + Tailwind component library styled after 90s desktop UIs —
-carved group boxes, sunken input wells, gradient title bars and honest
+carved group boxes, sunken input wells, hatched title bars and honest
 two-tone bevels — rebuilt with modern design tokens, light/dark theming, and
 full `className` composition.
 
@@ -33,7 +33,6 @@ Re-branding = editing one token block. No component has a hardcoded color.
   --accent: #0f766e;       /* primary actions + title bars            */
   --bevel-light: #f8fafc;  /* raised edge (top-left face of a carve)  */
   --bevel-dark: #8d95a3;   /* sunken edge (bottom-right face)         */
-  --titlebar-a/b: …;       /* horizontal title-bar gradient           */
   --focus: #171a20;        /* dotted focus rectangle                  */
   /* …bg, surface, surface-2, well, ink, ink-muted, danger, selection… */
 }
@@ -51,7 +50,7 @@ animated shadow:
 - states flip between the two **instantly** — no transitions by design.
   Pressure points: Button press, Input wells, Card wells, status-bar panes.
 
-Textures: `bg-titlebar` (horizontal title gradient), `bg-hatch`, `bg-dither`,
+Textures: `bg-hatch` (title-bar ticking), `bg-dither`,
 `bg-grid`. Keyboard focus renders as a dotted rectangle inside the control
 (`focus-etched`), controlled by `--focus`.
 
@@ -126,8 +125,8 @@ and is announced via `role="alert"`.
 ```
 
 - `raised` — hairline chrome + `shadow-out` bevel; reads as a window.
-- `titlebar` headers render the signature retro chrome: classic
-  left-to-right gradient (`--titlebar-a → --titlebar-b`), small caps white
+- `titlebar` headers render the signature retro chrome: hatched
+  silver background, small caps
   title.
 - `inset` = sunken well (matches `<Input>`), good for code blocks and
   terminal-style content.
