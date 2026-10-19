@@ -8,7 +8,9 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";import { cn } from "@/lib/utils";
+} from "react";
+
+import { cn } from "@/lib/utils";
 
 /**
  * The notification stack — balloons from the tray, minus the balloon
@@ -21,6 +23,7 @@ import {
  * ```tsx
  * const toast = useToast();
  * toast.info("Saved", "Your document is on the disk.");
+ * toast.success("Copy complete", "3 files written to C:\\TEMP.");
  * toast.error("Merge conflict", "Resolve it by hand.", { duration: 0 });
  * ```
  *
@@ -30,12 +33,12 @@ import {
  * live region (`error` toasts assert with `role="alert"`).
  */
 
-type ToastVariant = "info" | "error";
+type ToastVariant = "info" | "success" | "error";
 
 type ToastOptions = {
   title: string;
   description?: string;
-  /** "info" (accent) or "error" (danger) — mirrors Dialog */
+  /** "info" (accent), "success" (green) or "error" (danger) */
   variant?: ToastVariant;
   /** ms before auto-dismiss; 0 = sticky until the ✕ key */
   duration?: number;
@@ -51,6 +54,8 @@ type ToastContextValue = {
   dismiss: (id: number) => void;
   /** push with variant: "info" */
   info: (title: string, description?: string, options?: Partial<ToastOptions>) => number;
+  /** push with variant: "success" */
+  success: (title: string, description?: string, options?: Partial<ToastOptions>) => number;
   /** push with variant: "error" */
   error: (title: string, description?: string, options?: Partial<ToastOptions>) => number;
 };
@@ -103,6 +108,8 @@ function ToastProvider({ className, children }: ToastProviderProps) {
       dismiss,
       info: (title: string, description?: string, options?: Partial<ToastOptions>) =>
         push({ title, description, ...options, variant: "info" }),
+      success: (title: string, description?: string, options?: Partial<ToastOptions>) =>
+        push({ title, description, ...options, variant: "success" }),
       error: (title: string, description?: string, options?: Partial<ToastOptions>) =>
         push({ title, description, ...options, variant: "error" }),
     }),
@@ -157,7 +164,11 @@ function Toast({
         "pointer-events-auto relative border border-ink bg-surface p-3 pr-9 text-ink shadow-out",
         // the variant rail — a solid cut down the left edge
         'before:absolute before:inset-y-0 before:left-0 before:w-1 before:content-[""]',
-        item.variant === "error" ? "before:bg-danger" : "before:bg-accent",
+        item.variant === "error"
+          ? "before:bg-danger"
+          : item.variant === "success"
+            ? "before:bg-success"
+            : "before:bg-accent",
       )}
     >
       <div className="flex items-start gap-2.5">
@@ -186,19 +197,37 @@ function Toast({
 }
 
 function Glyph({ variant }: { variant: ToastVariant }) {
-  return variant === "error" ? (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 16 16"
-      width="16"
-      height="16"
-      className="mt-0.5 shrink-0 text-danger"
-    >
-      <circle cx="8" cy="8" r="7" fill="currentColor" />
-      <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
-      <rect x="4.6" y="7" width="6.8" height="2" fill="currentColor" />
-    </svg>
-  ) : (
+  if (variant === "error") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 16 16"
+        width="16"
+        height="16"
+        className="mt-0.5 shrink-0 text-danger"
+      >
+        <circle cx="8" cy="8" r="7" fill="currentColor" />
+        <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
+        <rect x="4.6" y="7" width="6.8" height="2" fill="currentColor" />
+      </svg>
+    );
+  }
+  if (variant === "success") {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 16 16"
+        width="16"
+        height="16"
+        className="mt-0.5 shrink-0 text-success"
+      >
+        <circle cx="8" cy="8" r="7" fill="currentColor" />
+        <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
+        <path d="M4.9 8.3 7 10.4 11.1 5.9" fill="none" stroke="currentColor" strokeWidth="2" />
+      </svg>
+    );
+  }
+  return (
     <svg
       aria-hidden="true"
       viewBox="0 0 16 16"

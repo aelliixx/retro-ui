@@ -41,6 +41,12 @@
   --danger-ink: #ffffff;
   --danger-soft: #fbe4e4;
 
+  /* success */
+  --success: #15803d;
+  --success-strong: #166534;
+  --success-ink: #ffffff;
+  --success-soft: #ddf3e1;
+
   /* focus + selection */
   --focus: #171a20;
   --selection: #99f6e4;
@@ -81,6 +87,12 @@
   --danger-ink: #2b0806;
   --danger-soft: #3b1412;
 
+  /* success */
+  --success: #4ade80;
+  --success-strong: #86efac;
+  --success-ink: #073015;
+  --success-soft: #123822;
+
   /* focus + selection */
   --focus: #e7eaf1;
   --selection: #134e4a;
@@ -114,6 +126,10 @@
   --color-danger-strong: var(--danger-strong);
   --color-danger-ink: var(--danger-ink);
   --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-strong: var(--success-strong);
+  --color-success-ink: var(--success-ink);
+  --color-success-soft: var(--success-soft);
   --color-bevel-light: var(--bevel-light);
   --color-bevel-dark: var(--bevel-dark);
   --color-focus: var(--focus);

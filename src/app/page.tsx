@@ -1599,6 +1599,22 @@ function ToastSection() {
           </Button>
         </Cell>
         <Cell
+          label="success — the green rail"
+          code={`toast.success(
+  "Copy complete",
+  "3 files written to C:\\\\TEMP.",
+);`}
+        >
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.success("Copy complete", "3 files written to C:\\TEMP.")
+            }
+          >
+            Push success
+          </Button>
+        </Cell>
+        <Cell
           label="error — asserts with role=alert, sticky until ✕"
           code={`toast.error(
   "Merge conflict",
