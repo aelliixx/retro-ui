@@ -8,8 +8,8 @@ full `className` composition.
 Current components: **Button · Field · Input · PasswordToggleField ·
 Textarea · Checkbox · Switch · Toggle · Slider · RadioGroup · Select ·
 Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Accordion ·
-MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator · ScrollArea ·
-Toast**.
+Collapsible · MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator ·
+ScrollArea · Toast**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -434,6 +434,26 @@ skinned) scrollbars — zero JS, honest trough-look.
 
 Give it an accessible `label` and the pane becomes `role="region"`,
 takes a tab stop, and scrolls with the keyboard once focused.
+
+### `<Collapsible>`
+
+A trigger that expands/collapses one panel, instantly. Use it instead of
+`<Accordion>` when there's a single panel and the trigger shouldn't look
+like a folder row — both parts are bare and styled by you, but wired
+together: `aria-expanded` + `aria-controls`, click/Space/Enter, and
+`data-state="open|closed"` on every part for styling (the classic move:
+`data-[state=open]:rotate-90` on an arrow the consumer includes themself).
+
+```tsx
+<Collapsible>
+  <CollapsibleTrigger>▸ Advanced</CollapsibleTrigger>
+  <CollapsibleContent>…anything…</CollapsibleContent>
+</Collapsible>
+```
+
+Controlled (`open` + `onOpenChange`) or uncontrolled (`defaultOpen`).
+Like Tabs' panels, the content stays mounted while closed but `hidden`,
+so form state inside survives toggling.
 
 ### `<PasswordToggleField>`
 

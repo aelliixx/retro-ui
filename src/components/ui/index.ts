@@ -3,6 +3,12 @@ export { Avatar, avatarVariants, type AvatarProps } from "./avatar";
 export { Button, buttonVariants, type ButtonProps } from "./button";
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, cardVariants } from "./card";
 export { Checkbox, checkboxVariants, type CheckboxProps } from "./checkbox";
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  type CollapsibleProps,
+} from "./collapsible";
 export { Dialog, dialogVariants, type DialogProps } from "./dialog";
 export { Field, useFieldIds, type FieldProps, type FieldIds } from "./field";
 export { PasswordToggleField, type PasswordToggleFieldProps } from "./password-toggle-field";

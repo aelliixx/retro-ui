@@ -16,6 +16,9 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Dialog,
   Field,
   Input,
@@ -1474,6 +1477,86 @@ function SeparatorSection() {
   );
 }
 
+function CollapsibleSection() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Section label="Collapsible">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="uncontrolled — the panel keeps its state while hidden"
+          code={`<Collapsible>
+  <CollapsibleTrigger>Advanced</CollapsibleTrigger>
+  <CollapsibleContent>
+    <!-- anything, state included -->
+  </CollapsibleContent>
+</Collapsible>`}
+        >
+          <Collapsible className="flex w-full max-w-xs flex-col items-start gap-2">
+            <CollapsibleTrigger>Advanced</CollapsibleTrigger>
+            <CollapsibleContent className="flex w-full flex-col gap-2">
+              <Field label="Mount point" hint="Where the archive unpacks">
+                <Input defaultValue="C:\\ARCHIVE" />
+              </Field>
+              <label className="flex cursor-pointer items-center gap-2 text-sm">
+                <Checkbox defaultChecked />
+                Prompt before overwrite
+              </label>
+            </CollapsibleContent>
+          </Collapsible>
+        </Cell>
+        <Cell
+          label="controlled + onOpenChange"
+          code={`const [open, setOpen] = useState(false);
+
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger>Details</CollapsibleTrigger>
+  <CollapsibleContent>…</CollapsibleContent>
+</Collapsible>
+<span>state: {open ? "open" : "closed"}</span>`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <Collapsible open={open} onOpenChange={setOpen}>
+              <CollapsibleTrigger>Details</CollapsibleTrigger>
+              <CollapsibleContent>
+                <p className="max-w-xs text-sm text-ink-muted">
+                  The panel stays mounted while closed (hidden), so anything
+                  inside keeps its state across toggles.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+            <span className="font-mono text-[11px] text-ink-muted">
+              state: {open ? "open" : "closed"}
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label="data-state styling — the arrow flips, no animation"
+          code={`<CollapsibleTrigger
+  className="data-[state=open]:[&>span]:rotate-90"
+>
+  <span>▸</span> Advanced
+</CollapsibleTrigger>`}
+        >
+          <Collapsible className="flex w-full max-w-xs flex-col items-start gap-2">
+            <CollapsibleTrigger className="data-[state=open]:[&>span]:rotate-90">
+              <span aria-hidden="true" className="inline-block">
+                ▸
+              </span>
+              Advanced
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <p className="max-w-xs text-sm text-ink-muted">
+                Every part carries data-state, so the key&rsquo;s arrow (or any
+                styling) can read the open-state — instantly, of course.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function PasswordSection() {
   return (
     <Section label="PasswordToggleField">
@@ -1788,6 +1871,7 @@ export default function PlaygroundPage() {
             <SwitchSliderSection />
             <ToggleGroupSection />
             <SeparatorSection />
+            <CollapsibleSection />
             <PasswordSection />
             <ScrollAreaSection />
             <ToastSection />
@@ -1796,7 +1880,7 @@ export default function PlaygroundPage() {
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 26 components</span>
+            <span className={PANE}>Ready — 27 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark
