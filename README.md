@@ -5,10 +5,11 @@ carved group boxes, sunken input wells, hatched title bars and honest
 two-tone bevels — rebuilt with modern design tokens, light/dark theming, and
 full `className` composition.
 
-Current components: **Button · Field · Input · Textarea · Checkbox ·
-Switch · Slider · RadioGroup · Select · Progress · LoadingIcon · Tooltip ·
-Card · Dialog · Avatar · Accordion · MenuBar · NavigationMenu · Tabs ·
-ToggleGroup · Separator**.
+Current components: **Button · Field · Input · PasswordToggleField ·
+Textarea · Checkbox · Switch · Toggle · Slider · RadioGroup · Select ·
+Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Accordion ·
+MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator · ScrollArea ·
+Toast**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -388,6 +389,64 @@ tint so "on" stays readable in either theme. `type="single"` callbacks
 see a `string` (empty when nothing is selected); `type="multiple"` sees
 `string[]`. Note: items are plain tabbable buttons (no roving tabindex)
 — fine for humane group sizes.
+
+### `<Toggle>`
+
+The latching key — `ToggleGroupItem` on its own: a button with
+`aria-pressed` whose bevel inverts and tints while it stays down.
+
+```tsx
+<Toggle defaultPressed>Bold</Toggle>
+<Toggle pressed={on} onPressedChange={setOn}>Debug</Toggle>
+```
+
+### `<Toast>`
+
+Notification balloons from the tray, minus the physics — toasts stack
+bottom-right and vanish without animation. Mount one `<ToastProvider>`
+(it renders the persistent polite live region and the stack), then push
+with the `useToast()` hook:
+
+```tsx
+const toast = useToast();
+toast.info("Saved", "Your document is on the disk.");     // 5s default
+toast.error("Merge conflict", "Resolve it by hand.", { duration: 0 });
+```
+
+`duration` is milliseconds — `0` sticks until the ✕ key. `variant` is
+`info` (accent rail) or `error` (danger rail), mirroring `Dialog`; error
+toasts assert with `role="alert"`. The provider is a client component —
+mount it around your app or page.
+
+### `<ScrollArea>`
+
+A sunken well that scrolls its overflow with the native (globally
+skinned) scrollbars — zero JS, honest trough-look.
+
+```tsx
+<ScrollArea label="Station log" className="h-40 w-64">
+  <p className="w-max">…wide or tall content…</p>
+</ScrollArea>
+```
+
+Give it an accessible `label` and the pane becomes `role="region"`,
+takes a tab stop, and scrolls with the keyboard once focused.
+
+### `<PasswordToggleField>`
+
+The password well with a joined reveal key: the button sits flush at the
+right end of the trough and toggles the mask instantly (`password` ⇄
+`text`, no transitions). Label/hint/error/required wire through the
+normal `Field` machinery — composite controls opt out of Field's
+single-child clone and self-wire via the exported `useFieldIds()` hook.
+
+```tsx
+<PasswordToggleField
+  label="Access key"
+  hint="8+ characters"
+  autoComplete="current-password"
+/>
+```
 
 ### `<Separator>`
 

@@ -30,9 +30,11 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  PasswordToggleField,
   Progress,
   Radio,
   RadioGroup,
+  ScrollArea,
   Select,
   Separator,
   Slider,
@@ -42,9 +44,12 @@ import {
   TabsList,
   TabsTrigger,
   Textarea,
+  Toggle,
   ToggleGroup,
   ToggleGroupItem,
+  ToastProvider,
   Tooltip,
+  useToast,
 } from "@/components/ui";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -1379,6 +1384,26 @@ function ToggleGroupSection() {
           </div>
         </Cell>
         <Cell
+          label="<Toggle> — the same key on its own"
+          code={`<Toggle defaultPressed>Bold</Toggle>
+
+// controlled:
+const [on, setOn] = useState(false);
+<Toggle pressed={on} onPressedChange={setOn}>
+  Debug
+</Toggle>`}
+        >
+          <div className="flex items-center gap-4">
+            <Toggle defaultPressed>
+              <span className="font-bold">Bold</span>
+            </Toggle>
+            <Toggle>
+              <span className="font-mono">Debug</span>
+            </Toggle>
+            <Toggle disabled>Turbo</Toggle>
+          </div>
+        </Cell>
+        <Cell
           label="vertical arrangement via container classes"
           code={`<ToggleGroup
   aria-label="Sidebar handles"
@@ -1443,6 +1468,167 @@ function SeparatorSection() {
             <Separator decorative className="my-2 w-40" />
             <span className="text-sm text-ink-muted">purely visual rule</span>
           </div>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function PasswordSection() {
+  return (
+    <Section label="PasswordToggleField">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="label + hint — the reveal key toggles the mask instantly"
+          code={`<PasswordToggleField
+  label="Access key"
+  hint="8+ characters; the key never leaves this machine"
+  placeholder="hunter2"
+  autoComplete="current-password"
+/>`}
+        >
+          <PasswordToggleField
+            label="Access key"
+            hint="8+ characters; the key never leaves this machine"
+            placeholder="hunter2"
+            autoComplete="current-password"
+          />
+        </Cell>
+        <Cell
+          label="error medicine: invalid wiring included"
+          code={`<PasswordToggleField
+  label="Access key"
+  error="That key was rejected three times. Caps lock?"
+  defaultValue="letmein123"
+/>`}
+        >
+          <PasswordToggleField
+            label="Access key"
+            error="That key was rejected three times. Caps lock?"
+            defaultValue="letmein123"
+          />
+        </Cell>
+        <Cell
+          label="defaultValue + required marker"
+          code={`<PasswordToggleField
+  label="Access key"
+  defaultValue="correct horse battery staple"
+  required
+/>`}
+        >
+          <PasswordToggleField
+            label="Access key"
+            defaultValue="correct horse battery staple"
+            required
+          />
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function ScrollAreaSection() {
+  const lines = Array.from({ length: 40 }, (_, i) => `line ${String(i + 1).padStart(2, "0")} — station log entry, sector ${i + 7} nominal`);
+  return (
+    <Section label="ScrollArea">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="vertical trough — native scrollbars, already skinned"
+          code={`<ScrollArea label="Station log" className="h-40 w-64">
+  {lines.map((line) => (
+    <p key={line}>{line}</p>
+  ))}
+</ScrollArea>`}
+        >
+          <ScrollArea label="Station log" className="h-40 w-full max-w-64 font-mono text-xs">
+            {lines.map((line) => (
+              <p key={line} className="whitespace-nowrap text-ink">
+                {line}
+              </p>
+            ))}
+          </ScrollArea>
+        </Cell>
+        <Cell
+          label="horizontal too — pass wider content"
+          code={`<ScrollArea label="Wide manifest" className="h-40 w-64">
+  <p className="w-max">very long manifest line, item 001 … item 099</p>
+</ScrollArea>`}
+        >
+          <ScrollArea label="Wide manifest" className="h-24 w-full max-w-64 font-mono text-xs">
+            <p className="w-max text-ink">
+              manifest 001 · crate A-7 · destination gateway east · weight 12kg · manifest 002 · crate B-2 · destination gateway west · weight 8kg · manifest 003 · crate C-9 · destination hold · weight 31kg
+            </p>
+          </ScrollArea>
+        </Cell>
+        <Cell
+          label="unnamed scrolls fine — no region role, no tab stop"
+          code={`<ScrollArea className="h-24 w-64">
+  <p>Decorative pane — skipped by screen readers.</p>
+</ScrollArea>`}
+        >
+          <ScrollArea className="h-24 w-full max-w-64">
+            <p className="text-sm text-ink">
+              Decorative pane — scrolls with the mouse, skipped by the
+              accessibility tree.
+            </p>
+          </ScrollArea>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function ToastSection() {
+  const toast = useToast();
+  return (
+    <Section label="Toast">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="info — polite live region, 5s auto-dismiss"
+          code={`const toast = useToast();
+
+<Button onClick={() => toast.info("Saved", "Your document is on the disk.")}>
+  Push info
+</Button>`}
+        >
+          <Button
+            variant="secondary"
+            onClick={() => toast.info("Saved", "Your document is on the disk.")}
+          >
+            Push info
+          </Button>
+        </Cell>
+        <Cell
+          label="error — asserts with role=alert, sticky until ✕"
+          code={`toast.error(
+  "Merge conflict",
+  "Resolve it by hand.",
+  { duration: 0 },
+);`}
+        >
+          <Button
+            variant="destructive"
+            onClick={() =>
+              toast.error("Merge conflict", "Resolve it by hand.", {
+                duration: 0,
+              })
+            }
+          >
+            Push error
+          </Button>
+        </Cell>
+        <Cell
+          label="short timer — 1.2s, watch it leave"
+          code={`toast.info("Copied 3 files", undefined, { duration: 1200 });`}
+        >
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.info("Copied 3 files", undefined, { duration: 1200 })
+            }
+          >
+            Push brief
+          </Button>
         </Cell>
       </div>
     </Section>
@@ -1551,7 +1737,8 @@ function TokensSection() {
 
 export default function PlaygroundPage() {
   return (
-    <div className="min-h-screen bg-desktop bg-dither p-4 sm:p-8 lg:p-12">
+    <ToastProvider>
+      <div className="min-h-screen bg-desktop bg-dither p-4 sm:p-8 lg:p-12">
       <main className="mx-auto w-full max-w-4xl">
         <Card>
           <CardHeader
@@ -1585,12 +1772,15 @@ export default function PlaygroundPage() {
             <SwitchSliderSection />
             <ToggleGroupSection />
             <SeparatorSection />
+            <PasswordSection />
+            <ScrollAreaSection />
+            <ToastSection />
             <TooltipSection />
             <TokensSection />
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 22 components</span>
+            <span className={PANE}>Ready — 26 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark
@@ -1598,6 +1788,7 @@ export default function PlaygroundPage() {
           </CardFooter>
         </Card>
       </main>
-    </div>
+      </div>
+    </ToastProvider>
   );
 }
