@@ -34,8 +34,19 @@ function Checkbox({
   const value = isControlled ? !!checked : state;
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    // The consumer gets first say: a veto (their own preventDefault) means
+    // we do nothing at all — not even the forwarding suppression below.
     onClick?.(event);
     if (event.defaultPrevented) return;
+    // Cancel the browser's default action before toggling: when this
+    // checkbox sits inside a wrapping <label>, Gecko (Firefox) re-dispatches
+    // extra click events at the button as the click bubbles to the label,
+    // which double/triple-fires the toggle — click the box and sometimes
+    // nothing changes. The label's forward *is* that default action, so
+    // preventing it keeps exactly one toggle per user click. Clicking the
+    // label text still works: the forward is dispatched *by* the original
+    // event and arrives here already, before anything we cancel.
+    event.preventDefault();
 
     const next = indeterminate ? true : !value;
     if (!isControlled) setState(next);
