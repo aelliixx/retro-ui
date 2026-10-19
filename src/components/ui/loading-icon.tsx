@@ -14,6 +14,9 @@ type LoadingIconProps = {
  * The classic busy-hourglass. It *flips* every 1.2s (instant, like an
  * animation frame from the era — no easing), and holds still entirely under
  * `prefers-reduced-motion`.
+ *
+ * The outline alone is centrosymmetric — flipped, it maps onto itself — so
+ * the sand pile (accent fill) makes the flip legible: bottom, tick, top.
  */
 function LoadingIcon({ className, label = "Loading…" }: LoadingIconProps) {
   return (
@@ -24,6 +27,12 @@ function LoadingIcon({ className, label = "Loading…" }: LoadingIconProps) {
         fill="none"
         className={cn("size-4 animate-hourglass text-ink", className)}
       >
+        {/* sand in the lower bulb — lands in the upper bulb when flipped */}
+        <path
+          d="M4 11 L12 11 L13 14 L3 14 Z"
+          className="text-accent"
+          fill="currentColor"
+        />
         <path
           d="M3 2 L13 2 L13 5 L9 8 L13 11 L13 14 L3 14 L3 11 L7 8 L3 5 Z"
           stroke="currentColor"

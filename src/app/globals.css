@@ -209,9 +209,21 @@
   appearance: none;
 
   @supports (appearance: base-select) {
-    &,
+    /* the customizable-select UA stylesheet doesn't center the label;
+       explicit flex centering + nowrap keeps the closed control aligned */
+    & {
+      appearance: base-select;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      line-height: 1;
+      padding-block: 0;
+    }
+
     &::picker(select) {
       appearance: base-select;
+      /* breathe below the control instead of sitting flush */
+      margin-block: 2px;
     }
 
     /* the UA draws its own arrow in base-select mode — ours is DOM */
