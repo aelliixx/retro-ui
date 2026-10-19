@@ -8,6 +8,18 @@ export { Field, type FieldProps } from "./field";
 export { Input, inputVariants, type InputProps } from "./input";
 export { LoadingIcon, type LoadingIconProps } from "./loading-icon";
 export { MenuBar, Menu, MenuItem, MenuSeparator, type MenuProps, type MenuItemProps } from "./menu-bar";
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  type NavigationMenuProps,
+  type NavigationMenuItemProps,
+  type NavigationMenuTriggerProps,
+  type NavigationMenuLinkProps,
+} from "./navigation-menu";
 export { Progress, progressVariants, type ProgressProps } from "./progress";
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from "./radio-group";
 export { Select, selectVariants, type SelectProps } from "./select";

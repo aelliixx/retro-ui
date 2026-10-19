@@ -24,6 +24,12 @@ import {
   MenuBar,
   MenuItem,
   MenuSeparator,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   Progress,
   Radio,
   RadioGroup,
@@ -1012,6 +1018,140 @@ function MenuBarSection() {
   );
 }
 
+function NavigationMenuSection() {
+  return (
+    <Section label="NavigationMenu">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          className="sm:col-span-2"
+          label="inline links + hover/click panels; Escape returns focus; active page marked"
+          code={`<NavigationMenu label="Main">
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuLink active href="#">
+        Desktop
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Library</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="#docs">
+          <span className="font-bold">Docs</span>
+          <span className="block text-xs text-ink-muted">
+            API reference for every primitive
+          </span>
+        </NavigationMenuLink>
+        <NavigationMenuLink href="#tokens">
+          <span className="font-bold">Tokens</span>
+          <span className="block text-xs text-ink-muted">
+            Rebrand from one CSS variable sheet
+          </span>
+        </NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`}
+        >
+          <NavigationMenu label="Main">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink active href="#">
+                  Desktop
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Library</NavigationMenuTrigger>
+                <NavigationMenuContent className="w-72">
+                  <div className="grid gap-0.5">
+                    <NavigationMenuLink href="#docs">
+                      <span className="font-bold">Docs</span>
+                      <span className="block text-xs text-ink-muted">
+                        API reference for every primitive
+                      </span>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink href="#tokens">
+                      <span className="font-bold">Tokens</span>
+                      <span className="block text-xs text-ink-muted">
+                        Rebrand from one CSS variable sheet
+                      </span>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink href="#themes">
+                      <span className="font-bold">Themes</span>
+                      <span className="block text-xs text-ink-muted">
+                        Light and dark workstation skins
+                      </span>
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Help</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid gap-0.5">
+                    <NavigationMenuLink href="#kb">
+                      Knowledge Base
+                    </NavigationMenuLink>
+                    <NavigationMenuLink href="#keyboard">
+                      Keyboard Shortcuts
+                    </NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </Cell>
+
+        <Cell
+          label='orientation="vertical" — panels hang to the right'
+          code={`<NavigationMenu
+  label="Sidebar"
+  orientation="vertical"
+>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>File</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="#new">
+          New…
+        </NavigationMenuLink>
+        <NavigationMenuLink href="#open">
+          Open…
+        </NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink active href="#">
+        Recycle Bin
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`}
+        >
+          <NavigationMenu label="Sidebar" orientation="vertical">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>File</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid gap-0.5">
+                    <NavigationMenuLink href="#new">New…</NavigationMenuLink>
+                    <NavigationMenuLink href="#open">Open…</NavigationMenuLink>
+                    <NavigationMenuLink href="#save">Save</NavigationMenuLink>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink active href="#">
+                  Recycle Bin
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function TooltipSection() {
   return (
     <Section label="Tooltip">
@@ -1143,12 +1283,13 @@ export default function PlaygroundPage() {
             <AvatarSection />
             <AccordionSection />
             <MenuBarSection />
+            <NavigationMenuSection />
             <TooltipSection />
             <TokensSection />
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 16 components</span>
+            <span className={PANE}>Ready — 17 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark

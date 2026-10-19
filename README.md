@@ -7,7 +7,7 @@ full `className` composition.
 
 Current components: **Button · Field · Input · Textarea · Checkbox ·
 RadioGroup · Select · Progress · LoadingIcon · Tooltip · Card · Dialog ·
-Avatar · Accordion · MenuBar**.
+Avatar · Accordion · MenuBar · NavigationMenu**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -277,6 +277,40 @@ a real `<button>`, so Tab walks into the list and Enter fires it.
 Deliberate limitations (documented, not hidden): `menubar`/`menu` roles are
 omitted because arrow-key roving can't be honored without JS, and keyboard
 focus is what keeps a list open — move focus away and it closes.
+
+### `<NavigationMenu>`
+
+The site navigation bar (the Radix-style "nav menu" primitive): inline links
+plus items that pop a content panel — panels hang flush under (or beside, for
+`orientation="vertical"`) the bar, aligned to their trigger and clamped to
+the window. One panel is open at a time; triggers open on mouse-over or
+click; panels close on outside click, focus leaving the bar, or Escape
+(which returns focus to the trigger). ArrowDown from a trigger opens it and
+focuses the panel's first link. Radix-compatible open-state API: `value` /
+`defaultValue` / `onValueChange`, with `""` = all closed.
+
+```tsx
+<NavigationMenu label="Main">
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuLink active href="#">Home</NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Library</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="#docs">
+          <span className="font-bold">Docs</span>
+          <span className="block text-xs text-ink-muted">Reference</span>
+        </NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Panels are `role="group"` labelled by their trigger; the active page link
+takes `aria-current="page"`. Use `MenuBar` for app-style action menus and
+`NavigationMenu` for site/section navigation with content panels.
 
 ### `<RadioGroup>`
 
