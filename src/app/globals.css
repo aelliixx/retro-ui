@@ -8,21 +8,26 @@
 /* Every color, font and depth value is a plain CSS variable. Override them  */
 /* in :root / .dark to re-brand the whole library without touching a single  */
 /* component.                                                                */
+/*                                                                           */
+/* Depth is modeled the way 90s systems did it: two-tone bevels (a light     */
+/* edge opposite a dark edge), not drop shadows. raised = --shadow-out,      */
+/* pressed/sunken = --shadow-in.                                             */
 /* ------------------------------------------------------------------------- */
 
 :root {
   color-scheme: light;
 
   /* surfaces */
-  --bg: #eef0f4;
-  --surface: #f8f9fb;
-  --surface-2: #e4e8ef;
-  --desktop: #0e7f74;
+  --bg: #d9dde3; /* window silver */
+  --surface: #eaeef2; /* raised silver */
+  --surface-2: #ccd2da; /* pressed / sunken silver */
+  --well: #fcfdff; /* input interiors */
+  --desktop: #008080;
 
-  /* ink (text + hard borders) */
-  --ink: #1b1f27;
-  --ink-muted: #5b6472;
-  --border-muted: #c9cfda;
+  /* ink (text + hairline chrome) */
+  --ink: #171a20;
+  --ink-muted: #505863;
+  --border-muted: #b7bec9;
 
   /* accent — workstation teal */
   --accent: #0f766e;
@@ -32,32 +37,38 @@
 
   /* danger */
   --danger: #b91c1c;
-  --danger-strong: #991b1b;
+  --danger-strong: #9c1a1a;
   --danger-ink: #ffffff;
   --danger-soft: #fbe4e4;
 
   /* focus + selection */
-  --ring: #0d9488;
+  --focus: #171a20;
   --selection: #99f6e4;
   --selection-ink: #0b3a35;
 
-  /* depth — the hard offset shadow color */
-  --shadow-color: #1b1f27;
+  /* bevel edges — the two faces of every carve */
+  --bevel-light: #f8fafc;
+  --bevel-dark: #8d95a3;
+
+  /* title bar gradient (dark → light, left → right) */
+  --titlebar-a: #0b5d57;
+  --titlebar-b: #12a094;
 }
 
 .dark {
   color-scheme: dark;
 
   /* surfaces */
-  --bg: #10131a;
-  --surface: #171b24;
-  --surface-2: #1f2532;
+  --bg: #12151c;
+  --surface: #1a1e28;
+  --surface-2: #10141b;
+  --well: #0b0e15;
   --desktop: #0b3f3a;
 
   /* ink */
   --ink: #e7eaf1;
-  --ink-muted: #9aa3b5;
-  --border-muted: #2c3345;
+  --ink-muted: #99a2b4;
+  --border-muted: #2d3446;
 
   /* accent */
   --accent: #2dd4bf;
@@ -72,21 +83,27 @@
   --danger-soft: #3b1412;
 
   /* focus + selection */
-  --ring: #2dd4bf;
+  --focus: #e7eaf1;
   --selection: #134e4a;
   --selection-ink: #d7f5ef;
 
-  /* depth */
-  --shadow-color: #05070b;
+  /* bevel edges */
+  --bevel-light: #333c4c;
+  --bevel-dark: #05070c;
+
+  /* title bar gradient */
+  --titlebar-a: #063833;
+  --titlebar-b: #0e887c;
 }
 
 /* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
-   `border-ink`, `shadow-hard` … exist. `inline` keeps the var() reference at
-   the point of use, so flipping .dark re-themes instantly. */
+   `border-ink`, `shadow-out`, `shadow-in` … exist. `inline` keeps the var()
+   reference at the point of use, so flipping .dark re-themes instantly. */
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-well: var(--well);
   --color-desktop: var(--desktop);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
@@ -99,20 +116,22 @@
   --color-danger-strong: var(--danger-strong);
   --color-danger-ink: var(--danger-ink);
   --color-danger-soft: var(--danger-soft);
-  --color-ring: var(--ring);
+  --color-bevel-light: var(--bevel-light);
+  --color-bevel-dark: var(--bevel-dark);
+  --color-focus: var(--focus);
   --color-selection: var(--selection);
   --color-selection-ink: var(--selection-ink);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
     monospace;
+  --font-pixel: var(--font-silkscreen), ui-monospace, monospace;
 
-  /* depth scale — hard offsets, no blur */
-  --shadow-hard-xs: 2px 2px 0 0 var(--shadow-color);
-  --shadow-hard-sm: 3px 3px 0 0 var(--shadow-color);
-  --shadow-hard: 4px 4px 0 0 var(--shadow-color);
-  --shadow-sunk: inset 2px 2px 0 0
-    color-mix(in srgb, var(--shadow-color) 22%, transparent);
+  /* depth scale — two-tone bevels, no blur, no motion */
+  --shadow-out: inset 2px 2px 0 0 var(--bevel-light),
+    inset -2px -2px 0 0 var(--bevel-dark);
+  --shadow-in: inset 2px 2px 0 0 var(--bevel-dark),
+    inset -2px -2px 0 0 var(--bevel-light);
 }
 
 @layer base {
@@ -126,13 +145,50 @@
     color: var(--ink);
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   }
+
+  /* beveled browser chrome, as far as CSS will take us */
+  html {
+    scrollbar-color: var(--surface) var(--surface-2);
+  }
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: var(--surface-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--surface);
+    border: 1px solid var(--ink);
+    box-shadow: var(--shadow-out);
+  }
+  ::-webkit-scrollbar-corner {
+    background-color: var(--surface-2);
+  }
 }
 
 /* ------------------------------------------------------------------------- */
-/* retro textures — pure CSS, theme-aware                                    */
+/* retro utilities                                                           */
 /* ------------------------------------------------------------------------- */
 
-/* diagonal ticking, as on window title bars */
+/* keyboard focus, the old way: a dotted rectangle drawn inside the control */
+@utility focus-etched {
+  &:focus-visible {
+    outline: 1px dotted var(--focus);
+    outline-offset: -3px;
+  }
+}
+
+/* horizontal title-bar gradient — dark on the left, light on the right */
+@utility bg-titlebar {
+  background-image: linear-gradient(
+    90deg,
+    var(--titlebar-a),
+    var(--titlebar-b)
+  );
+}
+
+/* diagonal ticking */
 @utility bg-hatch {
   background-image: repeating-linear-gradient(
     135deg,

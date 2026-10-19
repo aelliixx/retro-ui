@@ -3,16 +3,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "rounded-md border-2 border-ink bg-surface text-ink overflow-hidden",
+  "border border-ink bg-surface text-ink overflow-hidden",
   {
     variants: {
       variant: {
-        /** lifted: hard offset shadow (default) */
-        raised: "shadow-hard",
-        /** same box, no depth */
-        flat: "shadow-none",
+        /** raised window: two-tone bevel (default) */
+        raised: "shadow-out",
+        /** same box, no carve */
+        flat: "",
         /** sunken well, e.g. for code blocks or content wells */
-        inset: "bg-surface-2 shadow-sunk",
+        inset: "bg-surface-2 shadow-in",
       },
     },
     defaultVariants: {
@@ -42,11 +42,11 @@ function CardHeader({
     <div
       data-slot="card-header"
       className={cn(
-        "flex items-center gap-2 border-b-2 border-ink px-4 py-3",
+        "flex items-center gap-2 border-b border-ink px-4 py-3",
         variant === "titlebar" && [
-          "bg-surface-2 bg-hatch",
-          // title bars speak in small uppercase type
-          "[&_[data-slot=card-title]]:text-xs [&_[data-slot=card-title]]:font-bold [&_[data-slot=card-title]]:uppercase [&_[data-slot=card-title]]:tracking-[0.14em]",
+          "bg-titlebar",
+          // title bars speak in small, bold, white type
+          "[&_[data-slot=card-title]]:text-xs [&_[data-slot=card-title]]:font-bold [&_[data-slot=card-title]]:uppercase [&_[data-slot=card-title]]:tracking-[0.14em] [&_[data-slot=card-title]]:text-white",
         ],
         className,
       )}
@@ -90,7 +90,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center gap-2 border-t-2 border-ink px-4 py-3",
+        "flex items-center gap-2 border-t border-ink px-4 py-3",
         className,
       )}
       {...props}

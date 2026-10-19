@@ -1,12 +1,11 @@
 import { cn } from "@/lib/utils";
 
 const inputVariants = cn(
-  "h-10 w-full rounded-sm border-2 border-ink bg-surface px-3 text-ink shadow-sunk",
+  "h-10 w-full border border-ink bg-well px-3 text-ink shadow-in",
   "placeholder:text-ink-muted caret-accent",
-  "transition-[background-color,border-color,box-shadow,opacity] duration-100 motion-reduce:transition-none",
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+  "focus-etched",
   "aria-invalid:border-danger",
-  "disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-ink-muted disabled:opacity-90",
+  "disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-ink-muted",
 );
 
 type InputProps = React.ComponentProps<"input">;

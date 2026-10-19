@@ -14,6 +14,7 @@ import {
   Input,
 } from "@/components/ui";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------------- */
 /* playground helpers                                                        */
@@ -31,10 +32,11 @@ function Section({
   return (
     <fieldset
       className={
-        "rounded-sm border-2 border-ink px-4 pb-4 pt-2 " + (className ?? "")
+        "border-2 border-border-muted [border-style:groove] px-4 pb-4 pt-2 " +
+        (className ?? "")
       }
     >
-      <legend className="px-1.5 font-mono text-xs uppercase tracking-[0.18em] text-ink-muted">
+      <legend className="px-1.5 font-pixel text-[11px] uppercase text-ink">
         {label}
       </legend>
       {children}
@@ -66,13 +68,13 @@ function WindowButtons({ className }: { className?: string }) {
       aria-hidden="true"
       className={"flex items-center gap-1.5 " + (className ?? "")}
     >
-      <span className="flex h-4 w-4 items-end justify-center border-2 border-ink bg-surface pb-0.5">
+      <span className="flex h-4 w-4 items-end justify-center border border-ink bg-surface pb-0.5 shadow-out">
         <span className="h-0.5 w-1.5 bg-ink" />
       </span>
-      <span className="flex h-4 w-4 items-center justify-center border-2 border-ink bg-surface">
+      <span className="flex h-4 w-4 items-center justify-center border border-ink bg-surface shadow-out">
         <span className="h-1.5 w-1.5 border border-ink" />
       </span>
-      <span className="relative flex h-4 w-4 items-center justify-center border-2 border-ink bg-surface">
+      <span className="relative flex h-4 w-4 items-center justify-center border border-ink bg-surface shadow-out">
         <span className="absolute h-0.5 w-2 rotate-45 bg-ink" />
         <span className="absolute h-0.5 w-2 -rotate-45 bg-ink" />
       </span>
@@ -82,7 +84,7 @@ function WindowButtons({ className }: { className?: string }) {
 
 function CodeWell({ children }: { children: React.ReactNode }) {
   return (
-    <Card variant="inset" className="rounded-sm">
+    <Card variant="inset">
       <pre className="overflow-x-auto p-4 font-mono text-sm leading-relaxed text-ink">
         <code>{children}</code>
       </pre>
@@ -90,16 +92,25 @@ function CodeWell({ children }: { children: React.ReactNode }) {
   );
 }
 
+const PANE =
+  "border border-ink bg-surface px-2 py-0.5 font-mono text-[11px] leading-none text-ink shadow-in";
+
 const TOKENS = [
   "bg",
   "surface",
   "surface-2",
+  "well",
   "ink",
   "ink-muted",
   "accent",
   "accent-soft",
   "danger",
-  "ring",
+] as const;
+
+const TEXTURES = [
+  { label: "bg-hatch", className: "bg-hatch" },
+  { label: "bg-dither", className: "bg-dither" },
+  { label: "bg-grid", className: "bg-grid" },
 ] as const;
 
 /* ------------------------------------------------------------------------- */
@@ -110,15 +121,15 @@ function Intro() {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">retro/ui</h1>
-        <span className="rounded-sm border-2 border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
+        <h1 className="font-pixel text-3xl">retro/ui</h1>
+        <span className="border border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
           v0.1.0
         </span>
       </div>
       <p className="max-w-prose text-ink-muted">
         A small React + Tailwind component library styled after 90s desktop
-        UIs — hard borders, sunken wells and honest shadows — rebuilt with
-        modern tokens, light/dark theming and full{" "}
+        UIs — carved group boxes, sunken input wells and gradient title bars
+        — rebuilt with modern tokens, light/dark theming and full{" "}
         <code className="font-mono text-sm text-ink">className</code>{" "}
         composition via tailwind-merge.
       </p>
@@ -170,7 +181,7 @@ function ButtonsSection() {
         <Cell label="composed via className">
           <Button
             variant="secondary"
-            className="rounded-none border-dashed text-accent shadow-none"
+            className="border-dashed text-accent shadow-none"
           >
             Inline override
           </Button>
@@ -240,7 +251,7 @@ function CardsSection() {
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Standard raised card: 2px ink border, hard offset shadow,
+                Standard raised card: hairline chrome, carved two-tone bevel,
                 header and footer rails.
               </CardDescription>
             </CardContent>
@@ -254,7 +265,7 @@ function CardsSection() {
             </CardFooter>
           </Card>
         </Cell>
-        <Cell label='titlebar header (hatch + small caps)'>
+        <Cell label='titlebar header (gradient + small caps)'>
           <Card className="w-full">
             <CardHeader variant="titlebar">
               <CardTitle>C:\SYSTEM\README.TXT</CardTitle>
@@ -262,9 +273,9 @@ function CardsSection() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-ink-muted">
-                The titlebar header is the signature move — hatched
-                background, uppercase title, and room for decorative window
-                chrome.
+                The titlebar header is the signature move — classic
+                left-to-right gradient, small caps title, and room for
+                beveled window chrome.
               </p>
             </CardContent>
           </Card>
@@ -273,7 +284,7 @@ function CardsSection() {
           <Card variant="flat" className="w-full">
             <CardContent>
               <p className="text-sm text-ink-muted">
-                Flat variant: same border and surface, zero depth. Good inside
+                Flat variant: same border and surface, no carve. Good inside
                 dense layouts.
               </p>
             </CardContent>
@@ -283,8 +294,8 @@ function CardsSection() {
           <Card variant="inset" className="w-full">
             <CardContent>
               <p className="font-mono text-sm text-ink">
-                Sunken wells hold content the way text inputs do — inset
-                shadow, muted surface.
+                Sunken wells hold content the way text inputs do — carved
+                inward, muted surface.
               </p>
             </CardContent>
           </Card>
@@ -306,15 +317,29 @@ function TokensSection() {
         <code className="font-mono text-ink">className</code>, so any Tailwind
         utility wins over the defaults.
       </p>
-      <div className="grid grid-cols-3 gap-4 pt-4 sm:grid-cols-5 lg:grid-cols-9">
+
+      <div className="grid grid-cols-3 gap-4 pt-4 sm:grid-cols-5">
         {TOKENS.map((token) => (
           <div key={token} className="flex flex-col gap-1.5">
             <div
-              className="h-12 w-full rounded-sm border-2 border-ink"
+              className="h-12 w-full border border-ink"
               style={{ backgroundColor: `var(--${token})` }}
             />
             <span className="font-mono text-[11px] text-ink-muted">
               --{token}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 pt-4 sm:max-w-sm">
+        {TEXTURES.map((texture) => (
+          <div key={texture.label} className="flex flex-col gap-1.5">
+            <div
+              className={cn("h-12 w-full border border-ink", texture.className)}
+            />
+            <span className="font-mono text-[11px] text-ink-muted">
+              {texture.label}
             </span>
           </div>
         ))}
@@ -353,11 +378,10 @@ export default function PlaygroundPage() {
             <TokensSection />
           </CardContent>
 
-          <CardFooter className="flex-wrap justify-between gap-2 font-mono text-xs text-ink-muted">
-            <span>4 components loaded</span>
-            <span className="hidden sm:inline">
-              light / dark · tokens in globals.css
-            </span>
+          <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
+            <span className={PANE}>Ready — 4 components</span>
+            <span aria-hidden="true" className={cn(PANE, "flex-1")} />
+            <span className={cn(PANE, "hidden sm:block")}>tokens: light / dark</span>
           </CardFooter>
         </Card>
       </main>

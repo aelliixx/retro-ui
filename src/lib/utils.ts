@@ -2,14 +2,14 @@ import { clsx, type ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 /**
- * tailwind-merge with retro/ui's custom shadow scale registered, so
- * `cn("shadow-hard-sm", className)` lets consumers override depth with
- * `shadow-none`, `shadow-hard`, an arbitrary `shadow-[...]`, …
+ * tailwind-merge with retro/ui's custom bevel scale registered, so
+ * `cn("shadow-out", className)` lets consumers override depth with
+ * `shadow-none`, `shadow-in`, an arbitrary `shadow-[...]`, …
  */
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      shadow: ["shadow-hard-xs", "shadow-hard-sm", "shadow-hard", "shadow-sunk"],
+      shadow: ["shadow-out", "shadow-in"],
     },
   },
 });
