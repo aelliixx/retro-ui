@@ -24,33 +24,27 @@ export function DocTree({ onNavigate }: { onNavigate?: () => void }) {
           <h2 className="px-1.5 pb-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-muted">
             {group.label}
           </h2>
-          {group.pages.length === 0 ? (
-            <p className="px-1.5 pb-1 text-xs leading-relaxed text-ink-muted">
-              {group.pendingNote}
-            </p>
-          ) : (
-            group.pages.map((page) => {
-              const active =
-                pathname === page.href ||
-                pathname.startsWith(`${page.href}/`);
-              return (
-                <Link
-                  key={page.href}
-                  href={page.href}
-                  onClick={onNavigate}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "no-underline border px-1.5 py-1 text-sm",
-                    active
-                      ? "border-ink bg-accent-soft font-semibold text-ink"
-                      : "border-transparent text-ink-muted hover:border-border-muted hover:bg-surface-2 hover:text-ink",
-                  )}
-                >
-                  {page.label}
-                </Link>
-              );
-            })
-          )}
+          {group.pages.map((page) => {
+            const active =
+              pathname === page.href ||
+              pathname.startsWith(`${page.href}/`);
+            return (
+              <Link
+                key={page.href}
+                href={page.href}
+                onClick={onNavigate}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "no-underline border px-1.5 py-1 text-sm",
+                  active
+                    ? "border-ink bg-accent-soft font-semibold text-ink"
+                    : "border-transparent text-ink-muted hover:border-border-muted hover:bg-surface-2 hover:text-ink",
+                )}
+              >
+                {page.label}
+              </Link>
+            );
+          })}
         </div>
       ))}
     </nav>

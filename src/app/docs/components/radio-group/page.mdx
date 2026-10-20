@@ -1,0 +1,88 @@
+export const metadata = {
+  title: "RadioGroup · retro/ui",
+  description:
+    "A carved group box of real radio inputs — native semantics, keyboard roving and form participation for free.",
+};
+
+import { ViewRadioGroup } from "@/components/docs/demos/radio-group";
+
+# RadioGroup
+
+A carved group box of real radio inputs — native semantics, keyboard
+roving and form participation for free. `Radio`s must render inside the
+group (they share its `name`, auto-generated when the `name` prop is
+omitted); each labels itself — the children print right next to the
+roundel inside a wrapping `<label>`.
+
+Controlled (`value` + `onValueChange`) or uncontrolled
+(`defaultValue`). Disabling the group disables every nested radio
+natively.
+
+## Demo
+
+<ViewRadioGroup />
+
+```tsx
+import { Radio, RadioGroup } from "@/components/ui";
+
+export function ViewRadioGroup() {
+  return (
+    <RadioGroup
+      label="View"
+      defaultValue="details"
+      name="view"
+      className="max-w-xs"
+    >
+      <Radio value="large">Large icons</Radio>
+      <Radio value="list">List</Radio>
+      <Radio value="details">Details</Radio>
+      <Radio value="network" disabled>
+        Network places
+      </Radio>
+    </RadioGroup>
+  );
+}
+```
+
+## Examples
+
+### Controlled
+
+```tsx
+export function ControlledRadioGroup() {
+  const [value, setValue] = useState("weekly");
+  return (
+    <RadioGroup label="Frequency" value={value} onValueChange={setValue}>
+      <Radio value="daily">Daily</Radio>
+      <Radio value="weekly">Weekly</Radio>
+      <Radio value="monthly">Monthly</Radio>
+    </RadioGroup>
+  );
+}
+```
+
+## API reference
+
+### RadioGroup
+
+A `fieldset` with the era's groove border — `label` becomes the legend.
+
+| Prop          | Type                       | Default | Description |
+| ------------- | -------------------------- | ------- | ----------- |
+| label         | string                     | —       | Carved group-box caption, rendered as the fieldset's legend. |
+| name          | string                     | auto    | Radio input name; auto-generated when omitted. |
+| value         | string                     | —       | Controlled checked value (must match a Radio's `value`). |
+| defaultValue  | string                     | —       | Initially-selected Radio value when uncontrolled. |
+| onValueChange | (value: string) => void    | —       | Fires with the newly picked value. |
+
+### Radio
+
+`Omit<input props, "type" | "name">` — `type` and `name` are the
+group's business.
+
+| Prop   | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| value  | string | —       | The value this radio reports when picked. |
+
+Children render inside the wrapping label next to the roundel; size
+and tone that row via `className`.

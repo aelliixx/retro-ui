@@ -1,0 +1,56 @@
+export const metadata = {
+  title: "Tooltip · retro/ui",
+  description:
+    "The classic yellow tip — instant show on hover or keyboard focus, rendered with plain CSS.",
+};
+
+import { TooltipRow } from "@/components/docs/demos/tooltip";
+
+# Tooltip
+
+The classic yellow tip — instant show on hover or keyboard focus, no
+animation. Rendered with plain CSS: no portal, no JS, no delay.
+Position with `side` or fine-tune via `className` on the bubble.
+
+Hover alone is not an a11y story — wrap focusable triggers (buttons,
+links) so keyboard users see the same tip.
+
+## Demo
+
+<TooltipRow />
+
+Park the pointer over each key — or tab to them.
+
+```tsx
+import { Button, Tooltip } from "@/components/ui";
+
+export function TooltipRow() {
+  return (
+    <div className="flex flex-wrap items-center gap-3 py-6">
+      <Tooltip content="Save the file to disk">
+        <Button>Disk</Button>
+      </Tooltip>
+      <Tooltip content="Discard every change" side="bottom">
+        <Button variant="outline">Discard</Button>
+      </Tooltip>
+      <Tooltip content="Ctrl+P needs a paper drive">
+        <Button variant="outline" size="icon" aria-label="Print">
+          <span aria-hidden="true" className="font-bold">P</span>
+        </Button>
+      </Tooltip>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Tooltip
+
+A `span` wrapper around the trigger with the bubble as its hovered
+child.
+
+| Prop    | Type                | Default  | Description |
+| ------- | ------------------- | -------- | ----------- |
+| content | ReactNode           | —        | The bubble text — rich nodes welcome. |
+| side    | `"top" \| "bottom"` | `"top"`  | Side the bubble opens toward. |

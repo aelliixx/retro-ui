@@ -1,11 +1,10 @@
 /**
  * Documentation navigation — the single source of truth for the sidebar
- * tree, the mobile drawer, the prev/next pager, and (later) the doc
- * landing pages. Add a page here and to `src/app/docs` and everything
- * lights up.
+ * tree, the mobile drawer, the prev/next pager, and the doc panels. Add
+ * a page here and to `src/app/docs` and everything lights up.
  *
- * The Components group is deliberately empty for now — per-component
- * documentation comes after the groundwork gets its pass.
+ * The Components group is one flat, alphabetical list — the Radix docs
+ * shape — with a page per part of the library.
  */
 
 export type DocPage = {
@@ -19,9 +18,38 @@ export type DocGroup = {
   /** sidebar group heading */
   label: string;
   pages: DocPage[];
-  /** shown instead of pages while the group ships nothing */
-  pendingNote?: string;
 };
+
+const componentPages = [
+  ["accordion", "Accordion"],
+  ["avatar", "Avatar"],
+  ["button", "Button"],
+  ["card", "Card"],
+  ["checkbox", "Checkbox"],
+  ["collapsible", "Collapsible"],
+  ["dialog", "Dialog"],
+  ["field", "Field"],
+  ["input", "Input"],
+  ["loading-icon", "LoadingIcon"],
+  ["menu-bar", "MenuBar"],
+  ["navigation-menu", "NavigationMenu"],
+  ["password-toggle-field", "PasswordToggleField"],
+  ["progress", "Progress"],
+  ["radio-group", "RadioGroup"],
+  ["scroll-area", "ScrollArea"],
+  ["select", "Select"],
+  ["separator", "Separator"],
+  ["skeleton", "Skeleton"],
+  ["slider", "Slider"],
+  ["switch", "Switch"],
+  ["table", "Table"],
+  ["tabs", "Tabs"],
+  ["textarea", "Textarea"],
+  ["toast", "Toast"],
+  ["toggle", "Toggle"],
+  ["toggle-group", "ToggleGroup"],
+  ["tooltip", "Tooltip"],
+].map(([slug, label]) => ({ href: `/docs/components/${slug}`, label }));
 
 export const docGroups: DocGroup[] = [
   {
@@ -43,9 +71,7 @@ export const docGroups: DocGroup[] = [
   {
     id: "components",
     label: "Components",
-    pages: [],
-    pendingNote:
-      "Panels land one milestone at a time — until then the playground shows all 29 in working order.",
+    pages: componentPages,
   },
 ];
 

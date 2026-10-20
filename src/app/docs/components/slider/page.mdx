@@ -1,0 +1,75 @@
+export const metadata = {
+  title: "Slider · retro/ui",
+  description:
+    "A native range input wearing the workstation skin — sunken groove, hard-stop fill, square beveled thumb.",
+};
+
+import { SliderInField, SliderSteps } from "@/components/docs/demos/slider";
+
+# Slider
+
+The track knob — a native `<input type="range">` wearing the
+workstation skin: a sunken groove track with a hard-stop accent fill up
+to the knob (a solid block, no soft gradient) and a square beveled
+thumb. All native behavior stays native — pointer drag, arrow keys,
+PageUp/Down, Home/End, form submission.
+
+`onValueChange` mirrors `onChange` with the number. Horizontal only —
+native vertical ranges are still a compatibility maze.
+
+## Demo
+
+<SliderSteps />
+
+```tsx
+import { Slider } from "@/components/ui";
+
+export function SliderSteps() {
+  return (
+    <div className="flex max-w-xs flex-col gap-3">
+      <Slider defaultValue={40} min={0} max={100} aria-label="Volume" />
+      <Slider disabled defaultValue={70} aria-label="Disabled volume" />
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Inside a Field
+
+A bare slider has no accessible name — pass `aria-label` or wrap it in
+a `Field`, which supplies the labeling.
+
+<SliderInField />
+
+```tsx
+import { Field, Slider } from "@/components/ui";
+
+export function SliderInField() {
+  return (
+    <Field label="Cathode warmth" hint="10% steps, honest and chunky.">
+      <Slider defaultValue={30} min={0} max={100} step={10} />
+    </Field>
+  );
+}
+```
+
+## API reference
+
+### Slider
+
+`Omit<input props, "type" | "value" | "defaultValue" | "onChange">`
+plus a managed-value contract over numbers.
+
+| Prop          | Type                            | Default | Description |
+| ------------- | ------------------------------- | ------- | ----------- |
+| min           | number                          | 0       | Track start. |
+| max           | number                          | 100     | Track end. |
+| step          | number                          | 1       | Knob increments. |
+| value         | number                          | —       | Controlled knob position. |
+| defaultValue  | number                          | —       | Initial knob position when uncontrolled. |
+| onValueChange | (value: number) => void         | —       | Fires with the new number (controlled and uncontrolled). |
+
+The paint itself (groove, fill, thumb) lives in the `.retro-slider`
+rules of the global stylesheet — tokens only, nothing hardcoded.

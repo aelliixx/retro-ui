@@ -1,0 +1,112 @@
+export const metadata = {
+  title: "Checkbox · retro/ui",
+  description:
+    "A sunken check well on real button semantics — controlled or uncontrolled, with a tri-state dash.",
+};
+
+import {
+  CheckboxBasics,
+  CheckboxControlled,
+  CheckboxMixed,
+} from "@/components/docs/demos/checkbox";
+
+# Checkbox
+
+A sunken well with the era's hard checkmark, on plain button semantics
+— click, Space and Enter all toggle, focus draws the dotted etched
+rectangle, and the managed-value contract matches everything else in
+the library: controlled (`checked` + `onCheckedChange`) or uncontrolled
+(`defaultChecked`).
+
+## Demo
+
+<CheckboxBasics />
+
+```tsx
+import { Checkbox } from "@/components/ui";
+
+export function CheckboxBasics() {
+  return (
+    <div className="flex flex-wrap items-center gap-6">
+      <Checkbox aria-label="Archive everything" />
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <Checkbox defaultChecked /> Include hidden files
+      </label>
+      <label className="flex items-center gap-2 text-sm text-ink-muted">
+        <Checkbox disabled /> Scan network drives
+      </label>
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Controlled state
+
+`onCheckedChange` fires with the next value — works for controlled and
+uncontrolled use alike.
+
+<CheckboxControlled />
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+import { Checkbox } from "@/components/ui";
+
+export function CheckboxControlled() {
+  const [checked, setChecked] = useState(true);
+  return (
+    <div className="flex items-center gap-3">
+      <Checkbox checked={checked} onCheckedChange={setChecked} />
+      <span className="font-mono text-sm">checked = {String(checked)}</span>
+    </div>
+  );
+}
+```
+
+### Tri-state
+
+`indeterminate` renders the dash and reports as mixed until it is
+clicked once.
+
+<CheckboxMixed />
+
+```tsx
+import { Checkbox } from "@/components/ui";
+
+export function CheckboxMixed() {
+  return (
+    <div className="flex flex-wrap items-center gap-6">
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <Checkbox indeterminate /> Mixed contents
+      </label>
+      <label className="flex items-center gap-2 text-sm text-ink">
+        <Checkbox /> All contents
+      </label>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Checkbox
+
+A real `button` — every button prop is kept. Two of the DOM ones are
+retired because the component manages them: `checked` and `value`.
+
+| Prop             | Type                        | Default | Description |
+| ---------------- | --------------------------- | ------- | ----------- |
+| checked          | boolean                     | —       | Controlled on-state. |
+| defaultChecked   | boolean                     | false   | Initial on-state when uncontrolled. |
+| onCheckedChange  | (checked: boolean) => void  | —       | Fires with the next value — works for controlled and uncontrolled use. |
+| indeterminate    | boolean                     | false   | Tri-state: renders the dash and reports as mixed until toggled. |
+
+### The veto
+
+A consumer event handler that calls `event.preventDefault()` suppresses
+the flip — validation, confirmation dialogs and optimistic updates hook
+in without fighting the component.

@@ -1,0 +1,92 @@
+export const metadata = {
+  title: "MenuBar · retro/ui",
+  description:
+    "The classic pull-down menu strip — menus open on hover or focus, plain CSS, no state, no portal.",
+};
+
+import { WindowMenus } from "@/components/docs/demos/menu-bar";
+
+# MenuBar
+
+The classic pull-down menu strip. Menus open on hover or keyboard
+focus — the era's hover-preview — with plain CSS: no state, no portal,
+no delay. Each item is a real `button`, so Tab walks into the open
+list and Enter fires it.
+
+Deliberately omitted: the `menubar`/`menu` roles, since arrow-key
+roving can't be honored without JS. Shortcuts shown on the right are
+displays only — bind real keys yourself.
+
+## Demo
+
+<WindowMenus />
+
+Hover across the three titles and the lists swap in place; tab into an
+open menu and Enter fires an item.
+
+```tsx
+import {
+  Menu,
+  MenuBar,
+  MenuItem,
+  MenuSeparator,
+} from "@/components/ui";
+
+export function WindowMenus() {
+  return (
+    <MenuBar label="Window menus">
+      <Menu label="File">
+        <MenuItem>New dossier</MenuItem>
+        <MenuItem shortcut="Ctrl+O">Open…</MenuItem>
+        <MenuItem disabled>Save template</MenuItem>
+        <MenuSeparator />
+        <MenuItem>Exit</MenuItem>
+      </Menu>
+      <Menu label="Edit">
+        <MenuItem shortcut="Ctrl+Z">Undo move</MenuItem>
+        <MenuItem disabled>Redo move</MenuItem>
+        <MenuSeparator />
+        <MenuItem shortcut="Ctrl+V">Paste</MenuItem>
+        <MenuItem shortcut="Ctrl+A">Select all</MenuItem>
+      </Menu>
+      <Menu label="View" align="end">
+        <MenuItem shortcut="F5">Refresh</MenuItem>
+        <MenuItem>Large icons</MenuItem>
+        <MenuItem>Details</MenuItem>
+      </Menu>
+    </MenuBar>
+  );
+}
+```
+
+## API reference
+
+### MenuBar
+
+The strip — a `nav` element.
+
+| Prop  | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| label | string | —       | Accessible name for the strip (`aria-label`). |
+
+### Menu
+
+One title and its dropdown — the list hugs the title's left edge by
+default.
+
+| Prop  | Type                             | Default   | Description |
+| ----- | -------------------------------- | --------- | ----------- |
+| label | ReactNode                        | —         | The menu title — hover or focus opens the list below it. |
+| align | `"start" \| "end"`               | `"start"` | Which side the dropdown hugs; `"end"` hangs it at the right edge. |
+
+### MenuItem
+
+A real `button` in the list.
+
+| Prop     | Type   | Default | Description |
+| -------- | ------ | ------- | ----------- |
+| shortcut | string | —       | Right-aligned display-only shortcut, e.g. "Ctrl+S". |
+
+### MenuSeparator
+
+A hairline between groups. No props of its own.

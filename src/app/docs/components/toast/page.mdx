@@ -1,0 +1,112 @@
+export const metadata = {
+  title: "Toast · retro/ui",
+  description:
+    "Notification balloons from the tray — they appear instantly, wait out their timer, and hold while you read them.",
+};
+
+import { ToastDemo } from "@/components/docs/demos/toast";
+
+# Toast
+
+The notification stack — balloons from the tray, minus the balloon
+physics: toasts appear instantly in a fixed corner, wait out their
+timer (or the ✕ key), and vanish. No slide-in, no fade.
+
+Mount `<ToastProvider>` once — it renders the live region and the
+stack. Push with the `useToast()` hook. `duration` is milliseconds; 0
+sticks until dismissed. A pointer parked on a toast holds its timer —
+leaving restarts the full duration — so a toast never dies while
+someone is reading it. The stack is a polite live region; `error`
+toasts assert with `role="alert"`.
+
+## Demo
+
+<ToastDemo />
+
+Push a few — they stack bottom-right and age out on their own.
+
+```tsx
+"use client";
+
+import { Button, ToastProvider, useToast } from "@/components/ui";
+
+export function ToastDemo() {
+  return (
+    <ToastProvider>
+      <ToastTriggers />
+    </ToastProvider>
+  );
+}
+
+function ToastTriggers() {
+  const toast = useToast();
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button
+        size="sm"
+        onClick={() => toast.info("Saved", "Your document is on the disk.")}
+      >
+        Info
+      </Button>
+      <Button
+        size="sm"
+        onClick={() =>
+          toast.success("Copy complete", "3 files written to C:\\TEMP.")
+        }
+      >
+        Success
+      </Button>
+      <Button
+        size="sm"
+        onClick={() => toast.error("Merge conflict", "Resolve it by hand.")}
+      >
+        Error
+      </Button>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() =>
+          toast.push({
+            title: "Working offline",
+            description: "Reconnect to sync.",
+            duration: 0,
+          })
+        }
+      >
+        Sticky
+      </Button>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### ToastProvider
+
+Mount once per app; positions the fixed bottom-corner stack.
+
+| Prop      | Type            | Default     | Description |
+| --------- | --------------- | ----------- | ----------- |
+| className | string          | —           | Class for the fixed bottom-corner stack. |
+
+### useToast
+
+Returns the push surface:
+
+| Method | Signature                                                        | Description |
+| ------ | ---------------------------------------------------------------- | ----------- |
+| info   | (title, description?, options?) => id                             | Push with variant `"info"` (accent). |
+| success| (title, description?, options?) => id                             | Push with variant `"success"` (green). |
+| error  | (title, description?, options?) => id                             | Push with variant `"error"` (danger; asserts `role="alert"`). |
+| push   | (options) => id                                                   | Push with full control. |
+| dismiss| (id) => void                                                      | Dismiss a toast by id. |
+
+### ToastOptions
+
+| Prop        | Type                                 | Default        | Description |
+| ----------- | ------------------------------------ | -------------- | ----------- |
+| title       | string                               | —              | The headline. |
+| description | string                               | —              | The body line. |
+| variant     | `"info" \| "success" \| "error"`      | `"info"`       | Balloon tint. |
+| duration    | number                               | 5000           | Milliseconds before auto-dismiss; `0` = sticky until the ✕ key. |
