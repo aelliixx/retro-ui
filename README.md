@@ -12,7 +12,7 @@ Collapsible · MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator ·
 ScrollArea · Skeleton · Table · Toast**.
 
 ```bash
-npm run dev   # playground at http://localhost:3000
+npm run dev   # playground at http://localhost:3000 · docs at http://localhost:3000/docs
 ```
 
 ## How theming works

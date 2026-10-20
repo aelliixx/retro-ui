@@ -1,0 +1,62 @@
+export const metadata = {
+  title: "Introduction · retro/ui",
+  description:
+    "What retro/ui is, how the era is interpreted, and where to go next.",
+};
+
+# Introduction
+
+retro/ui is a small React + Tailwind component library that reinterprets
+the 90s web and desktop era — carved group boxes, sunken input wells,
+hatched title bars — but carries zero of the era's baggage: colors come
+from design tokens, every component has a light and a dark theme, and
+consumer `className` composes cleanly through tailwind-merge instead of
+losing to the defaults.
+
+All 29 components are in working order and on show in the
+[playground](/) — every demo there ships a collapsed code snippet. These
+docs cover the ground around them: how to install, how the styling
+system behaves, and how theming is wired. Panels for individual
+components are landing as each carve is documented.
+
+## The look
+
+The shortcuts people remember from 90s UIs are *structural*, not
+decorative, so that is what the library revives:
+
+- **Two-tone bevels instead of drop shadows.** Depth is communicated
+  with a light edge top-left and a dark edge bottom-right
+  (`shadow-out` for raised, `shadow-in` for wells), carried from tokens
+  `--bevel-light` / `--bevel-dark`. No gradients, no blur.
+- **Square corners everywhere.** The engine is full of 1px black
+  hairlines; nothing gets a radius.
+- **Textures as chrome.** Hatched title bars (`bg-hatch`), the
+  checkerboard dither (`bg-dither`), and 1px drafting grids (`bg-grid`)
+  sit on top of flat token colors.
+- **Instant state changes.** Pressing, opening, toggling — every state
+  switch is immediate. The library deliberately ships no transition or
+  keyframe animation; the era's snappiness is part of the contract.
+
+## Built the modern way
+
+- **Token-driven.** Never a hardcoded color — every style resolves
+  through the `--*` variables declared once in `globals.css` and mapped
+  into Tailwind via `@theme inline`.
+- **Composition-first.** Defaults are applied with `cn()` (clsx +
+  extended tailwind-merge), so a consumer's `className`
+  always wins over a component's own classes.
+- **Native semantics.** Dialog is a native `<dialog>`, Accordion is
+  `<details>`, Select is the native control — platform behaviors come
+  from the browser, not from script where it can be avoided.
+- **Accessible defaults in the usual places** — real ARIA tabs,
+  roving tab indexes, `aria-current`, focus rings that read like the
+  era's dotted etched focus but are a proper `:focus-visible` outline.
+
+## Where to next
+
+New to the library? [Installation](/docs/getting-started/installation)
+walks through wiring the tokens and copying in the components. Then
+[Styling](/docs/getting-started/styling) explains the token model, the
+bevel/texture utilities and the composition contract, and
+[Theming](/docs/getting-started/theming) shows how the light/dark split
+works and how to add your own color families.

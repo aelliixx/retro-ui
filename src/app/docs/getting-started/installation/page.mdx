@@ -1,0 +1,91 @@
+export const metadata = {
+  title: "Installation · retro/ui",
+  description: "Wiring the tokens and copying the components into a project.",
+};
+
+# Installation
+
+retro/ui is a source-distributed library: you copy the component files
+into your project the era way — like checking the source off a floppy —
+and tailor them in place. There is no runtime to install beyond the
+few utilities below.
+
+## Prerequisites
+
+- **React 19** and **Tailwind CSS v4** (CSS-first configuration — the
+  tokens below are `@theme` variables, not Tailwind 3 `theme.extend`
+  objects).
+- A globally imported stylesheet (e.g. `app/globals.css`) where the
+  token block lands.
+
+## 1. Install runtime dependencies
+
+```sh
+npm install clsx tailwind-merge class-variance-authority
+```
+
+`clsx` and `tailwind-merge` power composition; `cva` carries the
+`variants` used by Button, Card, Select and friends.
+
+## 2. Paste the tokens into your global stylesheet
+
+Copy the `:root` and `.dark` blocks, the `@theme inline` mapping, and
+the utilities (`focus-etched`, the texture family, the bevel shadows,
+fonts) from the playground's `src/app/globals.css` into your own global
+stylesheet. Two things must travel together — see
+[Styling](/docs/getting-started/styling) for why:
+
+- the CSS variables in `:root` / `.dark` (the actual color values,
+  one value per theme), and
+- the `@theme inline` block that maps each `--*` variable into a
+  Tailwind color so `text-ink`, `bg-surface-2` and friends exist.
+
+## 3. Copy the components
+
+Copy `src/components/ui/*.tsx` (plus the `src/lib/utils.ts` `cn()`
+helper) into your project. Keeping the barrel `src/components/ui/index.ts`
+makes imports read like the docs:
+
+```sh
+src/
+├── components/
+│   └── ui/            # 29 components + barrel
+│       └── …
+└── lib/
+    └── utils.ts       # cn() with tailwind-merge extensions
+```
+
+## 4. Optional — the type stack
+
+The playground uses Geist Sans (body), Geist Mono (`font-mono`) and
+Silkscreen (`font-pixel`, the pixel wordmarks). Any fonts will work —
+the components reference `font-mono` and `font-pixel` by name, so
+redefine them in `@theme` if you ship different faces.
+
+```tsx
+import { Geist, Geist_Mono, Silkscreen } from "next/font/google";
+
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const silkscreen = Silkscreen({ variable: "--font-silkscreen", subsets: ["latin"], weight: ["400", "700"] });
+```
+
+## 5. First render
+
+```tsx
+import { Button, Field, Input } from "@/components/ui";
+
+export function Ready() {
+  return (
+    <Field label="Save name">
+      <Input defaultValue="untitled.txt" />
+      <Button variant="primary">Save</Button>
+    </Field>
+  );
+}
+```
+
+Set your theme with the [Theming](/docs/getting-started/theming)
+switcher. The docs you are reading right now are themselves built from
+the library — the sidebar tree, the drawer and the code wells are
+`ScrollArea`, `Dialog`, `Collapsible` and `Card` in working order.

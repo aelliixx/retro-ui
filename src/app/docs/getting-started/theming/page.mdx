@@ -1,0 +1,109 @@
+export const metadata = {
+  title: "Theming · retro/ui",
+  description:
+    "How light/dark is wired, and how to customize tokens or add a color family.",
+};
+
+# Theming
+
+Every color in the library comes from a semantic token, so theming is a
+matter of the token values — never of the components. There is one
+whole set of values for light (`:root`) and one for dark (`.dark`), and
+the components read whichever is active.
+
+```css
+:root {
+  --surface: #f4f2ea;
+  --ink: #171a20;
+  --bevel-light: #ffffff;
+  --bevel-dark: #171a20;
+  /* …one matching value per theme for every token */
+}
+
+.dark {
+  --surface: #191d23;
+  --ink: #e6e8ec;
+  --bevel-light: #383f4a;
+  --bevel-dark: #0a0c10;
+  /* … */
+}
+```
+
+Note what shifts between themes: not just colors but *depth edges* —
+dark mode lightens `--bevel-light` (the raised edge) and darkens
+`--bevel-dark`, so bevels still read as bevels on dark surfaces.
+
+## The switch
+
+The persisted-or-system choice is applied before first paint to avoid a
+flash, then toggled at run time by flipping the `dark` class:
+
+```html
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("retro-theme");
+      var d = t
+        ? t === "dark"
+        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.classList.toggle("dark", d);
+    } catch (e) {}
+  })();
+</script>
+```
+
+The playground's ThemeToggle persists the choice under the
+`retro-theme` localStorage key and reflects the live class state.
+Anything that reads `document.documentElement.classList` can join.
+
+## Adding a color family
+
+New families follow the token grammar: a base plus `-strong`, `-ink`
+and `-soft`, declared in *both* themes, and mapped once so Tailwind
+utilities exist:
+
+```css
+:root {
+  --success: #15803d;
+  --success-strong: #14532d;
+  --success-ink: #eafff1;
+  --success-soft: #d5ecdf;
+}
+
+.dark {
+  --success: #4ade80;
+  --success-strong: #86efac;
+  --success-ink: #052e1a;
+  --success-soft: #1d3a29;
+}
+
+@theme inline {
+  --color-success: var(--success);
+  --color-success-strong: var(--success-strong);
+  /* … */
+}
+```
+
+After that, `bg-success-soft`, `text-success-strong` and friends are
+ordinary utilities, and a variant like the Toast's `success` shows up
+across both themes.
+
+## Customizing
+
+Any single token can be overridden in your own global stylesheet —
+either per theme or conditionally, e.g. a brand accent:
+
+```css
+:root {
+  --accent: #a5cf02; /* acid green, the incline brand way */
+}
+```
+
+Two cautions:
+
+- **Check contrast in both themes.** The tokens are named by role, so
+  a new value answers to many components at once — read text on its
+  intended surface, not against the perfect swatch.
+- **Textures never carry meaning.** `bg-hatch` and `bg-dither` are low
+  contrast by design; state must always come from token color or
+  depth, and the texture is decoration on top.

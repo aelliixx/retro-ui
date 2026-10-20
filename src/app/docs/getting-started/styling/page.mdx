@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Styling · retro/ui",
+  description:
+    "The token model, the bevel and texture utilities, and the className composition contract.",
+};
+
+# Styling
+
+Everything the library paints resolves through design tokens; nothing
+hardcodes a color. Three layers make that work:
+
+| Layer | Lives in | Who edits it |
+| --- | --- | --- |
+| Semantic CSS variables | `:root` and `.dark` blocks | you, per theme |
+| Tailwind color mapping | `@theme inline` block | once, on install |
+| Utilities (bevels, textures, focus) | `@utility` rules | once, on install |
+
+## The token vocabulary
+
+Colors are semantic, not swatch-numbered — a component asks for the
+*role* it needs:
+
+| Token | Role |
+| --- | --- |
+| `bg` | app background beneath the windows |
+| `surface` / `surface-2` | raised window face, and its recessed sheet |
+| `well` | deepest sunken interior (code wells, editors) |
+| `desktop` | the desk the windows sit on |
+| `ink` / `ink-muted` | body text / supporting text |
+| `border-muted` | hairlines inside a window |
+| `bevel-light` / `bevel-dark` | the two depth edges, see below |
+| `accent` (+ `-strong` `-ink` `-soft`) | selection flavor color |
+| `danger` (+ `-strong` `-ink` `-soft`) | destructive flavor |
+| `success` (+ `-strong` `-ink` `-soft`) | confirmation flavor |
+| `focus` | the dotted etched focus outline |
+| `selection` (+ `-ink`) | native selection highlight |
+| `tooltip` | tooltip sheet |
+
+Each flavor family follows one naming grammar: the base (mid), `-strong`
+(for text-grade contrast on light surfaces), `-ink` (text color that
+rides on the base), and `-soft` (a tint for hover/active fills).
+[Theming](/docs/getting-started/theming) shows how to add a family.
+
+## Depth: two-tone bevels
+
+Depth is *inset* edges, not drop shadows — `shadow-out` and `shadow-in`
+are declared in `@theme` as matching `--shadow-*` tokens:
+
+```css
+--shadow-out: inset 2px 2px 0 0 var(--bevel-light), inset -2px -2px 0 0 var(--bevel-dark);
+--shadow-in:
+  inset 2px 2px 0 0 var(--bevel-dark), inset -2px -2px 0 0 var(--bevel-light);
+```
+
+`shadow-out` raises (a window face, a button), `shadow-in` sinks (a
+well, a toggle's off-state). They ride the same `shadow-*` utility
+group, so `shadow-none` overrides them like any other shadow, and
+`cn("shadow-out", className)` disappears if a consumer passes their own
+depth.
+
+## Textures and markers
+
+- `bg-hatch` — the diagonal hatch of a title bar (sits over `--surface-2`
+  or `--accent-soft`).
+- `bg-dither` — the fine checkerboard, used on the desktop and in the
+  Skeleton placeholder.
+- `bg-grid` / `bg-backdrop` — drafting grid and modal dimmer.
+- `focus-etched` — `:focus-visible` outline in the era's dotted-etched
+  style (never the default outline style).
+- `font-pixel` — Silkscreen, for wordmarks and tiny system labels.
+
+Textures deliberately overlay flat colors rather than replacing them —
+`cn` treats them as a separate group so `bg-surface-2 bg-dither`
+composes instead of one dropping the other.
+
+## The composition contract
+
+Every component merges your `className` through `cn()` — clsx, then
+tailwind-merge, then *retro/ui's own vocabulary registered into it*:
+
+```ts
+const twMerge = extendTailwindMerge<"retro-texture">({
+  extend: {
+    classGroups: {
+      shadow: ["shadow-out", "shadow-in"],
+      "retro-texture": ["bg-hatch", "bg-dither", "bg-grid", "bg-backdrop"],
+    },
+  },
+});
+```
+
+This is library-specific and matters: without the registration,
+tailwind-merge would mis-file `bg-dither` under `bg-color` and drop it
+whenever a real background color joins the list. So when you copy the
+library in, copy `cn()` with it.
+
+## Square corners, instant states
+
+- **No rounded corners.** Do not reach for `rounded-*` — the look holds
+  without it.
+- **No transitions or animations.** State changes are instant by
+  contract: `hover:bg-…`, `active:shadow-in` react immediately. If you
+  need motion of your own, it stays outside the library's defaults.
