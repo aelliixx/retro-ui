@@ -418,3 +418,31 @@
   display: block;
   min-height: 0.75rem;
 }
+
+/* ------------------------------------------------------------------------- */
+/* shiki (docs code wells) — dual themes as CSS variables; palette follows    */
+/* the .dark class like everything else. The well itself stays ours:         */
+/* bg/border/depth come from tokens, only the ink colors come from shiki.    */
+/* ------------------------------------------------------------------------- */
+pre.shiki,
+pre.shiki span {
+  color: var(--shiki-light);
+  background-color: transparent;
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+.dark pre.shiki,
+.dark pre.shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+/* shiki paints its own theme background inline on the pre — the token
+   well wins, so both themes keep the house well color */
+pre.shiki {
+  background-color: var(--well) !important;
+}

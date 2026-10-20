@@ -21,7 +21,16 @@ const withMDX = createMDX({
   // gfm: GFM tables etc. · slug: heading anchors for the docs
   options: {
     remarkPlugins: ["remark-gfm"],
-    rehypePlugins: ["rehype-slug"],
+    rehypePlugins: [
+      // slug: heading anchors for the docs
+      "rehype-slug",
+      // build-time syntax highlighting; dual themes are emitted as CSS
+      // variables so the `.dark` class flips palettes with no re-render
+      ["@shikijs/rehype", {
+        themes: { light: "vitesse-light", dark: "vitesse-dark" },
+        defaultColor: false,
+      }],
+    ],
   },
 });
 
