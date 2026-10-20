@@ -622,12 +622,15 @@ function IndicatorsSection() {
   return (
     <Section label="Progress · Loading">
       <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
-        <Cell label="value = 64" code={`<Progress value={64} />`}>
+        <Cell
+          label="value = 64"
+          code={`<Progress value={64} aria-label="Install progress" />`}
+        >
           <Progress value={64} className="w-full" aria-label="Install progress" />
         </Cell>
         <Cell
           label="complete state"
-          code={`<Progress value={100} />  {/* data-state="complete" */}`}
+          code={`<Progress value={100} aria-label="Finished" />  {/* data-state="complete" */}`}
         >
           <Progress value={100} className="w-full" aria-label="Finished" />
         </Cell>
@@ -646,7 +649,7 @@ function IndicatorsSection() {
   }, [running]);
 
   return (
-    <Progress value={value} />
+    <Progress value={value} aria-label="Copy progress" />
   );
 }`}
         >

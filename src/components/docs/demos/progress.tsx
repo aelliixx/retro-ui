@@ -15,15 +15,15 @@ export function ProgressStates() {
     <DemoStage>
       <div className="flex w-64 flex-col gap-3 font-mono text-xs">
         <div className="flex items-center gap-2">
-          <Progress value={25} className="flex-1" />
+          <Progress value={25} className="flex-1" aria-label="Copy progress" />
           <span aria-hidden="true">25%</span>
         </div>
         <div className="flex items-center gap-2">
-          <Progress value={62} className="flex-1" />
+          <Progress value={62} className="flex-1" aria-label="Copy progress" />
           <span aria-hidden="true">62%</span>
         </div>
         <div className="flex items-center gap-2">
-          <Progress value={100} className="flex-1" />
+          <Progress value={100} className="flex-1" aria-label="Copy progress" />
           <span aria-hidden="true">100%</span>
         </div>
       </div>
