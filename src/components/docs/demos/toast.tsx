@@ -2,6 +2,8 @@
 
 import { Button, ToastProvider, useToast } from "@/components/ui";
 
+import { DemoStage } from "@/components/docs/demo-stage";
+
 /**
  * Toast demos — imported by the doc panel (`page.mdx`). Client
  * component: the demo pushes through `useToast()`.
@@ -12,9 +14,11 @@ import { Button, ToastProvider, useToast } from "@/components/ui";
 
 export function ToastDemo() {
   return (
-    <ToastProvider>
-      <ToastTriggers />
-    </ToastProvider>
+    <DemoStage>
+      <ToastProvider>
+        <ToastTriggers />
+      </ToastProvider>
+    </DemoStage>
   );
 }
 

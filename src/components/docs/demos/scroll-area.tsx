@@ -1,4 +1,5 @@
 import { ScrollArea } from "@/components/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
  * ScrollArea demos — imported by the doc panel (`page.mdx`).
@@ -32,22 +33,26 @@ const FILES = [
 
 export function ArchivePane() {
   return (
-    <ScrollArea label="Archive notes" className="h-40 max-w-sm">
-      <ul className="flex flex-col gap-1.5 text-sm text-ink">
-        {FILES.map((file) => (
-          <li key={file}>{file}</li>
-        ))}
-      </ul>
-    </ScrollArea>
+    <DemoStage>
+      <ScrollArea label="Archive notes" className="h-40 max-w-sm">
+        <ul className="flex flex-col gap-1.5 text-sm text-ink">
+          {FILES.map((file) => (
+            <li key={file}>{file}</li>
+          ))}
+        </ul>
+      </ScrollArea>
+    </DemoStage>
   );
 }
 
 export function WidePane() {
   return (
-    <ScrollArea className="h-24 max-w-sm">
-      <pre className="w-[560px] font-mono text-xs text-ink">
-        0x00B0: EB 3C 90 49 42 4D 20 33 2E 33 00 02 02 00 00 00
-      </pre>
-    </ScrollArea>
+    <DemoStage>
+      <ScrollArea className="h-24 max-w-sm">
+        <pre className="w-[560px] font-mono text-xs text-ink">
+          0x00B0: EB 3C 90 49 42 4D 20 33 2E 33 00 02 02 00 00 00
+        </pre>
+      </ScrollArea>
+    </DemoStage>
   );
 }

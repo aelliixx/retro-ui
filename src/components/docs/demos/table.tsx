@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
  * Table demos — imported by the doc panel (`page.mdx`).
@@ -23,55 +24,59 @@ const FILE_ROWS = [
 
 export function FilesTable() {
   return (
-    <ScrollArea className="max-w-sm">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead className="text-end">Size</TableHead>
-            <TableHead className="text-end">Modified</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {FILE_ROWS.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell className="text-end">{row.size}</TableCell>
-              <TableCell className="text-end">{row.modified}</TableCell>
+    <DemoStage>
+      <ScrollArea className="max-w-sm">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead className="text-end">Size</TableHead>
+              <TableHead className="text-end">Modified</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={2}>4 objects</TableCell>
-            <TableCell className="text-end">99 KB</TableCell>
-          </TableRow>
-        </TableFooter>
-        <TableCaption>Everything you need is already on disk.</TableCaption>
-      </Table>
-    </ScrollArea>
+          </TableHeader>
+          <TableBody>
+            {FILE_ROWS.map((row) => (
+              <TableRow key={row.name}>
+                <TableCell>{row.name}</TableCell>
+                <TableCell className="text-end">{row.size}</TableCell>
+                <TableCell className="text-end">{row.modified}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={2}>4 objects</TableCell>
+              <TableCell className="text-end">99 KB</TableCell>
+            </TableRow>
+          </TableFooter>
+          <TableCaption>Everything you need is already on disk.</TableCaption>
+        </Table>
+      </ScrollArea>
+    </DemoStage>
   );
 }
 
 export function RowHeadTable() {
   return (
-    <Table className="max-w-sm">
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-24">Setting</TableHead>
-          <TableHead>Value</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow data-state="selected">
-          <TableHead scope="row">Protocol</TableHead>
-          <TableCell>TCP/IP via modem</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableHead scope="row">Speed</TableHead>
-          <TableCell>33.6 kbit/s</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <DemoStage>
+      <Table className="max-w-sm">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-24">Setting</TableHead>
+            <TableHead>Value</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow data-state="selected">
+            <TableHead scope="row">Protocol</TableHead>
+            <TableCell>TCP/IP via modem</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableHead scope="row">Speed</TableHead>
+            <TableCell>33.6 kbit/s</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </DemoStage>
   );
 }

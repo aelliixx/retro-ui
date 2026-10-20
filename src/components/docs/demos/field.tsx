@@ -1,4 +1,5 @@
 import { Field, Input } from "@/components/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
  * Field demos — imported by the doc panel (`page.mdx`).
@@ -6,21 +7,25 @@ import { Field, Input } from "@/components/ui";
 
 export function BasicField() {
   return (
-    <Field
-      label="Display name"
-      hint="Shown to teammates on the network."
-      required
-      className="max-w-xs"
-    >
-      <Input defaultValue="carp" />
-    </Field>
+    <DemoStage>
+      <Field
+        label="Display name"
+        hint="Shown to teammates on the network."
+        required
+        className="max-w-xs"
+      >
+        <Input defaultValue="carp" />
+      </Field>
+    </DemoStage>
   );
 }
 
 export function InvalidField() {
   return (
-    <Field label="Email" error="That is not a valid address." className="max-w-xs">
-      <Input defaultValue="carp@bbs" />
-    </Field>
+    <DemoStage>
+      <Field label="Email" error="That is not a valid address." className="max-w-xs">
+        <Input defaultValue="carp@bbs" />
+      </Field>
+    </DemoStage>
   );
 }

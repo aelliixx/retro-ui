@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { Toggle } from "@/components/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
  * Toggle demos — imported by the doc panel (`page.mdx`). Client
@@ -11,22 +12,26 @@ import { Toggle } from "@/components/ui";
 
 export function ToggleStates() {
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <Toggle>Bold</Toggle>
-      <Toggle defaultPressed>Italic</Toggle>
-      <Toggle disabled>Underline</Toggle>
-    </div>
+    <DemoStage>
+      <div className="flex flex-wrap items-center gap-3">
+        <Toggle>Bold</Toggle>
+        <Toggle defaultPressed>Italic</Toggle>
+        <Toggle disabled>Underline</Toggle>
+      </div>
+    </DemoStage>
   );
 }
 
 export function ControlledToggle() {
   const [on, setOn] = useState(false);
   return (
-    <div className="flex items-center gap-3">
-      <Toggle pressed={on} onPressedChange={setOn}>
-        Caps lock
-      </Toggle>
-      <span className="font-mono text-sm">pressed = {String(on)}</span>
-    </div>
+    <DemoStage>
+      <div className="flex items-center gap-3">
+        <Toggle pressed={on} onPressedChange={setOn}>
+          Caps lock
+        </Toggle>
+        <span className="font-mono text-sm">pressed = {String(on)}</span>
+      </div>
+    </DemoStage>
   );
 }

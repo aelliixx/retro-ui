@@ -1,4 +1,5 @@
 import { PasswordToggleField } from "@/components/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
  * PasswordToggleField demos — imported by the doc panel (`page.mdx`).
@@ -6,22 +7,24 @@ import { PasswordToggleField } from "@/components/ui";
 
 export function PasswordBasics() {
   return (
-    <PasswordToggleField
-      label="Secret phrase"
-      hint="Keep it off the network."
-      defaultValue="hunter2"
-      className="max-w-xs"
-    />
+    <DemoStage>
+      <PasswordToggleField
+        label="Secret phrase"
+        hint="Keep it off the network."
+        defaultValue="hunter2"
+        className="max-w-xs"
+      />    </DemoStage>
   );
 }
 
 export function PasswordInvalid() {
   return (
-    <PasswordToggleField
-      label="Secret phrase"
-      error="That is not the right phrase."
-      required
-      className="max-w-xs"
-    />
+    <DemoStage>
+      <PasswordToggleField
+        label="Secret phrase"
+        error="That is not the right phrase."
+        required
+        className="max-w-xs"
+      />    </DemoStage>
   );
 }

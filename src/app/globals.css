@@ -452,3 +452,50 @@ pre.shiki span {
 pre.shiki {
   background-color: var(--well) !important;
 }
+
+/* ------------------------------------------------------------------------- */
+/* collapsed code wells — the rehype collapse-demos plugin wraps large        */
+/* pre.shiki blocks in a <details class="doc-collapse">. The chip is the      */
+/* class's small-caps mono label; the arrow flips instantly, no animation.    */
+/* ------------------------------------------------------------------------- */
+.doc-collapse {
+  margin-block: 1rem;
+}
+
+.doc-collapse > .doc-collapse-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.doc-collapse > .doc-collapse-chip:hover {
+  color: var(--ink);
+}
+
+.doc-collapse > .doc-collapse-chip::before {
+  content: "▸";
+  font-size: 9px;
+  transition: none;
+}
+
+.doc-collapse[open] > .doc-collapse-chip::before {
+  transform: rotate(90deg);
+}
+
+/* strip the browser's own disclosure markers */
+.doc-collapse > .doc-collapse-chip {
+  list-style: none;
+}
+
+.doc-collapse > .doc-collapse-chip::-webkit-details-marker {
+  display: none;
+}
+

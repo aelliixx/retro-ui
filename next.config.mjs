@@ -1,4 +1,5 @@
 import createMDX from "@next/mdx";
+import { resolve } from "node:path";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -30,6 +31,11 @@ const withMDX = createMDX({
         themes: { light: "vitesse-light", dark: "vitesse-dark" },
         defaultColor: false,
       }],
+      // fold code wells of minLines+ lines into <details> disclosures.
+      // Local plugins load through require.resolve against the MDX file's
+      // own directory, so an absolute path from the project root is the
+      // only portable way to point at it.
+      [resolve("src/mdx-plugins/collapse-demos.mjs"), { minLines: 12 }],
     ],
   },
 });
