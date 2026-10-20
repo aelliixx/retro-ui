@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='src/components/ui/**' --coverage.include='src/lib/**' --coverage.reporter=text"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -36,6 +37,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "happy-dom": "^21.0.3",
