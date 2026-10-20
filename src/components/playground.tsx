@@ -66,7 +66,6 @@ import {
 } from "@/components/ui";
 import { buttonVariants } from "@/components/ui";
 import { GroupBox } from "@/components/group-box";
-import { WindowButtons } from "@/components/window-buttons";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -728,13 +727,11 @@ function CardsSection() {
           <Card className="w-full">
             <CardHeader variant="titlebar">
               <CardTitle>C:\SYSTEM\README.TXT</CardTitle>
-              <WindowButtons />
             </CardHeader>
             <CardContent>
               <p className="text-sm text-ink-muted">
                 The titlebar header is the signature move — hatched
-                background, small caps title, and room for
-                beveled window chrome.
+                background and small caps title.
               </p>
             </CardContent>
           </Card>
@@ -2111,10 +2108,7 @@ export function PlaygroundPage() {
             <CardTitle className="min-w-0 truncate">
               retro/ui — component playground
             </CardTitle>
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-              <WindowButtons className="hidden sm:flex" />
-            </div>
+            <ThemeToggle />
           </CardHeader>
 
           <CardContent className="flex flex-col gap-10 p-4 sm:p-6">

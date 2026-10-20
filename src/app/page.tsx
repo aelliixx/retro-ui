@@ -25,7 +25,6 @@ import {
   buttonVariants,
 } from "@/components/ui";
 import { GroupBox } from "@/components/group-box";
-import { WindowButtons } from "@/components/window-buttons";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -103,7 +102,6 @@ function DemoWindow() {
     <Card className="mx-auto w-full max-w-3xl text-left">
       <CardHeader variant="titlebar" className="justify-between gap-3">
         <CardTitle className="min-w-0 truncate">carve.exe — live components</CardTitle>
-        <WindowButtons className="hidden sm:flex" />
       </CardHeader>
       <CardContent className="grid gap-x-6 gap-y-5 p-4 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
         <GroupBox label="Sign in" className="min-w-0">
