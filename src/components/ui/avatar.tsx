@@ -5,13 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
-
-const STATUS_COLOR = {
-  online: "bg-accent",
-  away: "bg-selection",
-  busy: "bg-danger",
-  offline: "bg-ink-muted",
-} as const;
+import { Status } from "@/components/ui/status";
 
 const avatarVariants = cva(
   "relative inline-flex select-none items-center justify-center border border-ink bg-surface-2 font-semibold text-ink-muted shadow-out",
@@ -94,12 +88,9 @@ function Avatar({
         <span className="truncate px-0.5 leading-none">{fallback ?? initials(name)}</span>
       )}
       {status && (
-        <span
-          data-slot="avatar-status"
-          className={cn(
-            "absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full border border-ink",
-            STATUS_COLOR[status],
-          )}
+        <Status
+          value={status}
+          className="absolute -bottom-0.5 -right-0.5"
         />
       )}
     </span>

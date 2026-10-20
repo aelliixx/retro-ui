@@ -1,0 +1,134 @@
+export const metadata = {
+  title: "Badge · retro/ui",
+  description:
+    "A tiny stamped label — pixel caps on a beveled chip, in three loudnesses and four tones.",
+};
+
+import {
+  BadgeTones,
+  BadgeOutline,
+  BadgeSubtle,
+  BadgeSizes,
+  BadgeComposed,
+} from "@/components/docs/demos/badge";
+
+# Badge
+
+A tiny stamped label — "NEW!", "BETA", "3 unread" — set in pixel caps
+on a small beveled chip. The era stamped states directly onto chrome:
+fill for loud, ink outline for neutral, soft well for background
+noise.
+
+Three axes: `variant` picks how loudly the chip speaks, `tone` picks
+the ink family, `size` picks the scale. It renders as an inline
+`span`, so it can sit inside headings, buttons, and table cells.
+
+## Demo
+
+<BadgeTones />
+
+```tsx
+import { Badge } from "@/components/ui";
+
+export function BadgeTones() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge>new</Badge>
+      <Badge tone="success">stable</Badge>
+      <Badge tone="danger">breaking</Badge>
+      <Badge tone="neutral">v0.4.0</Badge>
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Outline
+
+Same tones, but the color lives in the text alone and the chip stays
+windowed silver — suited to states that should whisper.
+
+<BadgeOutline />
+
+```tsx
+import { Badge } from "@/components/ui";
+
+export function BadgeOutline() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge variant="outline">new</Badge>
+      <Badge variant="outline" tone="success">stable</Badge>
+      <Badge variant="outline" tone="danger">breaking</Badge>
+      <Badge variant="outline" tone="neutral">v0.4.0</Badge>
+    </div>
+  );
+}
+```
+
+### Subtle
+
+The soft tone well behind, no bevel in front — the chip recedes into the page.
+
+<BadgeSubtle />
+
+```tsx
+import { Badge } from "@/components/ui";
+
+export function BadgeSubtle() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge variant="subtle">new</Badge>
+      <Badge variant="subtle" tone="success">stable</Badge>
+      <Badge variant="subtle" tone="danger">breaking</Badge>
+      <Badge variant="subtle" tone="neutral">v0.4.0</Badge>
+    </div>
+  );
+}
+```
+
+### Sizes
+
+<BadgeSizes />
+
+```tsx
+import { Badge } from "@/components/ui";
+
+export function BadgeSizes() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Badge size="sm">sm</Badge>
+      <Badge size="md">md</Badge>
+    </div>
+  );
+}
+```
+
+### Composed via `className`
+
+Round it off, drop the bevel — `className` composes through
+tailwind-merge, so every baked utility can be overridden.
+
+<BadgeComposed />
+
+```tsx
+import { Badge } from "@/components/ui";
+
+export function BadgeComposed() {
+  return (
+    <Badge className="rounded-full px-2 shadow-none">rounded off</Badge>
+  );
+}
+```
+
+## API reference
+
+### Badge
+
+A `span`; every native prop is kept.
+
+| Prop    | Type                                        | Default   | Description |
+| ------- | ------------------------------------------- | --------- | ----------- |
+| variant | `"solid" \| "outline" \| "subtle"`            | `"solid"` | How loudly the chip speaks: filled, windowed ink lettering, or a soft well. |
+| tone    | `"accent" \| "success" \| "danger" \| "neutral"` | `"accent"` | Ink family driving the fill, the lettering, and the soft well. |
+| size    | `"sm" \| "md"`                              | `"md"`    | Chip scale, driven by shared tokens; resize freely via `className`. |

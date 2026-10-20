@@ -8,7 +8,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AspectRatio,
   Avatar,
+  Badge,
   Button,
   Card,
   CardContent,
@@ -34,6 +36,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  Pagination,
+  PaginationNext,
+  PaginationPager,
+  PaginationPrev,
   PasswordToggleField,
   Progress,
   Radio,
@@ -43,6 +49,7 @@ import {
   Separator,
   Skeleton,
   Slider,
+  Status,
   Switch,
   Table,
   TableBody,
@@ -169,7 +176,7 @@ function Intro() {
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="font-pixel text-3xl">retro/ui</h1>
         <span className="border border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
-          v0.3.0
+          v0.4.0
         </span>
       </div>
       <p className="max-w-prose text-ink-muted">
@@ -974,6 +981,193 @@ function AvatarSection() {
   );
 }
 
+function AspectRatioSection() {
+  return (
+    <Section label="AspectRatio">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Cell
+          label="default 4 : 3 frame"
+          code={`<AspectRatio className="w-64">
+  <img src={demoImage} alt="Smiley tile" />
+</AspectRatio>`}
+        >
+          <AspectRatio className="w-64">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={DEMO_AVATAR_SRC} alt="Smiley tile" />
+          </AspectRatio>
+        </Cell>
+        <Cell
+          label="ratio={16 / 9}"
+          code={`<AspectRatio className="w-64" ratio={16 / 9}>
+  <img src={demoImage} alt="Smiley tile" />
+</AspectRatio>`}
+        >
+          <AspectRatio className="w-64" ratio={16 / 9}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={DEMO_AVATAR_SRC} alt="Smiley tile" />
+          </AspectRatio>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function BadgeSection() {
+  return (
+    <Section label="Badge">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="tones (solid, default)"
+          code={`<Badge>new</Badge>
+<Badge tone="success">stable</Badge>
+<Badge tone="danger">breaking</Badge>
+<Badge tone="neutral">v0.4.0</Badge>`}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge>new</Badge>
+            <Badge tone="success">stable</Badge>
+            <Badge tone="danger">breaking</Badge>
+            <Badge tone="neutral">v0.4.0</Badge>
+          </div>
+        </Cell>
+        <Cell
+          label='variant="outline"'
+          code={`<Badge variant="outline">new</Badge>
+<Badge variant="outline" tone="success">stable</Badge>
+<Badge variant="outline" tone="danger">breaking</Badge>
+<Badge variant="outline" tone="neutral">v0.4.0</Badge>`}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline">new</Badge>
+            <Badge variant="outline" tone="success">stable</Badge>
+            <Badge variant="outline" tone="danger">breaking</Badge>
+            <Badge variant="outline" tone="neutral">v0.4.0</Badge>
+          </div>
+        </Cell>
+        <Cell
+          label='variant="subtle"'
+          code={`<Badge variant="subtle">new</Badge>
+<Badge variant="subtle" tone="success">stable</Badge>
+<Badge variant="subtle" tone="danger">breaking</Badge>
+<Badge variant="subtle" tone="neutral">v0.4.0</Badge>`}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="subtle">new</Badge>
+            <Badge variant="subtle" tone="success">stable</Badge>
+            <Badge variant="subtle" tone="danger">breaking</Badge>
+            <Badge variant="subtle" tone="neutral">v0.4.0</Badge>
+          </div>
+        </Cell>
+        <Cell
+          label="sizes: sm / md"
+          code={`<Badge size="sm">s</Badge>
+<Badge size="md">md</Badge>`}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge size="sm">sm</Badge>
+            <Badge size="md">md</Badge>
+          </div>
+        </Cell>
+        <Cell
+          label="composed via className"
+          code={`<Badge className="rounded-full px-2 shadow-none">
+  rounded off
+</Badge>`}
+        >
+          <Badge className="rounded-full px-2 shadow-none">rounded off</Badge>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function StatusSection() {
+  return (
+    <Section label="Status">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2">
+        <Cell
+          label="presence values"
+          code={`<Status value="online" />
+<Status value="away" />
+<Status value="busy" />
+<Status value="offline" />`}
+        >
+          <div className="flex items-center gap-4">
+            <Status value="online" />
+            <Status value="away" />
+            <Status value="busy" />
+            <Status value="offline" />
+          </div>
+        </Cell>
+        <Cell
+          label="sizes: sm / md / lg"
+          code={`<Status size="sm" value="online" />
+<Status size="md" value="online" />
+<Status size="lg" value="online" />`}
+        >
+          <div className="flex items-center gap-4">
+            <Status size="sm" value="online" />
+            <Status size="md" value="online" />
+            <Status size="lg" value="online" />
+          </div>
+        </Cell>
+        <Cell
+          label="with a visible label"
+          code={`<Status value="online" label="Online" />
+<Status value="away" label="Away" />
+<Status value="busy" label="In a meeting" />
+<Status value="offline" label="Offline" />`}
+        >
+          <div className="grid gap-2">
+            <Status value="online" label="Online" />
+            <Status value="away" label="Away" />
+            <Status value="busy" label="In a meeting" />
+            <Status value="offline" label="Offline" />
+          </div>
+        </Cell>
+        <Cell
+          label="roster row (pips are aria-hidden)"
+          code={`<ul className="w-44 [&>li+li]:border-t-0">
+  <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+    <span className="font-mono text-xs">ada</span>
+    <Status value="online" />
+  </li>
+  <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+    <span className="font-mono text-xs">grace</span>
+    <Status value="busy" />
+  </li>
+  <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+    <span className="font-mono text-xs">lars</span>
+    <Status value="away" />
+  </li>
+  <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+    <span className="font-mono text-xs">noor</span>
+    <Status value="offline" />
+  </li>
+</ul>`}
+        >
+          <ul className="w-44 [&>li+li]:border-t-0">
+            {[
+              { name: "ada", status: "online" },
+              { name: "grace", status: "busy" },
+              { name: "lars", status: "away" },
+              { name: "noor", status: "offline" },
+            ].map((member) => (
+              <li
+                key={member.name}
+                className="flex items-center justify-between border border-ink bg-surface px-2 py-1"
+              >
+                <span className="font-mono text-xs">{member.name}</span>
+                <Status value={member.status as "online"} />
+              </li>
+            ))}
+          </ul>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function MenuBarSection() {
   return (
     <Section label="MenuBar">
@@ -1149,6 +1343,77 @@ function NavigationMenuSection() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
+function PaginationSection() {
+  const [page, setPage] = useState(2);
+
+  return (
+    <Section label="Pagination">
+      <div className="grid gap-x-6 gap-y-8 pt-2">
+        <Cell
+          label="uncontrolled — 12 pages, siblings default 1"
+          code={`<Pagination defaultPage={4} totalPages={12}>
+  <PaginationPrev />
+  <PaginationPager />
+  <PaginationNext />
+</Pagination>`}
+        >
+          <Pagination defaultPage={4} totalPages={12}>
+            <PaginationPrev />
+            <PaginationPager />
+            <PaginationNext />
+          </Pagination>
+        </Cell>
+        <Cell
+          label="controlled"
+          code={`const [page, setPage] = useState(2);
+
+<Pagination
+  page={page}
+  onPageChange={setPage}
+  totalPages={7}
+  className="items-center gap-2"
+>
+  <PaginationPrev />
+  <PaginationPager />
+  <PaginationNext />
+</Pagination>
+{/* reading order: page {page} of 7 */}`}
+        >
+          <div className="flex flex-col items-start gap-2">
+            <Pagination
+              page={page}
+              onPageChange={setPage}
+              totalPages={7}
+              className="items-center gap-2"
+            >
+              <PaginationPrev />
+              <PaginationPager />
+              <PaginationNext />
+            </Pagination>
+            <span className="font-mono text-[11px] text-ink-muted">
+              reading order: page {page} of 7
+            </span>
+          </div>
+        </Cell>
+        <Cell
+          label='size="sm"'
+          code={`<Pagination size="sm" totalPages={5} siblings={0}>
+  <PaginationPrev />
+  <PaginationPager />
+  <PaginationNext />
+</Pagination>`}
+        >
+          <Pagination size="sm" totalPages={5} siblings={0}>
+            <PaginationPrev />
+            <PaginationPager />
+            <PaginationNext />
+          </Pagination>
         </Cell>
       </div>
     </Section>
@@ -2120,11 +2385,15 @@ export function PlaygroundPage() {
             <SelectSection />
             <IndicatorsSection />
             <CardsSection />
+            <AspectRatioSection />
             <DialogSection />
             <AvatarSection />
+            <BadgeSection />
+            <StatusSection />
             <AccordionSection />
             <MenuBarSection />
             <NavigationMenuSection />
+            <PaginationSection />
             <TabsSection />
             <SwitchSliderSection />
             <ToggleGroupSection />
@@ -2140,7 +2409,7 @@ export function PlaygroundPage() {
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 29 components</span>
+            <span className={PANE}>Ready — 32 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark

@@ -7,8 +7,9 @@ full `className` composition.
 
 Current components: **Button · Field · Input · PasswordToggleField ·
 Textarea · Checkbox · Switch · Toggle · Slider · RadioGroup · Select ·
-Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Accordion ·
-Collapsible · MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator ·
+Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Badge ·
+Status · AspectRatio · Accordion · Collapsible · MenuBar ·
+NavigationMenu · Pagination · Tabs · ToggleGroup · Separator ·
 ScrollArea · Skeleton · Table · Toast**.
 
 ```bash

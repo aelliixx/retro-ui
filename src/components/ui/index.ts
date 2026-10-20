@@ -1,5 +1,7 @@
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
+export { AspectRatio, type AspectRatioProps } from "./aspect-ratio";
 export { Avatar, avatarVariants, type AvatarProps } from "./avatar";
+export { Badge, badgeVariants, type BadgeProps } from "./badge";
 export { Button, buttonVariants, type ButtonProps } from "./button";
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, cardVariants } from "./card";
 export { Checkbox, checkboxVariants, type CheckboxProps } from "./checkbox";
@@ -42,6 +44,23 @@ export {
   type NavigationMenuTriggerProps,
   type NavigationMenuLinkProps,
 } from "./navigation-menu";
+export {
+  Pagination,
+  PaginationPrev,
+  PaginationNext,
+  PaginationTrigger,
+  PaginationEllipsis,
+  PaginationPager,
+  paginationKeyVariants,
+  type PaginationProps,
+  type PagerItem,
+} from "./pagination";
+export {
+  Status,
+  statusVariants,
+  STATUS_VALUE,
+  type StatusProps,
+} from "./status";
 export {
   Separator,
   type SeparatorProps,

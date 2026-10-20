@@ -1,0 +1,154 @@
+export const metadata = {
+  title: "Status · retro/ui",
+  description:
+    "The presence pip — a beveled availability dot, on its own or with a label.",
+};
+
+import {
+  StatusValues,
+  StatusSizes,
+  StatusLabeled,
+  StatusRoster,
+  StatusInAvatar,
+} from "@/components/docs/demos/status";
+
+# Status
+
+The presence pip, on its own — the little availability dot roster
+lists and chat windows drew next to every name. It carries four
+presence values drawn from the library's own tokens, and can stand
+alone or carry a visible label.
+
+The pip is purely visual and `aria-hidden`. Pass `label` when the
+value needs to be read aloud, or let surrounding text carry the
+meaning — as `Avatar` does with its name. (Avatar imports this
+component for its corner pip.)
+
+## Demo
+
+<StatusValues />
+
+```tsx
+import { Status } from "@/components/ui";
+
+export function StatusValues() {
+  return (
+    <div className="flex flex-wrap items-center gap-6">
+      <Status value="online" />
+      <Status value="away" />
+      <Status value="busy" />
+      <Status value="offline" />
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Sizes
+
+<StatusSizes />
+
+```tsx
+import { Status } from "@/components/ui";
+
+export function StatusSizes() {
+  return (
+    <div className="flex items-center gap-6">
+      <Status size="sm" value="online" />
+      <Status size="md" value="online" />
+      <Status size="lg" value="online" />
+    </div>
+  );
+}
+```
+
+### With a label
+
+The label renders as visible [`font-mono`](/docs/getting-started/styling)
+text after the pip; screen readers read the label, not the pip.
+
+<StatusLabeled />
+
+```tsx
+import { Status } from "@/components/ui";
+
+export function StatusLabeled() {
+  return (
+    <div className="grid gap-2">
+      <Status value="online" label="Online" />
+      <Status value="away" label="Away" />
+      <Status value="busy" label="In a meeting" />
+      <Status value="offline" label="Offline" />
+    </div>
+  );
+}
+```
+
+### A roster row
+
+Bare pips beside the roster's names — the list itself carries the
+meaning, so nothing is announced twice.
+
+<StatusRoster />
+
+```tsx
+import { Status } from "@/components/ui";
+
+export function StatusRoster() {
+  return (
+    <ul className="w-44 [&>li+li]:border-t-0">
+      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+        <span className="font-mono text-xs">ada</span>
+        <Status value="online" />
+      </li>
+      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+        <span className="font-mono text-xs">grace</span>
+        <Status value="busy" />
+      </li>
+      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+        <span className="font-mono text-xs">lars</span>
+        <Status value="away" />
+      </li>
+      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
+        <span className="font-mono text-xs">noor</span>
+        <Status value="offline" />
+      </li>
+    </ul>
+  );
+}
+```
+
+### Inside Avatar
+
+`Avatar`'s corner pip *is* this component, positioned absolutely —
+perma-sizes and tone follow the same tokens.
+
+<StatusInAvatar />
+
+```tsx
+import { Avatar } from "@/components/ui";
+
+export function StatusInAvatar() {
+  return (
+    <div className="flex items-end gap-4">
+      <Avatar name="Ada Lovelace" status="online" />
+      <Avatar name="Lars Bak" status="away" />
+      <Avatar name="Noor Nisa" status="busy" />
+      <Avatar name="Tim B." status="offline" />
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Status
+
+A `span`; every native prop is kept.
+
+| Prop  | Type                                        | Default    | Description |
+| ----- | ------------------------------------------- | ---------- | ----------- |
+| value | `"online" \| "away" \| "busy" \| "offline"`  | `"online"` | Which presence to report, drawn from shared presence tokens. |
+| size  | `"sm" \| "md" \| "lg"`                      | `"md"`     | Pip scale; resize freely via `className`. |
+| label | ReactNode                                    | —          | Visible text rendered after the pip. Screen readers read this, never the pip. |

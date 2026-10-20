@@ -22,7 +22,9 @@ export type DocGroup = {
 
 const componentPages = [
   ["accordion", "Accordion"],
+  ["aspect-ratio", "AspectRatio"],
   ["avatar", "Avatar"],
+  ["badge", "Badge"],
   ["button", "Button"],
   ["card", "Card"],
   ["checkbox", "Checkbox"],
@@ -33,6 +35,7 @@ const componentPages = [
   ["loading-icon", "LoadingIcon"],
   ["menu-bar", "MenuBar"],
   ["navigation-menu", "NavigationMenu"],
+  ["pagination", "Pagination"],
   ["password-toggle-field", "PasswordToggleField"],
   ["progress", "Progress"],
   ["radio-group", "RadioGroup"],
@@ -41,6 +44,7 @@ const componentPages = [
   ["separator", "Separator"],
   ["skeleton", "Skeleton"],
   ["slider", "Slider"],
+  ["status", "Status"],
   ["switch", "Switch"],
   ["table", "Table"],
   ["tabs", "Tabs"],
