@@ -408,7 +408,7 @@ export default function LandingPage() {
             Ready — 32 components
           </span>
           <span className="ml-auto hidden font-mono text-[11px] text-ink-muted sm:block">
-            retro/ui v0.4.0
+            retro/ui v0.5.0
           </span>
         </div>
       </footer>

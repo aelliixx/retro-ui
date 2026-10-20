@@ -176,7 +176,7 @@ function Intro() {
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="font-pixel text-3xl">retro/ui</h1>
         <span className="border border-ink bg-accent-soft px-2 py-0.5 font-mono text-xs font-bold text-ink">
-          v0.4.0
+          v0.5.0
         </span>
       </div>
       <p className="max-w-prose text-ink-muted">

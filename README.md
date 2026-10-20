@@ -14,7 +14,24 @@ ScrollArea · Skeleton · Table · Toast**.
 
 ```bash
 npm run dev   # landing at http://localhost:3000 → playground at /playground · docs at /docs
+npm test      # component test suite (vitest + testing-library, happy-dom)
 ```
+
+## Tests
+
+Every component has a test file next to it — `src/components/ui/*.test.tsx` —
+covering what the component promises: variants and class composition,
+controlled and uncontrolled state, keyboard operation, disabled
+behavior, and the accessibility wiring (roles, labels, `aria-*`).
+
+```bash
+npm test          # run the suite once
+npm run test:watch # re-run on change
+```
+
+The suite runs on [happy-dom](https://github.com/capricorn86/happy-dom) and
+uses [Testing Library](https://testing-library.com) queries, so the tests
+assert on what a user (or a screen reader) can actually reach.
 
 ## How theming works
 

@@ -259,6 +259,10 @@ function NavigationMenuTrigger({
   const item = useItem();
   const triggerRef = useTriggerRef();
   const open = value === item.value;
+  // the panel may already be open because the mouse hovered over the
+  // trigger — a click then must not dismiss it, or the first click on a
+  // fresh menu bar would look like it did nothing
+  const openedByHover = useRef(false);
 
   return (
     <button
@@ -278,12 +282,18 @@ function NavigationMenuTrigger({
       onClick={(event) => {
         onClick?.(event);
         if (event.defaultPrevented) return;
-        setValue(open ? "" : item.value);
+        if (open && !openedByHover.current) {
+          setValue("");
+        } else {
+          setValue(item.value);
+          openedByHover.current = false;
+        }
       }}
       onPointerEnter={(event) => {
         // mouse-over opens like the era's menus; touch relies on the click
         if (event.pointerType !== "mouse") return;
         if (value === item.value) return;
+        openedByHover.current = true;
         setValue(item.value);
       }}
       onKeyDown={(event) => {
