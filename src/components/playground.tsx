@@ -75,6 +75,7 @@ import { buttonVariants } from "@/components/ui";
 import { GroupBox } from "@/components/group-box";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
+import { COMPONENT_COUNT } from "@/lib/component-count";
 
 /* ------------------------------------------------------------------------- */
 /* playground helpers                                                        */
@@ -2409,7 +2410,7 @@ export function PlaygroundPage() {
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 32 components</span>
+            <span className={PANE}>Ready — {COMPONENT_COUNT} components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark

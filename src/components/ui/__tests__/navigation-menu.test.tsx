@@ -64,6 +64,45 @@ describe("NavigationMenu", () => {
     expect(screen.getByRole("link", { name: "Widget" })).toBeInTheDocument();
   });
 
+  it("opens a panel on mouse-over", async () => {
+    const user = userEvent.setup();
+    render(<Menu />);
+
+    await user.hover(screen.getByRole("button", { name: "Products" }));
+
+    expect(screen.getByRole("button", { name: "Products" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    expect(screen.getByRole("link", { name: "Widget" })).toBeInTheDocument();
+  });
+
+  it("keeps a hover-opened panel open when the trigger is clicked", async () => {
+    // the click must not dismiss what the hover just opened — otherwise
+    // the first click on a fresh menu bar looks like it did nothing
+    const user = userEvent.setup();
+    render(<Menu />);
+
+    const trigger = screen.getByRole("button", { name: "Products" });
+    await user.hover(trigger);
+    await user.click(trigger);
+
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("link", { name: "Widget" })).toBeInTheDocument();
+  });
+
+  it("closes a click-opened panel on the next click", async () => {
+    const user = userEvent.setup();
+    render(<Menu />);
+
+    const trigger = screen.getByRole("button", { name: "Products" });
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("closes the panel when the trigger is clicked again", async () => {
     const user = userEvent.setup();
     render(<Menu />);

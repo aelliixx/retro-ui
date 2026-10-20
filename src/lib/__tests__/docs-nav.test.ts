@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { COMPONENT_COUNT } from "@/lib/component-count";
 import { docGroups, docNeighbors, docPageLabel, docPages } from "@/lib/docs-nav";
 
 const components = docGroups.find((group) => group.id === "components")!;
@@ -19,7 +20,7 @@ describe("docs navigation", () => {
   });
 
   it("keeps one page per component file", () => {
-    expect(components.pages.length).toBe(32);
+    expect(components.pages.length).toBe(COMPONENT_COUNT);
   });
 
   it("walks the neighbours of a page in reading order", () => {

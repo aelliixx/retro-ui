@@ -27,6 +27,7 @@ import {
 import { GroupBox } from "@/components/group-box";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
+import { COMPONENT_COUNT } from "@/lib/component-count";
 
 export const metadata: Metadata = {
   title: "retro/ui — 90s UI components, modern engineering",
@@ -290,7 +291,7 @@ export default function LandingPage() {
             </Link>
           </div>
           <p className="border border-ink bg-surface px-2 py-0.5 font-mono text-xs leading-none text-ink shadow-in">
-            32 components · works with your tokens from day one
+            {COMPONENT_COUNT} components · works with your tokens from day one
           </p>
 
           {/* the hook: a real window doing real things */}
@@ -405,7 +406,7 @@ export default function LandingPage() {
             <span className="font-pixel text-xs text-ink">Start</span>
           </Link>
           <span className="border border-ink bg-surface px-2 py-0.5 font-mono text-[11px] leading-none text-ink shadow-in">
-            Ready — 32 components
+            Ready — {COMPONENT_COUNT} components
           </span>
           <span className="ml-auto hidden font-mono text-[11px] text-ink-muted sm:block">
             retro/ui v0.5.0

@@ -100,4 +100,43 @@ describe("MenuBar", () => {
     expect(list).toHaveClass("right-0");
     expect(list).not.toHaveClass("left-0");
   });
+
+  it("reveals the list on hover and on keyboard focus", () => {
+    // the reveal is pure CSS — the wrapper is the group, and the list
+    // comes back on group-hover or group-focus-within
+    const { container } = render(
+      <MenuBar label="File">
+        <Menu label="File">
+          <MenuItem>New</MenuItem>
+        </Menu>
+      </MenuBar>,
+    );
+
+    const menu = container.querySelector('[data-slot="menu"]')!;
+    expect(menu).toHaveClass("group");
+
+    const list = container.querySelector('[data-slot="menu-list"]')!;
+    expect(list).toHaveClass("hidden");
+    expect(list).toHaveClass("group-hover:block");
+    expect(list).toHaveClass("group-focus-within:block");
+  });
+
+  it("keeps the items reachable by keyboard once the menu is focused", async () => {
+    const user = userEvent.setup();
+    render(
+      <MenuBar label="File">
+        <Menu label="File">
+          <MenuItem>New</MenuItem>
+          <MenuItem>Open</MenuItem>
+        </Menu>
+      </MenuBar>,
+    );
+
+    // focus-within keeps the list open, so Tab walks into the items
+    await user.tab();
+    expect(screen.getByRole("button", { name: "File" })).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole("button", { name: "New" })).toHaveFocus();
+  });
 });

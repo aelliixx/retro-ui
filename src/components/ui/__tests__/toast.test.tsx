@@ -131,4 +131,45 @@ describe("Toast", () => {
 
     expect(screen.getAllByText("Saved")).toHaveLength(2);
   });
+
+  it("holds the timer while the pointer rests on the toast", () => {
+    renderToasts({ duration: 1000 });
+
+    push();
+    const toast = document.querySelector('[data-slot="toast"]')!;
+
+    // a pointer parked on the toast holds its timer — a toast should not
+    // die while someone is reading it
+    fireEvent.pointerEnter(toast);
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(screen.getByText("Saved")).toBeInTheDocument();
+    expect(toast).toHaveAttribute("data-hovered", "true");
+  });
+
+  it("restarts the full duration once the pointer leaves", () => {
+    renderToasts({ duration: 1000 });
+
+    push();
+    const toast = document.querySelector('[data-slot="toast"]')!;
+
+    fireEvent.pointerEnter(toast);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+    fireEvent.pointerLeave(toast);
+
+    // the leave restarts the clock — the toast survives the first window
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+    expect(screen.getByText("Saved")).toBeInTheDocument();
+
+    // and the restarted clock still runs out
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByText("Saved")).not.toBeInTheDocument();
+  });
 });
