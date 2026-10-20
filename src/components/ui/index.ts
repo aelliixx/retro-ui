@@ -14,6 +14,17 @@ export { Field, useFieldIds, type FieldProps, type FieldIds } from "./field";
 export { PasswordToggleField, type PasswordToggleFieldProps } from "./password-toggle-field";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area";
 export { Skeleton, type SkeletonProps } from "./skeleton";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  type TableProps,
+} from "./table";
 export { ToastProvider, useToast, type ToastOptions, type ToastVariant } from "./toast";
 export { Toggle, type ToggleProps } from "./toggle";
 export { Input, inputVariants, type InputProps } from "./input";

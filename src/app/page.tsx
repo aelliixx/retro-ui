@@ -43,6 +43,14 @@ import {
   Skeleton,
   Slider,
   Switch,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
   Tabs,
   TabsContent,
   TabsList,
@@ -1637,6 +1645,202 @@ function SkeletonSection() {
   );
 }
 
+function TableSection() {
+  return (
+    <Section label="Table">
+      <div className="grid gap-x-6 gap-y-8 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+        <Cell
+          label="details pane — directory listing with a selected row"
+          code={`<ScrollArea className="max-w-96 border border-ink bg-surface shadow-out">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Size</TableHead>
+        <TableHead>Modified</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-semibold">readme.txt</TableCell>
+        <TableCell>12 KB</TableCell>
+        <TableCell>10:04</TableCell>
+      </TableRow>
+      <TableRow className="bg-accent-soft">
+        <TableCell className="font-semibold">boot.log</TableCell>
+        <TableCell>3 KB</TableCell>
+        <TableCell>09:51</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</ScrollArea>`}
+        >
+          <ScrollArea className="max-w-96 border border-ink bg-surface shadow-out">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead className="text-right">Modified</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-semibold">
+                    readme.txt
+                  </TableCell>
+                  <TableCell>12 KB</TableCell>
+                  <TableCell className="text-right">10:04</TableCell>
+                </TableRow>
+                <TableRow className="bg-accent-soft">
+                  <TableCell className="font-semibold">boot.log</TableCell>
+                  <TableCell>3 KB</TableCell>
+                  <TableCell className="text-right">09:51</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-semibold">autoexec.bat</TableCell>
+                  <TableCell>1 KB</TableCell>
+                  <TableCell className="text-right">yesterday</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-semibold">plan9.iso</TableCell>
+                  <TableCell>640 MB</TableCell>
+                  <TableCell className="text-right">1994</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </Cell>
+        <Cell
+          label="row headers + caption + footer beneath the pane"
+          code={`<Table>
+  <TableCaption>Memory map — 640K is enough for anyone</TableCaption>
+  <TableHeader>…</TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableHead scope="row">Low</TableHead>
+      <TableCell>0x0000</TableCell>
+    </TableRow>
+  </TableBody>
+  <TableFooter>
+    <TableRow>
+      <TableCell>Total</TableCell>
+      <TableCell className="text-right">640K</TableCell>
+    </TableRow>
+  </TableFooter>
+</Table>`}
+        >
+          <Table className="max-w-96">
+            <TableCaption>
+              memory map — 640K is enough for anyone
+            </TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Region</TableHead>
+                <TableHead className="text-right">Base</TableHead>
+                <TableHead className="text-right">Kind</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableHead scope="row" className="font-semibold">
+                  Low
+                </TableHead>
+                <TableCell>0x0000</TableCell>
+                <TableCell className="text-right">conventional</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableHead scope="row" className="font-semibold">
+                  High
+                </TableHead>
+                <TableCell>0xA0000</TableCell>
+                <TableCell className="text-right">upper</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableHead scope="row" className="font-semibold">
+                  XMS
+                </TableHead>
+                <TableCell>0x100000</TableCell>
+                <TableCell className="text-right">extended</TableCell>
+              </TableRow>
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell>Total</TableCell>
+                <TableCell className="text-right">3 regions</TableCell>
+                <TableCell className="text-right">640K</TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </Cell>
+        <Cell
+          label="wide — horizontal scroll via ScrollArea; panes stay current"
+          code={`<ScrollArea className="w-fit max-w-full border border-ink bg-surface shadow-out">
+  <Table className="w-max">
+    <TableHeader>
+      <TableRow>
+        {columns.map((c) => (
+          <TableHead key={c}>{c}</TableHead>
+        ))}
+      </TableRow>
+    </TableHeader>
+    <TableBody>…</TableBody>
+  </Table>
+</ScrollArea>`}
+        >
+          <ScrollArea className="w-fit max-w-full border border-ink bg-surface shadow-out">
+            <Table className="w-max">
+              <TableHeader>
+                <TableRow>
+                  {["Drive", "File system", "Label", "Free", "Total", "Status"].map(
+                    (c) => (
+                      <TableHead key={c}>{c}</TableHead>
+                    ),
+                  )}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-semibold whitespace-nowrap">
+                    A:
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">FAT12</TableCell>
+                  <TableCell className="whitespace-nowrap">SYSTEM</TableCell>
+                  <TableCell className="whitespace-nowrap">1.2 MB</TableCell>
+                  <TableCell className="whitespace-nowrap">1.44 MB</TableCell>
+                  <TableCell className="whitespace-nowrap">up</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-semibold whitespace-nowrap">
+                    C:
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">FAT16</TableCell>
+                  <TableCell className="whitespace-nowrap">HD</TableCell>
+                  <TableCell className="whitespace-nowrap">88 MB</TableCell>
+                  <TableCell className="whitespace-nowrap">504 MB</TableCell>
+                  <TableCell className="whitespace-nowrap">up</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-semibold whitespace-nowrap">
+                    D:
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">CD-ROM</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    SHAREWARE
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">0 KB</TableCell>
+                  <TableCell className="whitespace-nowrap">650 MB</TableCell>
+                  <TableCell className="whitespace-nowrap">read-only</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </Cell>
+      </div>
+    </Section>
+  );
+}
+
 function PasswordSection() {
   return (
     <Section label="PasswordToggleField">
@@ -1953,6 +2157,7 @@ export default function PlaygroundPage() {
             <SeparatorSection />
             <CollapsibleSection />
             <SkeletonSection />
+            <TableSection />
             <PasswordSection />
             <ScrollAreaSection />
             <ToastSection />
@@ -1961,7 +2166,7 @@ export default function PlaygroundPage() {
           </CardContent>
 
           <CardFooter className="gap-1 border-0 bg-surface px-1.5 py-1.5">
-            <span className={PANE}>Ready — 28 components</span>
+            <span className={PANE}>Ready — 29 components</span>
             <span aria-hidden="true" className={cn(PANE, "flex-1")} />
             <span className={cn(PANE, "hidden sm:block")}>
               tokens: light / dark

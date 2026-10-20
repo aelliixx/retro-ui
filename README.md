@@ -9,7 +9,7 @@ Current components: **Button · Field · Input · PasswordToggleField ·
 Textarea · Checkbox · Switch · Toggle · Slider · RadioGroup · Select ·
 Progress · LoadingIcon · Tooltip · Card · Dialog · Avatar · Accordion ·
 Collapsible · MenuBar · NavigationMenu · Tabs · ToggleGroup · Separator ·
-ScrollArea · Skeleton · Toast**.
+ScrollArea · Skeleton · Table · Toast**.
 
 ```bash
 npm run dev   # playground at http://localhost:3000
@@ -486,6 +486,41 @@ layout preserved — and is disabled (`inert`, `tabIndex={-1}`,
 Shell paint lives in the `.retro-skeleton` rules in `globals.css` and
 deliberately beats the wrapped element's own bevels. Base element: span
 (like Radix).
+
+### `<Table>`
+
+The details pane — semantic native table parts wearing the operating
+system's list skin: column headers on a sunken sheet between dark
+rules, hairline column dividers, rows separated by soft hairlines that
+highlight on hover (accent tint, instant — the list-selection way).
+
+Composable and flat — `<Table>` is the `<table>` itself; everything is
+semantic and simply styled:
+
+```tsx
+<ScrollArea className="border border-ink bg-surface shadow-out">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Size</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>document.txt</TableCell>
+        <TableCell>12 KB</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableCaption>4 objects</TableCaption>
+  </Table>
+</ScrollArea>
+```
+
+Wrap in a `<ScrollArea>` when the column count outruns the pane. For
+row headers in the first column pass `scope="row"` to `TableHead`.
+`TableFooter` is a `tfoot` (dark rule above, sunken sheet). A selected
+row is a consumer concern: `className="bg-accent-soft"` on the `TableRow`.
 
 ### `<PasswordToggleField>`
 
