@@ -63,7 +63,7 @@ function RevealRow({
     <div
       data-slot="password-toggle-field"
       className={cn(
-        "flex w-fit min-w-56 items-stretch border border-ink bg-well shadow-in",
+        "flex w-full items-stretch border border-ink bg-well shadow-in",
         ids.hasError && "border-danger",
       )}
     >

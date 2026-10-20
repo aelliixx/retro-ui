@@ -242,7 +242,7 @@ export default function LandingPage() {
     <div className="flex min-h-dvh flex-col bg-desktop bg-dither">
       {/* top bar — hand-styled: solid sheet, hairline, sticky */}
       <header className="sticky top-0 z-40 border-b border-ink bg-surface">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
+        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-2.5 sm:px-6">
           <Link href="/" className="no-underline group">
             <span className="font-pixel text-lg text-ink group-hover:text-accent-strong">
               retro/ui
