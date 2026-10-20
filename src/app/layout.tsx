@@ -20,9 +20,9 @@ const silkscreen = Silkscreen({
 });
 
 export const metadata: Metadata = {
-  title: "retro/ui — component playground",
+  title: "retro/ui — 90s UI components, modern engineering",
   description:
-    "A small React + Tailwind component library styled after 90s desktop UIs, built with modern tokens.",
+    "A small React + Tailwind component library styled after 90s desktop UIs — tokens, light/dark theming and className composition included.",
 };
 
 // Applies the persisted (or system) theme before first paint to avoid a flash.

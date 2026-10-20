@@ -23,6 +23,10 @@
   --surface-2: #ccd2da; /* pressed / sunken silver */
   --well: #fcfdff; /* input interiors */
   --desktop: #008080;
+  /* text cast on the desktop itself (hero + section headings) — the
+     silver desk has no AA-compliant muted, so meta copy lives in
+     surface chips, never raw on the canvas */
+  --desktop-ink: #ffffff;
 
   /* ink (text + hairline chrome) */
   --ink: #171a20;
@@ -69,6 +73,7 @@
   --surface-2: #10141b;
   --well: #0b0e15;
   --desktop: #0b3f3a;
+  --desktop-ink: #e9f6f2;
 
   /* ink */
   --ink: #e7eaf1;
@@ -115,6 +120,7 @@
   --color-surface-2: var(--surface-2);
   --color-well: var(--well);
   --color-desktop: var(--desktop);
+  --color-desktop-ink: var(--desktop-ink);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-border-muted: var(--border-muted);

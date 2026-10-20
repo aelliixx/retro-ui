@@ -66,7 +66,7 @@ function RadioGroup({
       {...props}
     >
       {label && (
-        <legend className="px-1 text-sm font-semibold text-ink">{label}</legend>
+        <legend className="px-1.5 font-pixel text-[11px] uppercase text-ink">{label}</legend>
       )}
       <div className="flex flex-col gap-2">
         <RadioGroupContext.Provider value={context}>
