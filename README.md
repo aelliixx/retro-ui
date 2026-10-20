@@ -19,10 +19,11 @@ npm test      # component test suite (vitest + testing-library, happy-dom)
 
 ## Tests
 
-Every component has a test file next to it — `src/components/ui/*.test.tsx` —
-covering what the component promises: variants and class composition,
-controlled and uncontrolled state, keyboard operation, disabled
-behavior, and the accessibility wiring (roles, labels, `aria-*`).
+Every component has a test file in a `__tests__` folder beside it —
+`src/components/ui/__tests__/*.test.tsx` — covering what the component
+promises: variants and class composition, controlled and uncontrolled
+state, keyboard operation, disabled behavior, and the accessibility
+wiring (roles, labels, `aria-*`).
 
 ```bash
 npm test          # run the suite once
