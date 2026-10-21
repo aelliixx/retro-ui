@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import { DocsTitlebarControls } from "@/components/docs/docs-controls";
 import { DocPager } from "@/components/docs/docs-pager";
 import { DocTree } from "@/components/docs/docs-tree";
+import Link from "next/link";
 
 /**
  * The docs window — full screen, like a truly maximized application:
@@ -19,8 +20,11 @@ export default function DocsLayout({
     <div className="h-dvh">
       <Card className="flex h-full flex-col overflow-hidden">
         <CardHeader variant="titlebar" className="justify-between gap-3">
-          <CardTitle className="min-w-0 truncate">
-            retro/ui — documentation
+          <CardTitle className="flex items-baseline min-w-0 truncate">
+            <Link href="/" className="no-underline group">
+              retro/ui
+            </Link>
+              <span className="ml-1">— documentation</span>
           </CardTitle>
           <DocsTitlebarControls />
         </CardHeader>
