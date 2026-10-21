@@ -50,9 +50,39 @@ describe("Pagination", () => {
       .getAllByRole("button", { name: /^Page \d+$/ })
       .map((button) => button.textContent);
 
-    // the window is page 2 alone, so there is no gap before it
-    expect(pages).toEqual(["1", "2", "12"]);
+    // the window grew to take the place of the swallowed first slot
+    expect(pages).toEqual(["1", "2", "3", "4", "5", "12"]);
     expect(screen.getAllByText("…")).toHaveLength(1);
+  });
+
+  it("keeps the same number of slots at every page", () => {
+    // the rail must not change width as it pages — the slot count is
+    // constant, and the elision is the same size as a key
+    const counts = new Set<number>();
+
+    for (let page = 1; page <= 12; page++) {
+      const { unmount } = render(<Rail totalPages={12} defaultPage={page} />);
+      const slots = document.querySelectorAll(
+        '[data-slot="pagination-pager"] > li',
+      );
+      counts.add(slots.length);
+      unmount();
+    }
+
+    expect([...counts]).toEqual([7]);
+  });
+
+  it("keeps the elision the same size as a key", () => {
+    render(<Rail totalPages={12} defaultPage={6} />);
+
+    const key = screen.getByRole("button", { name: "Page 6" });
+    const ellipsis = document.querySelector(
+      '[data-slot="pagination-ellipsis"]',
+    )!;
+
+    // the same box, so the rail's width never shifts
+    expect(ellipsis.className).toContain("w-8");
+    expect(key.className).toContain("w-8");
   });
 
   it("elides the middle pages with an ellipsis", () => {

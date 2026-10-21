@@ -67,19 +67,38 @@ const ELLIPSIS = "…" as const;
 type PagerItem = number | typeof ELLIPSIS;
 
 function pagerItems(page: number, totalPages: number, siblings: number) {
+  // the moving window of page numbers around the current one
+  const core = siblings * 2 + 1;
+  // first + ellipsis + window + ellipsis + last
+  const slots = core + 4;
+
   // everything fits — no eliding at all
-  if (totalPages <= siblings * 2 + 5) {
+  if (totalPages <= slots) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  const start = Math.max(2, page - siblings);
-  const end = Math.min(totalPages - 1, page + siblings);
+  let start = Math.max(1, page - siblings);
+  let end = Math.min(totalPages, page + siblings);
 
-  const items: PagerItem[] = [1];
-  if (start > 2) items.push(ELLIPSIS);
+  // The rail holds the same number of slots at every page, so it never
+  // changes width. Reaching an end swallows the first/last slot and its
+  // ellipsis — the window grows on the other side to take their place.
+  if (start === 1) {
+    end = Math.min(totalPages - 1, start + core + 1);
+  } else if (end === totalPages) {
+    start = Math.max(2, end - core - 1);
+  }
+
+  const items: PagerItem[] = [];
+  if (start > 1) {
+    items.push(1);
+    items.push(ELLIPSIS);
+  }
   for (let i = start; i <= end; i++) items.push(i);
-  if (end < totalPages - 1) items.push(ELLIPSIS);
-  items.push(totalPages);
+  if (end < totalPages) {
+    items.push(ELLIPSIS);
+    items.push(totalPages);
+  }
 
   return items;
 }
@@ -235,7 +254,10 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
     <span
       aria-hidden="true"
       data-slot="pagination-ellipsis"
-      className={cn("px-0.5 font-mono text-sm text-ink-muted", className)}
+      className={cn(
+        "inline-flex items-center justify-center px-0.5 font-mono text-sm text-ink-muted",
+        className,
+      )}
       {...props}
     >
       …
@@ -262,7 +284,14 @@ function PaginationPager({ className, ...props }: PaginationPagerProps) {
       {items.map((item, index) =>
         item === ELLIPSIS ? (
           <li key={`ellipsis-${index}-…`} aria-hidden="true">
-            <PaginationEllipsis />
+            {/* the elision takes the same box as a key, so swapping one
+                for the other never changes the rail's width */}
+            <PaginationEllipsis
+              className={cn(
+                paginationKeyVariants({ size }),
+                "border-transparent bg-transparent text-ink-muted shadow-none",
+              )}
+            />
           </li>
         ) : (
           <li key={item}>

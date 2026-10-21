@@ -17,6 +17,11 @@ stepping and `…` eliding the pages that don't fit. Edge pages always
 show; the window around the current key shrinks to dots as space
 demands.
 
+The rail keeps the same width on every page — it holds a fixed number
+of slots, so paging never nudges the surrounding layout. Near the
+first and last pages the window grows to fill the space the missing
+edge slot leaves behind.
+
 It is composition: `<Pagination>` owns the page state and renders a
 `<nav>`; lay the rail out with `PaginationPrev`, `PaginationPager`
 and `PaginationNext` inside it — move the arrows around or drop
