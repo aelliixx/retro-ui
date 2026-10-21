@@ -1,0 +1,63 @@
+export const metadata = {
+  title: "Textarea · retro/ui",
+  description:
+    "A sunken multi-line well — resize by the bottom edge, native text editing throughout.",
+};
+
+import { NoteTextarea, TextareaStates } from "@/components/docs/demos/textarea";
+
+# Textarea
+
+A sunken multi-line well — a native `<textarea>` wearing the
+workstation skin: sunken bevel, etched focus, danger border under
+`aria-invalid`. `resize-y` is the only motion: pull the bottom edge,
+no drawers, no twitches.
+
+## Demo
+
+<NoteTextarea />
+
+```tsx
+import { Field, Textarea } from "@retro-ui/ui";
+
+export function NoteTextarea() {
+  return (
+    <Field
+      label="Autoexec notes"
+      hint="Resize at the bottom edge; wraps at the column."
+      className="max-w-sm"
+    >
+      <Textarea rows={4} defaultValue={"REM load high, run late\nREM keep off the network"} />
+    </Field>
+  );
+}
+```
+
+## Examples
+
+### States
+
+<TextareaStates />
+
+```tsx
+import { Textarea } from "@retro-ui/ui";
+
+export function TextareaStates() {
+  return (
+    <div className="flex max-w-sm flex-col gap-3">
+      <Textarea placeholder="Disabled buffer" disabled aria-label="Disabled buffer" />
+      <Textarea
+        aria-invalid
+        defaultValue="buffer overrun: 512 bytes requested"
+        aria-label="Invalid note"
+      />
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Textarea
+
+A native `<textarea>` — all props flow through. No props of its own.

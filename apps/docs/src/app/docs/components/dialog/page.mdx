@@ -1,0 +1,121 @@
+export const metadata = {
+  title: "Dialog · retro/ui",
+  description:
+    "Modal message windows on the native <dialog> — focus trapping, Escape and the dithered backdrop come from the platform.",
+};
+
+import { ErrorDialog, InfoDialog } from "@/components/docs/demos/dialog";
+
+# Dialog
+
+Modal message windows built on the native `dialog` element — focus
+trapping, Escape-to-close and page-blocking come from the platform, and
+the dithered black backdrop is the era again. The default glyphs are
+the info ("i" roundel) and critical-error (red X roundel) icons; pass
+`icon` to override either.
+
+Controlled (`open` + `onOpenChange`) or uncontrolled
+(`defaultOpen`). Escape and the ✕ button both flow through
+`onOpenChange(false)` — keep `open` in sync on your side.
+
+## Demo
+
+<InfoDialog />
+
+Press the key, then close with ✕, Escape or OK — all three routes land
+in `onOpenChange`.
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+import { Button, Dialog } from "@retro-ui/ui";
+
+export function InfoDialog() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Run defrag</Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Defragment C:"
+        actions={
+          <Button variant="primary" onClick={() => setOpen(false)}>
+            OK
+          </Button>
+        }
+      >
+        Are you sure you want to defragment drive C: now?
+      </Dialog>
+    </>
+  );
+}
+```
+
+## Examples
+
+### Critical error
+
+The error variant swaps the red X roundel and keeps the dialog
+loud-but-instant.
+
+<ErrorDialog />
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+import { Button, Dialog } from "@retro-ui/ui";
+
+export function ErrorDialog() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Format disk
+      </Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        variant="error"
+        title="Format C:"
+        actions={
+          <>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={() => setOpen(false)}>
+              Format
+            </Button>
+          </>
+        }
+      >
+        Formatting will erase all data on the disk. Continue?
+      </Dialog>
+    </>
+  );
+}
+```
+
+## API reference
+
+### Dialog
+
+Built on the native `dialog` element — most native props pass through,
+though `open` is controlled by the component's own managed-value
+contract. Width defaults to `28rem`; resize via `className`.
+
+| Prop          | Type                                    | Default | Description |
+| ------------- | --------------------------------------- | ------- | ----------- |
+| open          | boolean                                 | —       | Controlled visibility. |
+| defaultOpen   | boolean                                 | false   | Initial visibility when uncontrolled. |
+| onOpenChange  | (open: boolean) => void                 | —       | Fires with the next visibility — from Escape, the ✕ button or `close()`. |
+| variant       | `"info" \| "error"`                     | `"info"` | Which glyph the dialog opens with. |
+| title         | string                                  | —       | Titlebar text — doubles as the dialog's a11y label. |
+| icon          | ReactNode                               | per variant | Pass a node to replace the default per-variant glyph. |
+| noIcon        | boolean                                 | false   | Hide the glyph entirely for plain text dialogs. |
+| actions       | ReactNode                               | —       | Right-aligned action row rendered in the footer rail. |
+
+Width defaults to `min(28rem, calc(100vw - 2rem))` and is overridden
+through the ordinary `className` contract.

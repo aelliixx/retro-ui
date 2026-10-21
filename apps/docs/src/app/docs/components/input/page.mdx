@@ -1,0 +1,72 @@
+export const metadata = {
+  title: "Input · retro/ui",
+  description:
+    "A sunken single-line well — native behavior, etched focus, danger border on aria-invalid.",
+};
+
+import { InputFields, InputStates } from "@/components/docs/demos/input";
+
+# Input
+
+A sunken single-line well. It stays a native `<input>` — typing,
+selection, form participation and every type behave as the platform
+does — wearing the workstation skin: sunken bevel, etched focus
+rectangle, and a danger border when `aria-invalid` is set.
+
+## Demo
+
+<InputStates />
+
+```tsx
+import { Input } from "@retro-ui/ui";
+
+export function InputStates() {
+  return (
+    <div className="flex max-w-xs flex-col gap-3">
+      <Input placeholder="Search the disk" aria-label="Search the disk" />
+      <Input placeholder="Disabled" disabled aria-label="Disabled input" />
+      <Input
+        aria-invalid
+        defaultValue="C:\WINDOWS\SYSTEM32"
+        aria-label="Path"
+      />
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Inside a Field
+
+`Field` supplies label, hint and error wiring — the input needs
+nothing extra.
+
+<InputFields />
+
+```tsx
+import { Field, Input } from "@retro-ui/ui";
+
+export function InputFields() {
+  return (
+    <div className="flex max-w-xs flex-col gap-4">
+      <Field label="Secret phrase" hint="Keep it off the network.">
+        <Input type="password" defaultValue="hunter2" />
+      </Field>
+      <Field label="Attachment" error="File is over the 64K limit.">
+        <Input type="file" />
+      </Field>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Input
+
+A native `<input>` — all props flow through. `type` defaults to
+`"text"`. No props of its own.
+
+For the re-usable class matters: the sunken well recipe is exported as
+`inputVariants` if you need to style a bare input to match.

@@ -1,0 +1,74 @@
+export const metadata = {
+  title: "Separator · retro/ui",
+  description:
+    "The carved divider — a two-tone groove that looks dented into the surface.",
+};
+
+import { HorizontalSeparator, VerticalSeparator } from "@/components/docs/demos/separator";
+
+# Separator
+
+The carved divider — a two-tone "groove": a dark line with its light
+highlight directly underneath, so the cut looks dented into the
+surface, exactly how the era drew its rule lines.
+
+It renders as a semantic separator (announced by screen readers)
+unless `decorative` is set — then it is a bare `div`, skipped by the
+accessibility tree.
+
+## Demo
+
+<HorizontalSeparator />
+
+```tsx
+import { Separator } from "@retro-ui/ui";
+
+export function HorizontalSeparator() {
+  return (
+    <div className="max-w-sm text-sm text-ink">
+      <p>Everything ends.</p>
+      <Separator className="my-2" />
+      <p>Everything begins again.</p>
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Vertical rules
+
+In a flex row, give the vertical rule a stretching parent or it
+collapses to hair height.
+
+<VerticalSeparator />
+
+```tsx
+import { Separator } from "@retro-ui/ui";
+
+export function VerticalSeparator() {
+  return (
+    <div className="flex h-16 items-center gap-3 text-sm text-ink">
+      <span>Suspend</span>
+      <Separator orientation="vertical" />
+      <span>Shut down</span>
+      <Separator orientation="vertical" />
+      <span>Restart</span>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Separator
+
+A `div` with separator semantics.
+
+| Prop        | Type                                | Default         | Description |
+| ----------- | ----------------------------------- | --------------- | ----------- |
+| orientation | `"horizontal" \| "vertical"`         | `"horizontal"`  | Rule direction. |
+| decorative  | boolean                              | false           | Omit the separator role; purely visual. |
+
+`aria-orientation="vertical"` is wired automatically whenever the rule
+is vertical and announced.

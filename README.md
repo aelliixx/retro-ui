@@ -12,15 +12,25 @@ Status · AspectRatio · Accordion · Collapsible · MenuBar ·
 NavigationMenu · Pagination · Tabs · ToggleGroup · Separator ·
 ScrollArea · Skeleton · Table · Toast**.
 
+## Layout
+
+A workspace with two packages:
+
+```
+packages/ui/     the library — components, tokens, utilities
+apps/docs/      the documentation site and playground
+```
+
 ```bash
 npm run dev   # landing at http://localhost:3000 → playground at /playground · docs at /docs
 npm test      # component test suite (vitest + testing-library, happy-dom)
+npm run build # the docs site, statically exported
 ```
 
 ## Tests
 
 Every component has a test file in a `__tests__` folder beside it —
-`src/components/ui/__tests__/*.test.tsx` — covering what the component
+`packages/ui/src/components/ui/__tests__/*.test.tsx` — covering what the component
 promises: variants and class composition, controlled and uncontrolled
 state, keyboard operation, disabled behavior, and the accessibility
 wiring (roles, labels, `aria-*`).
@@ -37,12 +47,13 @@ assert on what a user (or a screen reader) can actually reach.
 ## How theming works
 
 Every color is a plain CSS variable declared in
-[`src/styles/tokens.css`](src/styles/tokens.css) and mapped into Tailwind v4 with
+[`packages/ui/src/styles/tokens.css`](packages/ui/src/styles/tokens.css)
+and mapped into Tailwind v4 with
 `@theme inline`, which gives you utilities like `bg-surface`, `text-ink-muted`,
 `border-ink`, plus the depth and texture utilities below. The component skin
 (the etched focus ring, the textures, the styled slider, the placeholder
 shell) lives beside it in
-[`src/styles/utilities.css`](src/styles/utilities.css).
+[`packages/ui/src/styles/utilities.css`](packages/ui/src/styles/utilities.css).
 
 - **Light theme** — variables on `:root`
 - **Dark theme** — the same variables under `.dark` (class strategy, wired with
@@ -85,7 +96,7 @@ renders as a dotted rectangle inside the control
 ## Overriding components
 
 All components accept a `className` that is merged through
-`clsx` + `tailwind-merge` (see `src/lib/utils.ts`), and the bevel scale is
+`clsx` + `tailwind-merge` (see `packages/ui/src/lib/utils.ts`), and the bevel scale is
 registered with tailwind-merge so depth overrides resolve cleanly:
 
 ```tsx
@@ -506,8 +517,8 @@ layout preserved — and is disabled (`inert`, `tabIndex={-1}`,
 ```
 
 Shell paint lives in the `.retro-skeleton` rules in
-`src/styles/utilities.css` and deliberately beats the wrapped element's own
-bevels. Base element: span (like Radix).
+`packages/ui/src/styles/utilities.css` and deliberately beats the wrapped
+element's own bevels. Base element: span (like Radix).
 
 ### `<Table>`
 
@@ -594,11 +605,11 @@ sunken bevel, mint-dot when checked.
 
 Follow the existing pattern:
 
-1. One file per component in `src/components/ui/`, with a `cva()` call for
+1. One file per component in `packages/ui/src/components/ui/`, with a `cva()` call for
    variants and `data-slot` attributes on each rendered part.
 2. Accept all native props for the underlying element plus variant props.
 3. Always merge classes with `cn()` last so consumer `className` wins.
-4. Export from `src/components/ui/index.ts` and add a demo to the playground
+4. Export from `packages/ui/src/components/ui/index.ts` and add a demo to the playground
    (`src/app/page.tsx`).
 
 ## Dark mode (playground)

@@ -1,0 +1,102 @@
+export const metadata = {
+  title: "AspectRatio · retro/ui",
+  description:
+    "A frame that holds its shape — era thumbnails that scaled without reflowing.",
+};
+
+import {
+  AspectRatioDefault,
+  AspectRatioWide,
+  AspectRatioSquare,
+} from "@/components/docs/demos/aspect-ratio";
+
+# AspectRatio
+
+A frame that holds its shape at any width. The era's thumbnails never
+reflowed — they scaled — so this part takes a `ratio`, reserves the
+shape, and lets the contents fill it.
+
+Children fill the frame absolutely; give it an `<img>` or `<video>`
+and it is stretched to cover, exactly like photo wells in old
+explorer windows. The frame ships with the house windowed chrome
+(ink border, sunken silver) and composes away through `className`.
+
+## Demo
+
+<AspectRatioDefault />
+
+```tsx
+import { AspectRatio } from "@retro-ui/ui";
+
+/**
+ * A wallpaper tile drawn inline as a data URI so the demo needs no network.
+ */
+const DEMO_TILE_SRC =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 533 300' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='533' height='300' fill='%23008080'/%3E%3Crect x='36' y='36' width='221' height='112' fill='%23fcfdff' stroke='%23171a20'/%3E%3Ccircle cx='400' cy='150' r='64' fill='%23f5c542' stroke='%23171a20'/%3E%3Ccircle cx='378' cy='132' r='7' fill='%23171a20'/%3E%3Ccircle cx='422' cy='132' r='7' fill='%23171a20'/%3E%3Cpath d='M372 172 q28 22 56 0' stroke='%23171a20' stroke-width='5' fill='none'/%3E%3C/svg%3E";
+
+export function AspectRatioDefault() {
+  return (
+    <AspectRatio className="w-64">
+      <img src={DEMO_TILE_SRC} alt="Teal wallpaper with a smiley sun" />
+    </AspectRatio>
+  );
+}
+```
+
+## Examples
+
+### 16 : 9
+
+<AspectRatioWide />
+
+```tsx
+import { AspectRatio } from "@retro-ui/ui";
+
+/**
+ * A wallpaper tile drawn inline as a data URI so the demo needs no network.
+ */
+const DEMO_TILE_SRC =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 533 300' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='533' height='300' fill='%23008080'/%3E%3Crect x='36' y='36' width='221' height='112' fill='%23fcfdff' stroke='%23171a20'/%3E%3Ccircle cx='400' cy='150' r='64' fill='%23f5c542' stroke='%23171a20'/%3E%3Ccircle cx='378' cy='132' r='7' fill='%23171a20'/%3E%3Ccircle cx='422' cy='132' r='7' fill='%23171a20'/%3E%3Cpath d='M372 172 q28 22 56 0' stroke='%23171a20' stroke-width='5' fill='none'/%3E%3C/svg%3E";
+
+export function AspectRatioWide() {
+  return (
+    <AspectRatio className="w-64" ratio={16 / 9}>
+      <img src={DEMO_TILE_SRC} alt="Teal wallpaper with a smiley sun" />
+    </AspectRatio>
+  );
+}
+```
+
+The image fills whatever the shape is — `ratio` trades an expression,
+not a class hunt.
+
+### Any content, not just media
+
+Anything inside fills the frame absolutely — content is your layout.
+
+<AspectRatioSquare />
+
+```tsx
+import { AspectRatio } from "@retro-ui/ui";
+
+export function AspectRatioSquare() {
+  return (
+    <AspectRatio className="w-24" ratio={1 / 1}>
+      <div className="flex h-full w-full items-center justify-center font-pixel text-sm text-ink-muted">
+        1 : 1
+      </div>
+    </AspectRatio>
+  );
+}
+```
+
+## API reference
+
+### AspectRatio
+
+A `div`; every native prop is kept. The shape is set with the modern
+`aspect-ratio` style property, so the frame scales with its width.
+
+| Prop  | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| ratio | number | `4/3`   | Width ÷ height the frame keeps, e.g. `16/9`. |

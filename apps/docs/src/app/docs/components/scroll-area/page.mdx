@@ -1,0 +1,82 @@
+export const metadata = {
+  title: "ScrollArea · retro/ui",
+  description:
+    "The pane with the trough scrollbars — a sunken well that scrolls its overflow, zero JS.",
+};
+
+import { ArchivePane, WidePane } from "@/components/docs/demos/scroll-area";
+
+# ScrollArea
+
+The pane with the trough scrollbars — a sunken well that scrolls its
+overflow. The scrollbars themselves are the native ones, already
+skinned by the global stylesheet, so dragging works everywhere and the
+component stays zero-JS.
+
+Pass `label` to expose the pane to assistive tech: it becomes a
+`role="region"` with `aria-label` and takes `tabIndex={0}` so keyboard
+users can scroll it directly.
+
+## Demo
+
+<ArchivePane />
+
+```tsx
+import { ScrollArea } from "@retro-ui/ui";
+
+const FILES = [
+  "about the archive.txt",
+  "boot-disk-notes.txt",
+  "dialup handshakes (2).txt",
+  "interrupt vectors.txt",
+  "palette swap matrix.txt",
+  "scanline flicker.txt",
+  "terminator glyphs.txt",
+  "window chrome.txt",
+];
+
+export function ArchivePane() {
+  return (
+    <ScrollArea label="Archive notes" className="h-40 max-w-sm">
+      <ul className="flex flex-col gap-1.5 text-sm text-ink">
+        {FILES.map((file) => (
+          <li key={file}>{file}</li>
+        ))}
+      </ul>
+    </ScrollArea>
+  );
+}
+```
+
+## Examples
+
+### Blowing out the width
+
+The same well scrolls horizontally when its contents insist.
+
+<WidePane />
+
+```tsx
+import { ScrollArea } from "@retro-ui/ui";
+
+export function WidePane() {
+  return (
+    <ScrollArea className="h-24 max-w-sm">
+      <pre className="w-[560px] font-mono text-xs text-ink">
+        0x00B0: EB 3C 90 49 42 4D 20 33 2E 33 00 02 02 00 00 00
+      </pre>
+    </ScrollArea>
+  );
+}
+```
+
+## API reference
+
+### ScrollArea
+
+A sunken `div` — height and width are yours via `className`; scroll
+where the content overflows.
+
+| Prop  | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| label | string | —       | Accessible name — promotes the well to a labelled scroll region with keyboard focus. |

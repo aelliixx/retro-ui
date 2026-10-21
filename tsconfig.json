@@ -13,22 +13,20 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./apps/docs/src/*"],
+      "@retro-ui/ui": ["./packages/ui/src/index.ts"],
+      "@retro-ui/ui/*": ["./packages/ui/src/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "apps/docs/next-env.d.ts",
+    "apps/docs/src/**/*.ts",
+    "apps/docs/src/**/*.tsx",
+    "packages/ui/src/**/*.ts",
+    "packages/ui/src/**/*.tsx",
+    "*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/node_modules", "**/dist", "**/.next", "**/out"]
 }

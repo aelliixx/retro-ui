@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Field · retro/ui",
+  description:
+    "The label / control / hint layer that wires ids, aria-invalid and required markers to your control automatically.",
+};
+
+import { BasicField, InvalidField } from "@/components/docs/demos/field";
+
+# Field
+
+The label / control / hint layer. `<Field>` wraps any single control
+and does the wiring you'd otherwise hand-roll: the `label` becomes a
+real `<label>` pointed at the control, `hint` prints below it, `error`
+replaces the hint and flips `aria-invalid` onto the control, `required`
+adds the marker plus `aria-required`.
+
+Single-child labels and descriptions arrive via id injection — the
+field derives the control's id from the child, so no ids are written by
+hand in the ordinary case.
+
+## Demo
+
+<BasicField />
+
+The required marker rides the label; the hint sits under the well.
+
+```tsx
+import { Field, Input } from "@retro-ui/ui";
+
+export function BasicField() {
+  return (
+    <Field
+      label="Display name"
+      hint="Shown to teammates on the network."
+      required
+      className="max-w-xs"
+    >
+      <Input defaultValue="carp" />
+    </Field>
+  );
+}
+```
+
+## Examples
+
+### Error state
+
+Setting `error` swaps the hint, wires `aria-invalid` + `describedby`
+and prints the message assertively (`role="alert"`).
+
+<InvalidField />
+
+```tsx
+import { Field, Input } from "@retro-ui/ui";
+
+export function InvalidField() {
+  return (
+    <Field label="Email" error="That is not a valid address." className="max-w-xs">
+      <Input defaultValue="carp@bbs" />
+    </Field>
+  );
+}
+```
+
+## API reference
+
+### Field
+
+A `div` composition wrapper — layout classes compose through the
+shared contract.
+
+| Prop     | Type    | Default | Description |
+| -------- | ------- | ------- | ----------- |
+| label    | string  | —       | Visible label text, rendered as a `<label>` linked to the control. |
+| hint     | string  | —       | Helper text shown below the control (hidden while `error` is set). |
+| error    | string  | —       | Error message shown below the control; wires `aria-invalid` + `describedby` on the child. |
+| required | boolean | false   | Renders the required marker and wires `aria-required`. |
+| htmlFor  | string  | derived | Explicit control id. Derived from the child `<input>` when omitted. |
+| noWire   | boolean | false   | Skip the single-child clone injection — composite controls wire themselves with `useFieldIds()`. |
+
+### useFieldIds
+
+Composite controls (an input with a joined button, custom
+sub-controls) call `useFieldIds()` inside the `Field` and wire their
+own elements: the context hands out `controlId`, `hintId`, `errorId`,
+`hasError` and `isRequired`. `PasswordToggleField` is built exactly
+this way — its source is the reference recipe.

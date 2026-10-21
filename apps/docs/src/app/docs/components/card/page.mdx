@@ -1,0 +1,121 @@
+export const metadata = {
+  title: "Card · retro/ui",
+  description:
+    "The window recipe as a container — hairline chrome, optional hatched titlebar, footer rail, and raised/flat/inset depth.",
+};
+
+import { CardVariants, WindowCard } from "@/components/docs/demos/card";
+
+# Card
+
+The window recipe as a container: optional hatched titlebar, a
+hairline-chrome body, a footer rail, and three depths — `raised` (the
+default bevel), `flat` (printed on the page) and `inset` (a sunken
+well). Everything here is a plain semantic `div`-family element, so
+layout is yours.
+
+## Demo
+
+<WindowCard />
+
+```tsx
+import {
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@retro-ui/ui";
+
+export function WindowCard() {
+  return (
+    <Card className="max-w-sm">
+      <CardHeader variant="titlebar">
+        <CardTitle>readme.txt — Notepad</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <p>
+          A window is a card that grew up: hatched title bar, hairline
+          chrome, and a status footer for the little truths.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <span className="mr-auto text-sm text-ink-muted">1 file, 412 bytes</span>
+        <Button size="sm">Close</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+## Examples
+
+### Depths
+
+<CardVariants />
+
+```tsx
+import { Card, CardContent, CardHeader, CardTitle } from "@retro-ui/ui";
+
+export function CardVariants() {
+  return (
+    <div className="flex flex-wrap gap-4">
+      <Card className="w-56" variant="raised">
+        <CardHeader>
+          <CardTitle>Raised</CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-ink-muted">
+          The default — a window on the desk.
+        </CardContent>
+      </Card>
+      <Card className="w-56" variant="flat">
+        <CardHeader>
+          <CardTitle>Flat</CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-ink-muted">
+          Same box, printed on the surface.
+        </CardContent>
+      </Card>
+      <Card className="w-56" variant="inset">
+        <CardHeader>
+          <CardTitle>Inset</CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-ink-muted">
+          A sunken well, like a code pane.
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Card
+
+| Prop    | Type                                    | Default     | Description |
+| ------- | --------------------------------------- | ----------- | ----------- |
+| variant | `"raised" \| "flat" \| "inset"`          | `"raised"`  | Depth of the pane. `raised` carries the two-tone bevel, `flat` prints the same box bare, `inset` sinks it into a well. |
+
+### CardHeader
+
+| Prop    | Type                        | Default   | Description |
+| ------- | --------------------------- | --------- | ----------- |
+| variant | `"plain" \| "titlebar"`     | `"plain"` | `titlebar` paints the hatched strip and restyles `CardTitle` inside it to small, bold, uppercase micro-caps — the classic window caption. |
+
+### CardTitle
+
+An `h3` caption. No props of its own.
+
+### CardDescription
+
+Muted supporting line (`p`). No props of its own.
+
+### CardContent
+
+The padded body. No props of its own — compose freely.
+
+### CardFooter
+
+The status rail along the bottom edge. No props of its own.

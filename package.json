@@ -1,31 +1,22 @@
 {
-  "name": "ui",
-  "version": "0.5.0",
+  "name": "retro-ui",
+  "version": "0.0.0",
   "private": true,
+  "description": "Workspace root \u2014 the retro/ui component library and its documentation site.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "npm run dev --workspace @retro-ui/docs",
+    "build": "npm run build --workspace @retro-ui/docs",
+    "start": "npm run start --workspace @retro-ui/docs",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='src/components/ui/**' --coverage.include='src/lib/**' --coverage.reporter=text"
-  },
-  "dependencies": {
-    "@mdx-js/loader": "^3.1.1",
-    "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.4.2",
-    "@shikijs/rehype": "^4.5.0",
-    "@types/mdx": "^2.0.14",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "next": "16.4.2",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "rehype-slug": "^6.0.0",
-    "remark-gfm": "^4.0.1",
-    "shiki": "^4.5.0",
-    "tailwind-merge": "^3.7.0"
+    "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='packages/*/src/**' --coverage.include='apps/*/src/**' --coverage.reporter=text",
+    "typecheck": "tsc --noEmit",
+    "build:ui": "npm run build --workspace @retro-ui/ui"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
@@ -38,12 +29,17 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.1.2",
     "@vitest/coverage-v8": "^5.0.5",
-    "axe-core": "^4.14.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "happy-dom": "^21.0.3",
+    "jsdom": "^30.1.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   }
 }

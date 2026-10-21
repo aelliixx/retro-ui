@@ -1,0 +1,73 @@
+export const metadata = {
+  title: "Avatar · retro/ui",
+  description:
+    "Square beveled identity well — initials or image, an optional presence pip, and an instant fallback when the image is missing.",
+};
+
+import { AvatarRoster, AvatarSizes } from "@/components/docs/demos/avatar";
+
+# Avatar
+
+The identity well — a square, beveled tile showing `fallback` initials
+by default, an image when `src` resolves, and an optional presence pip
+in the corner. A missing or broken image URL falls back instantly; no
+spinner, no broken-image glyph.
+
+## Demo
+
+<AvatarRoster />
+
+```tsx
+import { Avatar } from "@retro-ui/ui";
+
+export function AvatarRoster() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Avatar name="Ada Lovelace" />
+      <Avatar name="Grace Hopper" status="online" />
+      <Avatar name="Alan Turing" status="away" />
+      <Avatar name="Edsger Dijkstra" status="busy" />
+      <Avatar name="Barbara Liskov" status="offline" />
+      <Avatar
+        name="Maintenance Mode"
+        src="/avatars/missing.png"
+        fallback="MM"
+      />
+    </div>
+  );
+}
+```
+
+## Examples
+
+### Sizes
+
+<AvatarSizes />
+
+```tsx
+import { Avatar } from "@retro-ui/ui";
+
+export function AvatarSizes() {
+  return (
+    <div className="flex items-center gap-3">
+      <Avatar name="Katherine Johnson" size="sm" />
+      <Avatar name="Katherine Johnson" size="md" />
+      <Avatar name="Katherine Johnson" size="lg" />
+    </div>
+  );
+}
+```
+
+## API reference
+
+### Avatar
+
+A `span` with presence semantics; every native prop is kept.
+
+| Prop     | Type                                                 | Default  | Description |
+| -------- | ---------------------------------------------------- | -------- | ----------- |
+| name     | string                                               | —        | Required. The person or machine — becomes the private accessible label and the source of the default initials. |
+| src      | string                                               | —        | Image URL. A missing or broken source swaps to the `fallback` well. |
+| fallback | ReactNode                                            | initials | Shown when there is no image. Defaults to up to two initials derived from `name`. |
+| status   | `"online" \| "away" \| "busy" \| "offline"`           | —        | Presence pip in the bottom-right corner, hidden from the accessibility tree — roster state belongs to the text nearby, not the pip. Drawn by the [`Status`](/docs/components/status) component. |
+| size     | `"sm" \| "md" \| "lg"`                               | `"md"`   | Well scale; resize freely via `className`. |

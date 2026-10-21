@@ -1,0 +1,54 @@
+import createMDX from "@next/mdx";
+import { fileURLToPath } from "node:url";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "export",
+  // docs pages are .mdx on the filesystem
+  pageExtensions: ["ts", "tsx", "mdx"],
+  // A static export: every route is prerendered to plain HTML, so the
+  // docs can live on any static host. Nothing here needs a server — there
+  // are no API routes, no server actions and no dynamic APIs.
+  //
+  // The one thing a static export cannot do is redirect, so `/docs` is a
+  // real page (the Introduction) rather than a rule bouncing to
+  // `/docs/introduction`.
+  //
+  // cacheComponents (and the partialPrefetching that depends on it) stay
+  // off: they turn on Partial Prerendering, which Next refuses to run in
+  // export mode. Nothing here needs them — every route is prerendered
+  // whole.
+  turbopack: {
+    rules: {
+      "*.css": {
+        loaders: ["@tailwindcss/turbopack"],
+        as: "*.css",
+      },
+    },
+  },
+};
+
+const withMDX = createMDX({
+  // turbopack requires serializable plugin names (object form below);
+  // gfm: GFM tables etc. · slug: heading anchors for the docs
+  options: {
+    remarkPlugins: ["remark-gfm"],
+    rehypePlugins: [
+      // slug: heading anchors for the docs
+      "rehype-slug",
+      // build-time syntax highlighting; dual themes are emitted as CSS
+      // variables so the `.dark` class flips palettes with no re-render
+      ["@shikijs/rehype", {
+        themes: { light: "vitesse-light", dark: "vitesse-dark" },
+        defaultColor: false,
+      }],
+      // fold code wells of minLines+ lines into <details> disclosures.
+      // Local plugins load through require.resolve against the MDX file's
+      // own directory, so an absolute path is the only portable way to
+      // point at it.
+      [fileURLToPath(new URL("./src/mdx-plugins/collapse-demos.mjs", import.meta.url)), { minLines: 12 }],
+    ],
+  },
+});
+
+export default withMDX(nextConfig);
