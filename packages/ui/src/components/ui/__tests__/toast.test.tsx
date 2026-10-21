@@ -232,11 +232,11 @@ describe("Toast", () => {
   describe("position", () => {
     const region = () => screen.getByLabelText("Notifications");
 
-    it("sits in the bottom-left by default", () => {
+    it("sits in the bottom-right by default", () => {
       renderToasts({ duration: 0 });
 
-      expect(region()).toHaveAttribute("data-position", "bottom-left");
-      expect(region()).toHaveClass("left-4");
+      expect(region()).toHaveAttribute("data-position", "bottom-right");
+      expect(region()).toHaveClass("right-4");
       expect(region()).toHaveClass("bottom-4");
     });
 

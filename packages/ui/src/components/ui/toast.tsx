@@ -132,7 +132,7 @@ type ToastProviderProps = {
 
 function ToastProvider({
   className,
-  position = "bottom-left",
+  position = "bottom-right",
   children,
 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
