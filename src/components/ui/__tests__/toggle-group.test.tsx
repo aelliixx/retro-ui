@@ -133,4 +133,57 @@ describe("ToggleGroup", () => {
 
     expect(onValueChange).not.toHaveBeenCalled();
   });
+
+  it("deselects an item in multiple mode", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <ToggleGroup type="multiple" defaultValue={["bold"]} onValueChange={onValueChange}>
+        <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+        <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+      </ToggleGroup>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Bold" }));
+
+    expect(onValueChange).toHaveBeenCalledWith([]);
+    expect(screen.getByRole("button", { name: "Bold" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+  });
+
+  it("honours a controlled array value", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <ToggleGroup
+        type="multiple"
+        value={["bold"]}
+        onValueChange={onValueChange}
+      >
+        <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+        <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+      </ToggleGroup>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Italic" }));
+
+    expect(onValueChange).toHaveBeenCalledWith(["bold", "italic"]);
+    // the parent owns the selection — the group must not move on its own
+    expect(screen.getByRole("button", { name: "Bold" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
+  it("refuses to render an item outside a ToggleGroup", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<ToggleGroupItem value="left">Left</ToggleGroupItem>)).toThrow(
+      /must be used inside <ToggleGroup>/,
+    );
+
+    consoleError.mockRestore();
+  });
 });

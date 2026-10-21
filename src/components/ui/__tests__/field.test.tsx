@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { Field } from "@/components/ui/field";
+import { Field, useFieldIds } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 describe("Field", () => {
@@ -104,5 +104,30 @@ describe("Field", () => {
 
     expect(onChange).toHaveBeenCalled();
     expect(screen.getByLabelText("Username")).toHaveValue("ada");
+  });
+
+  it("renders without a label", () => {
+    render(
+      <Field>
+        <Input aria-label="Unlabelled" />
+      </Field>,
+    );
+
+    // no label element is rendered, and the control keeps its own name
+    expect(document.querySelector('[data-slot="field-label"]')).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Unlabelled")).toBeInTheDocument();
+  });
+
+  it("refuses to read field ids outside a Field", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    function Orphan() {
+      useFieldIds();
+      return null;
+    }
+
+    expect(() => render(<Orphan />)).toThrow(/must be used inside <Field>/);
+
+    consoleError.mockRestore();
   });
 });

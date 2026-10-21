@@ -115,8 +115,21 @@ describe("Tabs", () => {
     expect(screen.getByRole("tab", { name: "Files" })).toHaveFocus();
   });
 
-  it("jumps to the first and last tab with Home and End", async () => {
+  it("walks backwards with the left arrow", async () => {
     const user = userEvent.setup();
+    render(<TabsFixture defaultValue="network" />);
+
+    screen.getByRole("tab", { name: "Network" }).focus();
+    await user.keyboard("{ArrowLeft}");
+
+    expect(screen.getByRole("tab", { name: "Files" })).toHaveFocus();
+    expect(screen.getByRole("tab", { name: "Files" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it("jumps to the first and last tab with Home and End", async () => {    const user = userEvent.setup();
     render(<TabsFixture defaultValue="files" />);
 
     screen.getByRole("tab", { name: "Files" }).focus();
@@ -165,5 +178,86 @@ describe("Tabs", () => {
     await user.click(screen.getByRole("tab", { name: "Files" }));
 
     expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("ignores keys that are not navigation keys", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<TabsFixture defaultValue="files" onValueChange={onValueChange} />);
+
+    screen.getByRole("tab", { name: "Files" }).focus();
+    await user.keyboard("a");
+
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(screen.getByRole("tab", { name: "Files" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it("lets the consumer veto keyboard navigation", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <Tabs defaultValue="files" onValueChange={onValueChange}>
+        <TabsList>
+          <TabsTrigger
+            value="files"
+            onKeyDown={(event) => event.preventDefault()}
+          >
+            Files
+          </TabsTrigger>
+          <TabsTrigger value="network">Network</TabsTrigger>
+        </TabsList>
+        <TabsContent value="files">Files panel</TabsContent>
+        <TabsContent value="network">Network panel</TabsContent>
+      </Tabs>,
+    );
+
+    screen.getByRole("tab", { name: "Files" }).focus();
+    await user.keyboard("{ArrowRight}");
+
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(screen.getByRole("tab", { name: "Files" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it("derives safe ids from a value with no usable characters", () => {
+    render(
+      <Tabs defaultValue="!!!">
+        <TabsList>
+          <TabsTrigger value="!!!">Odd</TabsTrigger>
+        </TabsList>
+        <TabsContent value="!!!">Odd panel</TabsContent>
+      </Tabs>,
+    );
+
+    const trigger = screen.getByRole("tab", { name: "Odd" });
+    const panel = screen.getByRole("tabpanel");
+
+    expect(trigger.getAttribute("aria-controls")).toBe(panel.id);
+    expect(panel.getAttribute("aria-labelledby")).toBe(trigger.id);
+  });
+
+  it("refuses to render a trigger outside Tabs", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<TabsTrigger value="files">Files</TabsTrigger>)).toThrow(
+      /must be used inside <Tabs>/,
+    );
+
+    consoleError.mockRestore();
+  });
+
+  it("refuses to render content outside Tabs", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<TabsContent value="files">Panel</TabsContent>)).toThrow(
+      /must be used inside <Tabs>/,
+    );
+
+    consoleError.mockRestore();
   });
 });

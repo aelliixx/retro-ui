@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPager,
   PaginationPrev,
+  PaginationTrigger,
 } from "@/components/ui/pagination";
 
 function Rail(props: {
@@ -40,6 +41,18 @@ describe("Pagination", () => {
 
     expect(screen.getAllByRole("button", { name: /^Page \d+$/ })).toHaveLength(5);
     expect(screen.queryByText("…")).not.toBeInTheDocument();
+  });
+
+  it("leaves out the leading ellipsis near the first page", () => {
+    render(<Rail totalPages={12} defaultPage={1} />);
+
+    const pages = screen
+      .getAllByRole("button", { name: /^Page \d+$/ })
+      .map((button) => button.textContent);
+
+    // the window is page 2 alone, so there is no gap before it
+    expect(pages).toEqual(["1", "2", "12"]);
+    expect(screen.getAllByText("…")).toHaveLength(1);
   });
 
   it("elides the middle pages with an ellipsis", () => {
@@ -160,5 +173,82 @@ describe("Pagination", () => {
       "aria-current",
       "page",
     );
+  });
+
+  it("lets the consumer veto a step forward", async () => {
+    const user = userEvent.setup();
+    const onPageChange = vi.fn();
+    render(
+      <Pagination totalPages={5} defaultPage={2} onPageChange={onPageChange}>
+        <PaginationPrev />
+        <PaginationPager />
+        <PaginationNext onClick={(event) => event.preventDefault()} />
+      </Pagination>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Next page" }));
+
+    expect(onPageChange).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Page 2" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  });
+
+  it("ignores a jump to the page it is already on", async () => {
+    const user = userEvent.setup();
+    const onPageChange = vi.fn();
+    render(
+      <Pagination totalPages={5} defaultPage={3} onPageChange={onPageChange}>
+        <PaginationPager />
+      </Pagination>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Page 3" }));
+
+    expect(onPageChange).not.toHaveBeenCalled();
+  });
+
+  it("lets a custom trigger pick its own size", () => {
+    render(
+      <Pagination totalPages={5} size="sm">
+        <PaginationTrigger value={1} size="md">
+          1
+        </PaginationTrigger>
+      </Pagination>,
+    );
+
+    // the root asks for small keys, the trigger asked for the medium one
+    expect(screen.getByRole("button", { name: "1" })).toHaveClass("h-8");
+  });
+
+  it("gives a custom trigger the root's size when it has none", () => {
+    render(
+      <Pagination totalPages={5} size="sm">
+        <PaginationTrigger value={1}>1</PaginationTrigger>
+      </Pagination>,
+    );
+
+    expect(screen.getByRole("button", { name: "1" })).toHaveClass("h-7");
+  });
+
+  it("refuses to render a trigger outside a Pagination", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<PaginationTrigger value={1}>1</PaginationTrigger>)).toThrow(
+      /must be used within <Pagination>/,
+    );
+
+    consoleError.mockRestore();
+  });
+
+  it("refuses to render a pager outside a Pagination", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<PaginationPager />)).toThrow(
+      /must be used within <Pagination>/,
+    );
+
+    consoleError.mockRestore();
   });
 });

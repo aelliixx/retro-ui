@@ -69,4 +69,10 @@ describe("Avatar", () => {
 
     expect(screen.getByRole("img")).toHaveClass("size-10");
   });
+
+  it("falls back to a question mark for an empty name", () => {
+    render(<Avatar name="" />);
+
+    expect(screen.getByText("?")).toBeInTheDocument();
+  });
 });

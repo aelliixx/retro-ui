@@ -147,4 +147,25 @@ describe("Collapsible", () => {
 
     expect(input).toHaveValue("kept");
   });
+
+  it("refuses to render a trigger outside a Collapsible", () => {
+    // React logs the render error itself; keep the output readable
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<CollapsibleTrigger>Advanced</CollapsibleTrigger>)).toThrow(
+      /must be used inside <Collapsible>/,
+    );
+
+    consoleError.mockRestore();
+  });
+
+  it("refuses to render content outside a Collapsible", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() => render(<CollapsibleContent>Panel</CollapsibleContent>)).toThrow(
+      /must be used inside <Collapsible>/,
+    );
+
+    consoleError.mockRestore();
+  });
 });

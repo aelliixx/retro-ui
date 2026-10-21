@@ -75,4 +75,12 @@ describe("Slider", () => {
     expect(slider).toBeDisabled();
     expect(slider).toHaveAttribute("data-state", "disabled");
   });
+
+  it("handles a degenerate range", () => {
+    // min === max has no span to fill — the fill must not divide by zero
+    render(<Slider aria-label="Volume" min={5} max={5} defaultValue={5} />);
+
+    const slider = screen.getByLabelText("Volume");
+    expect(slider.style.getPropertyValue("--slider-fill")).toBe("0%");
+  });
 });

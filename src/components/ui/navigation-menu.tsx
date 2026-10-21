@@ -42,6 +42,8 @@ type NavContextValue = {
   value: string;
   setValue: (value: string) => void;
   rootRef: React.RefObject<HTMLElement | null>;
+  /** true once the bar's ref is attached — see the note on `setRoot` */
+  rootReady: boolean;
 };
 
 type ItemContextValue = {
@@ -118,6 +120,15 @@ function NavigationMenu({
 
   const rootRef = useRef<HTMLElement>(null);
   const graceTimer = useRef<number>(undefined);
+  // React attaches the bar's ref *after* a child's layout effect has run,
+  // so a panel that starts open (defaultValue / value) would never find
+  // the bar to measure against. The flag tells the panel to try again once
+  // the bar is really there.
+  const [rootReady, setRootReady] = useState(false);
+  const setRoot = useCallback((node: HTMLElement | null) => {
+    rootRef.current = node;
+    if (node) setRootReady(true);
+  }, []);
 
   const setValue = useCallback(
     (next: string) => {
@@ -157,12 +168,12 @@ function NavigationMenu({
 
   return (
     <NavContext.Provider
-      value={{ orientation, value: currentValue, setValue, rootRef }}
+      value={{ orientation, value: currentValue, setValue, rootRef, rootReady }}
     >
       <nav
         data-slot="navigation-menu"
         aria-label={label}
-        ref={rootRef}
+        ref={setRoot}
         className={cn(
           "relative w-fit border border-ink bg-surface px-0.5 py-0.5 shadow-out",
           orientation === "horizontal" ? "flex items-stretch" : "flex flex-col items-stretch",
@@ -335,7 +346,7 @@ function NavigationMenuContent({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { orientation, value, setValue, rootRef } = useRoot();
+  const { orientation, value, setValue, rootRef, rootReady } = useRoot();
   const item = useItem();
   const triggerRef = useTriggerRef();
   const open = value === item.value;
@@ -372,7 +383,7 @@ function NavigationMenuContent({
       );
       setOffset({ top: Math.min(Math.max(0, natural), maxTop) });
     }
-  }, [open, orientation, item.value, item.contentId, triggerRef, rootRef]);
+  }, [open, orientation, item.value, item.contentId, triggerRef, rootRef, rootReady]);
 
   if (!open) return null;
 

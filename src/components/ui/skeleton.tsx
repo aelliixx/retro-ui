@@ -65,13 +65,15 @@ function Skeleton({
 
   // bare text, fragments, arrays or nothing: wrap in the shell span;
   // `data-inline-skeleton` normalizes inline text metrics like Radix
+  // (the element-child case returned above, so this is always the
+  // text-shaped shell)
   return (
     <span
       data-slot="skeleton"
       data-state="loading"
       aria-hidden="true"
       tabIndex={-1}
-      data-inline-skeleton={!React.isValidElement(children) ? true : undefined}
+      data-inline-skeleton
       className={skeletonClasses}
       {...props}
     >

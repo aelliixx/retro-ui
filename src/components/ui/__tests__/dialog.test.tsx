@@ -142,4 +142,22 @@ describe("Dialog", () => {
     // the titlebar ✕ glyph is the only svg left
     expect(container.querySelectorAll("svg")).toHaveLength(1);
   });
+
+  it("closes without an onOpenChange handler", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog title="Careful" defaultOpen>
+        Something happened.
+      </Dialog>,
+    );
+
+    // the handler is optional — closing must not throw on the missing call
+    await user.click(screen.getByRole("button", { name: "Close dialog" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog", { hidden: true })).not.toHaveAttribute(
+        "open",
+      );
+    });
+  });
 });

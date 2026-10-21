@@ -172,4 +172,44 @@ describe("Toast", () => {
     });
     expect(screen.queryByText("Saved")).not.toBeInTheDocument();
   });
+
+  it("defaults to the info variant and omits an empty description", () => {
+    // the raw push API carries no variant of its own
+    function RawPush() {
+      const toast = useToast();
+      return (
+        <button type="button" onClick={() => toast.push({ title: "Saved" })}>
+          push
+        </button>
+      );
+    }
+
+    render(
+      <ToastProvider>
+        <RawPush />
+      </ToastProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "push" }));
+
+    const toast = document.querySelector('[data-slot="toast"]')!;
+    expect(toast).toHaveAttribute("data-variant", "info");
+    // title only — the description paragraph is not rendered at all
+    expect(toast.querySelectorAll("p")).toHaveLength(1);
+  });
+
+  it("refuses to push outside a provider", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    function Orphan() {
+      useToast();
+      return null;
+    }
+
+    expect(() => render(<Orphan />)).toThrow(
+      /must be used inside <ToastProvider>/,
+    );
+
+    consoleError.mockRestore();
+  });
 });
