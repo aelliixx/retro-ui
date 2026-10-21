@@ -27,6 +27,9 @@ npm test      # component test suite (vitest + testing-library, happy-dom)
 npm run build # the docs site, statically exported
 ```
 
+The changelog lives in [`CHANGELOG.md`](CHANGELOG.md) — the docs page at
+`/docs/changelog` renders that file rather than keeping a second copy.
+
 ## Tests
 
 Every component has a test file in a `__tests__` folder beside it —

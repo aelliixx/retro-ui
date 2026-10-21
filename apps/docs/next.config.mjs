@@ -29,6 +29,10 @@ const nextConfig = {
 };
 
 const withMDX = createMDX({
+  // .md as well as .mdx — the changelog is plain markdown at the root of
+  // the repository, and the docs page imports it rather than keeping a
+  // second copy
+  extension: /\.mdx?$/,
   // turbopack requires serializable plugin names (object form below);
   // gfm: GFM tables etc. · slug: heading anchors for the docs
   options: {

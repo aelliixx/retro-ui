@@ -67,6 +67,13 @@ if (!existsSync(backup)) {
 
 manifest.exports = rewrite(manifest.exports);
 
+// the changelog ships with the package — npm renders it on the package
+// page — and the repository's file is the only copy of it
+const changelog = join(root, "..", "..", "CHANGELOG.md");
+if (existsSync(changelog)) {
+  copyFileSync(changelog, join(root, "CHANGELOG.md"));
+}
+
 writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
 console.log("manifest repointed at the build");

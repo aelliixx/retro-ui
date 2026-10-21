@@ -25,9 +25,21 @@ const tokensPath = join(PKG, "styles", "tokens.css");
 const tokens = readFileSync(tokensPath, "utf8");
 
 describe("the docs stylesheet", () => {
-  it("imports the library's stylesheets", () => {
-    expect(globals).toContain('@import "@retro-ui/ui/tokens.css"');
-    expect(globals).toContain('@import "@retro-ui/ui/utilities.css"');
+  it("imports the library's stylesheet", () => {
+    expect(globals).toContain('@import "@retro-ui/ui/styles.css"');
+  });
+
+  it("imports the library before Tailwind", () => {
+    // the library's stylesheet declares the cascade layer order, and the
+    // statement only counts if it comes first — swap the two and the
+    // library's layer lands above Tailwind's, where a consumer's
+    // utilities no longer win
+    const library = globals.indexOf('@import "@retro-ui/ui/styles.css"');
+    const tailwind = globals.indexOf('@import "tailwindcss"');
+
+    expect(library).toBeGreaterThan(-1);
+    expect(tailwind).toBeGreaterThan(-1);
+    expect(library).toBeLessThan(tailwind);
   });
 
   it("points Tailwind at the library's own source", () => {

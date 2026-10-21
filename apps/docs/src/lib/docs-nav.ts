@@ -77,6 +77,13 @@ export const docGroups: DocGroup[] = [
     label: "Components",
     pages: componentPages,
   },
+  {
+    id: "project",
+    label: "Project",
+    pages: [
+      { href: "/docs/changelog", label: "Changelog" },
+    ],
+  },
 ];
 
 /** flattened reading order — drives the prev/next pager */

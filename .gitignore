@@ -33,6 +33,9 @@
 # package build output
 **/dist
 
+# copied in by the package's prepack, taken out by its postpack
+packages/ui/CHANGELOG.md
+
 # misc
 .DS_Store
 *.pem

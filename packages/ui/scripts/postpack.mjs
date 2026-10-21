@@ -20,4 +20,10 @@ if (!existsSync(backup)) {
 copyFileSync(backup, manifestPath);
 rmSync(backup);
 
+// the changelog was only here for the tarball
+const changelog = join(root, "CHANGELOG.md");
+if (existsSync(changelog)) {
+  rmSync(changelog);
+}
+
 console.log("workspace manifest restored");
