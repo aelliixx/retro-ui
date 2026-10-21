@@ -4,7 +4,38 @@ export const metadata = {
     "The carved divider — a two-tone groove that looks dented into the surface.",
 };
 
-import { HorizontalSeparator, VerticalSeparator } from "@/components/docs/demos/separator";
+import { Separator } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Separator demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function HorizontalSeparator() {
+  return (
+    <DemoStage>
+      <div className="max-w-sm text-sm text-ink">
+        <p>Everything ends.</p>
+        <Separator className="my-2" />
+        <p>Everything begins again.</p>
+      </div>
+    </DemoStage>
+  );
+}
+
+export function VerticalSeparator() {
+  return (
+    <DemoStage>
+      <div className="flex h-16 items-center gap-3 text-sm text-ink">
+        <span>Suspend</span>
+        <Separator orientation="vertical" />
+        <span>Shut down</span>
+        <Separator orientation="vertical" />
+        <span>Restart</span>
+      </div>
+    </DemoStage>
+  );
+}
 
 # Separator
 

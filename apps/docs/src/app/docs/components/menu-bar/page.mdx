@@ -4,7 +4,40 @@ export const metadata = {
     "The classic pull-down menu strip — menus open on hover or focus, plain CSS, no state, no portal.",
 };
 
-import { WindowMenus } from "@/components/docs/demos/menu-bar";
+import { MenuItem, MenuBar, Menu, MenuSeparator } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * MenuBar demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function WindowMenus() {
+  return (
+    <DemoStage>
+      <MenuBar label="Window menus">
+        <Menu label="File">
+          <MenuItem>New dossier</MenuItem>
+          <MenuItem shortcut="Ctrl+O">Open…</MenuItem>
+          <MenuItem disabled>Save template</MenuItem>
+          <MenuSeparator />
+          <MenuItem>Exit</MenuItem>
+        </Menu>
+        <Menu label="Edit">
+          <MenuItem shortcut="Ctrl+Z">Undo move</MenuItem>
+          <MenuItem disabled>Redo move</MenuItem>
+          <MenuSeparator />
+          <MenuItem shortcut="Ctrl+V">Paste</MenuItem>
+          <MenuItem shortcut="Ctrl+A">Select all</MenuItem>
+        </Menu>
+        <Menu label="View" align="end">
+          <MenuItem shortcut="F5">Refresh</MenuItem>
+          <MenuItem>Large icons</MenuItem>
+          <MenuItem>Details</MenuItem>
+        </Menu>
+      </MenuBar>
+    </DemoStage>
+  );
+}
 
 # MenuBar
 

@@ -601,6 +601,16 @@ Wrap each `<Radio>` in a plain `<label>` to give it text. Controlled
 group disables every nested radio natively; the roundel is the standard
 sunken bevel, mint-dot when checked.
 
+## Doc pages
+
+A doc page is one file: `apps/docs/src/app/docs/components/<slug>/page.mdx`
+holds the prose, the live demos and the copy-pasteable snippet.
+
+The demos are exported functions in the page itself. An MDX page is a
+server component — the `use client` directive is dropped by the MDX
+compiler — so a demo that reads React state cannot live in the page; it
+goes in `demo.tsx` beside it and the page imports it.
+
 ## Adding components
 
 Follow the existing pattern:
@@ -610,11 +620,12 @@ Follow the existing pattern:
 2. Accept all native props for the underlying element plus variant props.
 3. Always merge classes with `cn()` last so consumer `className` wins.
 4. Export from `packages/ui/src/components/ui/index.ts` and add a demo to the playground
-   (`src/app/page.tsx`).
+   (`apps/docs/src/app/page.tsx`).
 
 ## Dark mode (playground)
 
-`ThemeToggle` (`src/components/theme-toggle.tsx`) flips the `.dark` class on
-`<html>` and persists the choice in `localStorage["retro-theme"]`. An inline
-script in [`src/app/layout.tsx`](src/app/layout.tsx) applies the persisted
-theme (or system preference on first visit) before first paint.
+`ThemeToggle` (`apps/docs/src/components/theme-toggle.tsx`) flips the `.dark`
+class on `<html>` and persists the choice in `localStorage["retro-theme"]`. An
+inline script in [`apps/docs/src/app/layout.tsx`](apps/docs/src/app/layout.tsx)
+applies the persisted theme (or system preference on first visit) before first
+paint.

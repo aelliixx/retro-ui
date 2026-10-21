@@ -4,7 +4,46 @@ export const metadata = {
     "A sunken single-line well — native behavior, etched focus, danger border on aria-invalid.",
 };
 
-import { InputFields, InputStates } from "@/components/docs/demos/input";
+import { Field, Input } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Input demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function InputStates() {
+  return (
+    <DemoStage>
+      <div className="flex max-w-xs flex-col gap-3">
+        <Input placeholder="Search the disk" aria-label="Search the disk" />
+        <Input placeholder="Disabled" disabled aria-label="Disabled input" />
+        <Input
+          aria-invalid
+          defaultValue="C:\WINDOWS\SYSTEM32"
+          aria-label="Path"
+        />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function InputFields() {
+  return (
+    <DemoStage>
+      <div className="flex max-w-xs flex-col gap-4">
+        <Field
+          label="Secret phrase"
+          hint="Keep it off the network."
+        >
+          <Input type="password" defaultValue="hunter2" />
+        </Field>
+        <Field label="Attachment" error="File is over the 64K limit.">
+          <Input type="file" />
+        </Field>
+      </div>
+    </DemoStage>
+  );
+}
 
 # Input
 

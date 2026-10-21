@@ -2,7 +2,7 @@
   "name": "retro-ui",
   "version": "0.0.0",
   "private": true,
-  "description": "Workspace root \u2014 the retro/ui component library and its documentation site.",
+  "description": "Workspace root — the retro/ui component library and its documentation site.",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -19,6 +19,7 @@
     "build:ui": "npm run build --workspace @retro-ui/ui"
   },
   "devDependencies": {
+    "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/turbopack": "^4",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",

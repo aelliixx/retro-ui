@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
 
+import mdx from "@mdx-js/rollup";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
@@ -8,7 +9,9 @@ const docs = fileURLToPath(new URL("./apps/docs/src", import.meta.url));
 const ui = fileURLToPath(new URL("./packages/ui/src", import.meta.url));
 
 export default defineConfig({
-  plugins: [react()],
+  // the doc pages are MDX, and the demo smoke tests render the demos
+  // that now live inside them
+  plugins: [react(), mdx()],
   resolve: {
     alias: {
       "@": docs,

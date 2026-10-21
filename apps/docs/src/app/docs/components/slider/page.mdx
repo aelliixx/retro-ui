@@ -4,7 +4,33 @@ export const metadata = {
     "A native range input wearing the workstation skin — sunken groove, hard-stop fill, square beveled thumb.",
 };
 
-import { SliderInField, SliderSteps } from "@/components/docs/demos/slider";
+import { Field, Slider } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Slider demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function SliderSteps() {
+  return (
+    <DemoStage>
+      <div className="flex max-w-xs flex-col gap-3">
+        <Slider defaultValue={40} min={0} max={100} aria-label="Volume" />
+        <Slider disabled defaultValue={70} aria-label="Disabled volume" />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function SliderInField() {
+  return (
+    <DemoStage>
+      <Field label="Cathode warmth" hint="10% steps, honest and chunky.">
+        <Slider defaultValue={30} min={0} max={100} step={10} />
+      </Field>
+    </DemoStage>
+  );
+}
 
 # Slider
 

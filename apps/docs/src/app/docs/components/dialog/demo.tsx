@@ -6,8 +6,9 @@ import { Button, Dialog } from "@retro-ui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
- * Dialog demos — imported by the doc panel (`page.mdx`). Client
- * component: open state lives in the demo.
+ * Dialog demos — the live demos on this page. The page itself is a
+ * server component, so a demo that reads React state lives here,
+ * beside it.
  */
 
 export function InfoDialog() {

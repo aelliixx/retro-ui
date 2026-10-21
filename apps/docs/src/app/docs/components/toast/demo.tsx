@@ -12,11 +12,9 @@ import {
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
- * Toast demos — imported by the doc panel (`page.mdx`). Client
- * component: the demo pushes through `useToast()`.
- *
- * The provider is mounted right in the demo so the panel is
- * self-contained; in an application it lives once near the root.
+ * Toast demos — the live demos on this page. The page itself is a
+ * server component, so a demo that reads React state lives here,
+ * beside it.
  */
 
 export function ToastDemo() {

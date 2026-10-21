@@ -4,7 +4,36 @@ export const metadata = {
     "The password well with the reveal key — a joined input+button that flips the mask instantly.",
 };
 
-import { PasswordBasics, PasswordInvalid } from "@/components/docs/demos/password-toggle-field";
+import { PasswordToggleField } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * PasswordToggleField demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function PasswordBasics() {
+  return (
+    <DemoStage>
+      <PasswordToggleField
+        label="Secret phrase"
+        hint="Keep it off the network."
+        defaultValue="hunter2"
+        className="max-w-xs"
+      />    </DemoStage>
+  );
+}
+
+export function PasswordInvalid() {
+  return (
+    <DemoStage>
+      <PasswordToggleField
+        label="Secret phrase"
+        error="That is not the right phrase."
+        required
+        className="max-w-xs"
+      />    </DemoStage>
+  );
+}
 
 # PasswordToggleField
 

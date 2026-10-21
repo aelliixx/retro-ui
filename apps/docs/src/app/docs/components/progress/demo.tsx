@@ -6,8 +6,9 @@ import { Progress, Slider } from "@retro-ui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
- * Progress demos — imported by the doc panel (`page.mdx`). Client
- * component: the second demo wires a Slider to the meter.
+ * Progress demos — the live demos on this page. The page itself is a
+ * server component, so a demo that reads React state lives here,
+ * beside it.
  */
 
 export function ProgressStates() {

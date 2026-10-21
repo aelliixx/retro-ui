@@ -4,13 +4,88 @@ export const metadata = {
     "The presence pip — a beveled availability dot, on its own or with a label.",
 };
 
-import {
-  StatusValues,
-  StatusSizes,
-  StatusLabeled,
-  StatusRoster,
-  StatusInAvatar,
-} from "@/components/docs/demos/status";
+import { Avatar, Status } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Status demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function StatusValues() {
+  return (
+    <DemoStage>
+      <div className="flex flex-wrap items-center gap-6">
+        <Status value="online" />
+        <Status value="away" />
+        <Status value="busy" />
+        <Status value="offline" />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function StatusSizes() {
+  return (
+    <DemoStage>
+      <div className="flex items-center gap-6">
+        <Status size="sm" value="online" />
+        <Status size="md" value="online" />
+        <Status size="lg" value="online" />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function StatusLabeled() {
+  return (
+    <DemoStage>
+      <div className="grid gap-2">
+        <Status value="online" label="Online" />
+        <Status value="away" label="Away" />
+        <Status value="busy" label="In a meeting" />
+        <Status value="offline" label="Offline" />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function StatusRoster() {
+  return (
+    <DemoStage>
+      <ul className="w-44 [&>li+li]:border-t-0">
+        {(
+          [
+            { name: "ada", status: "online" },
+            { name: "grace", status: "busy" },
+            { name: "lars", status: "away" },
+            { name: "noor", status: "offline" },
+          ]
+        ).map((member) => (
+          <li
+            key={member.name}
+            className="flex items-center justify-between border border-ink bg-surface px-2 py-1"
+          >
+            <span className="font-mono text-xs">{member.name}</span>
+            <Status value={member.status} />
+          </li>
+        ))}
+      </ul>
+    </DemoStage>
+  );
+}
+
+export function StatusInAvatar() {
+  return (
+    <DemoStage>
+      <div className="flex items-end gap-4">
+        <Avatar name="Ada Lovelace" status="online" />
+        <Avatar name="Lars Bak" status="away" />
+        <Avatar name="Noor Nisa" status="busy" />
+        <Avatar name="Tim B." status="offline" />
+      </div>
+    </DemoStage>
+  );
+}
 
 # Status
 
@@ -98,22 +173,22 @@ import { Status } from "@retro-ui/ui";
 export function StatusRoster() {
   return (
     <ul className="w-44 [&>li+li]:border-t-0">
-      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
-        <span className="font-mono text-xs">ada</span>
-        <Status value="online" />
-      </li>
-      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
-        <span className="font-mono text-xs">grace</span>
-        <Status value="busy" />
-      </li>
-      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
-        <span className="font-mono text-xs">lars</span>
-        <Status value="away" />
-      </li>
-      <li className="flex items-center justify-between border border-ink bg-surface px-2 py-1">
-        <span className="font-mono text-xs">noor</span>
-        <Status value="offline" />
-      </li>
+      {(
+        [
+          { name: "ada", status: "online" },
+          { name: "grace", status: "busy" },
+          { name: "lars", status: "away" },
+          { name: "noor", status: "offline" },
+        ] as const
+      ).map((member) => (
+        <li
+          key={member.name}
+          className="flex items-center justify-between border border-ink bg-surface px-2 py-1"
+        >
+          <span className="font-mono text-xs">{member.name}</span>
+          <Status value={member.status} />
+        </li>
+      ))}
     </ul>
   );
 }

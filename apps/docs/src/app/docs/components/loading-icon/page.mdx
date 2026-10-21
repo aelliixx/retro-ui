@@ -4,7 +4,36 @@ export const metadata = {
     "The busy hourglass — it flips every 1.2s, instant like the era, and holds still under prefers-reduced-motion.",
 };
 
-import { LoadingIconSizes, LoadingIconStatus } from "@/components/docs/demos/loading-icon";
+import { LoadingIcon } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * LoadingIcon demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function LoadingIconSizes() {
+  return (
+    <DemoStage>
+      <div className="flex items-center gap-3">
+        <LoadingIcon className="size-3" label={null} />
+        <LoadingIcon label={null} />
+        <LoadingIcon className="size-6" label={null} />
+        <LoadingIcon />
+      </div>
+    </DemoStage>
+  );
+}
+
+export function LoadingIconStatus() {
+  return (
+    <DemoStage>
+      <div className="flex items-center gap-2 text-sm text-ink">
+        <LoadingIcon label={null} />
+        <span>Mounting drive C…</span>
+      </div>
+    </DemoStage>
+  );
+}
 
 # LoadingIcon
 

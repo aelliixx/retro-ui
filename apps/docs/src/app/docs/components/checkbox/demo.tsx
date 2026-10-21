@@ -6,9 +6,9 @@ import { Checkbox } from "@retro-ui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**
- * Checkbox demos — imported by the doc panel (`page.mdx`). The complete
- * code for each demo lives in the fenced block under it on the page.
- * This file is a client component because one demo reads React state.
+ * Checkbox demos — the live demos on this page. The page itself is a
+ * server component, so a demo that reads React state lives here,
+ * beside it.
  */
 
 export function CheckboxBasics() {

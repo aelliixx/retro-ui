@@ -4,7 +4,37 @@ export const metadata = {
     "A sunken multi-line well — resize by the bottom edge, native text editing throughout.",
 };
 
-import { NoteTextarea, TextareaStates } from "@/components/docs/demos/textarea";
+import { Field, Textarea } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Textarea demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function NoteTextarea() {
+  return (
+    <DemoStage>
+      <Field label="Autoexec notes" hint="Resize at the bottom edge; wraps at the column." className="max-w-sm">
+        <Textarea rows={4} defaultValue={"REM load high, run late\nREM keep off the network"} />
+      </Field>
+    </DemoStage>
+  );
+}
+
+export function TextareaStates() {
+  return (
+    <DemoStage>
+      <div className="flex max-w-sm flex-col gap-3">
+        <Textarea placeholder="Disabled buffer" disabled aria-label="Disabled buffer" />
+        <Textarea
+          aria-invalid
+          defaultValue="buffer overrun: 512 bytes requested"
+          aria-label="Invalid note"
+        />
+      </div>
+    </DemoStage>
+  );
+}
 
 # Textarea
 

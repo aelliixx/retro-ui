@@ -4,7 +4,32 @@ export const metadata = {
     "The classic yellow tip — instant show on hover or keyboard focus, rendered with plain CSS.",
 };
 
-import { TooltipRow } from "@/components/docs/demos/tooltip";
+import { Button, Tooltip } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Tooltip demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function TooltipRow() {
+  return (
+    <DemoStage>
+      <div className="flex flex-wrap items-center gap-3 py-6">
+        <Tooltip content="Save the file to disk">
+          <Button>Disk</Button>
+        </Tooltip>
+        <Tooltip content="Discard every change" side="bottom">
+          <Button variant="outline">Discard</Button>
+        </Tooltip>
+        <Tooltip content="Ctrl+P needs a paper drive">
+          <Button variant="outline" size="icon" aria-label="Print">
+            <span aria-hidden="true" className="font-bold">P</span>
+          </Button>
+        </Tooltip>
+      </div>
+    </DemoStage>
+  );
+}
 
 # Tooltip
 

@@ -4,7 +4,37 @@ export const metadata = {
     "The label / control / hint layer that wires ids, aria-invalid and required markers to your control automatically.",
 };
 
-import { BasicField, InvalidField } from "@/components/docs/demos/field";
+import { Field, Input } from "@retro-ui/ui";
+import { DemoStage } from "@/components/docs/demo-stage";
+/**
+ * Field demos — the live demos on this page. The complete code
+ * for each demo lives in the fenced block under it.
+ */
+
+export function BasicField() {
+  return (
+    <DemoStage>
+      <Field
+        label="Display name"
+        hint="Shown to teammates on the network."
+        required
+        className="max-w-xs"
+      >
+        <Input defaultValue="carp" />
+      </Field>
+    </DemoStage>
+  );
+}
+
+export function InvalidField() {
+  return (
+    <DemoStage>
+      <Field label="Email" error="That is not a valid address." className="max-w-xs">
+        <Input defaultValue="carp@bbs" />
+      </Field>
+    </DemoStage>
+  );
+}
 
 # Field
 
