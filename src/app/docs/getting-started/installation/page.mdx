@@ -27,18 +27,44 @@ npm install clsx tailwind-merge class-variance-authority
 `clsx` and `tailwind-merge` power composition; `cva` carries the
 `variants` used by Button, Card, Select and friends.
 
-## 2. Paste the tokens into your global stylesheet
+## 2. Paste the stylesheet into your global stylesheet
 
-Copy the `:root` and `.dark` blocks, the `@theme inline` mapping, and
-the utilities (`focus-etched`, the texture family, the bevel shadows,
-fonts) from the playground's `src/app/globals.css` into your own global
-stylesheet. Two things must travel together — see
+The library ships two stylesheets, and both are meant to be imported
+from your own global CSS:
+
+- `src/styles/tokens.css` — the theming contract: the `:root` / `.dark`
+  variables, the `@theme inline` mapping that turns each `--*` variable
+  into a Tailwind colour (`text-ink`, `bg-surface-2` …), the font
+  stack, the bevel shadows, and the `dark` variant.
+- `src/styles/utilities.css` — the component skin: the etched focus
+  ring, the era's textures, the styled slider, the placeholder shell.
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "./styles/utilities.css";
+```
+
+Two things in `tokens.css` must travel together — see
 [Styling](/docs/getting-started/styling) for why:
 
 - the CSS variables in `:root` / `.dark` (the actual color values,
   one value per theme), and
 - the `@theme inline` block that maps each `--*` variable into a
   Tailwind color so `text-ink`, `bg-surface-2` and friends exist.
+
+To re-brand, override the variables after the import — the components
+follow:
+
+```css
+@import "./styles/tokens.css";
+
+:root {
+  --surface: #f4f4f8;
+  --accent: #7c3aed;
+}
+```
 
 ## 3. Copy the components
 
@@ -51,8 +77,11 @@ src/
 ├── components/
 │   └── ui/            # 32 components + barrel
 │       └── …
-└── lib/
-    └── utils.ts       # cn() with tailwind-merge extensions
+├── lib/
+│   └── utils.ts       # cn() with tailwind-merge extensions
+└── styles/
+    ├── tokens.css     # the theming contract
+    └── utilities.css  # the component skin
 ```
 
 ## 4. Optional — the type stack

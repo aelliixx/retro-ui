@@ -37,9 +37,12 @@ assert on what a user (or a screen reader) can actually reach.
 ## How theming works
 
 Every color is a plain CSS variable declared in
-[`src/app/globals.css`](src/app/globals.css) and mapped into Tailwind v4 with
+[`src/styles/tokens.css`](src/styles/tokens.css) and mapped into Tailwind v4 with
 `@theme inline`, which gives you utilities like `bg-surface`, `text-ink-muted`,
-`border-ink`, plus the depth and texture utilities below.
+`border-ink`, plus the depth and texture utilities below. The component skin
+(the etched focus ring, the textures, the styled slider, the placeholder
+shell) lives beside it in
+[`src/styles/utilities.css`](src/styles/utilities.css).
 
 - **Light theme** — variables on `:root`
 - **Dark theme** — the same variables under `.dark` (class strategy, wired with
@@ -502,9 +505,9 @@ layout preserved — and is disabled (`inert`, `tabIndex={-1}`,
 <Skeleton className="h-3 w-2/3" />
 ```
 
-Shell paint lives in the `.retro-skeleton` rules in `globals.css` and
-deliberately beats the wrapped element's own bevels. Base element: span
-(like Radix).
+Shell paint lives in the `.retro-skeleton` rules in
+`src/styles/utilities.css` and deliberately beats the wrapped element's own
+bevels. Base element: span (like Radix).
 
 ### `<Table>`
 

@@ -1,0 +1,240 @@
+/* ------------------------------------------------------------------------- */
+/* retro/ui — component utilities                                             */
+/*                                                                           */
+/* The skin the components wear: the etched focus ring, the era's textures,  */
+/* the styled slider and the placeholder shell. Tokens live in tokens.css —  */
+/* these read them, so overriding a token re-skins everything.                */
+/* ------------------------------------------------------------------------- */
+
+/* keyboard focus, the old way: a dotted rectangle drawn inside the control */
+@utility focus-etched {
+  &:focus-visible {
+    outline: 1px dotted var(--focus);
+    outline-offset: -3px;
+  }
+}
+
+/* 1.2s step flip — the hourglass ticks between upright and inverted, no easing */
+@utility animate-hourglass {
+  animation: hourglass-flip 1.2s step-end infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes hourglass-flip {
+  0% {
+    rotate: 0deg;
+  }
+
+  50% {
+    rotate: 180deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
+
+/* stylable dropdown for <Select>. Customizable-select in one utility:
+   engines that know `base-select` get a fully in-page picker we can theme
+   (ink borders, sunken bevel, token colors); older engines keep the native
+   OS list and can't spell the new value, so `appearance: none` survives. */
+@utility select-base {
+  appearance: none;
+
+  @supports (appearance: base-select) {
+    /* the customizable-select UA stylesheet doesn't center the label;
+       explicit flex centering + nowrap keeps the closed control aligned */
+    & {
+      appearance: base-select;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      line-height: 1;
+      padding-block: 0;
+    }
+
+    &::picker(select) {
+      appearance: base-select;
+      /* breathe below the control instead of sitting flush */
+      margin-block: 2px;
+    }
+
+    /* the UA draws its own arrow in base-select mode — ours is DOM */
+    &::picker-icon {
+      display: none;
+    }
+  }
+}
+
+/* diagonal ticking — the title-bar texture of record */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--ink) 9%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+/* fine checkerboard dither, as on old desktops */
+@utility bg-dither {
+  background-image: repeating-conic-gradient(
+    color-mix(in srgb, var(--ink) 7%, transparent) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}
+
+/* faint blueprint grid */
+@utility bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--ink) 8%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ink) 8%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+}
+
+/* modal backdrop — hard black dither, no blur, the way the era dimmed windows */
+@utility bg-backdrop {
+  background-image: repeating-conic-gradient(
+    rgb(0 0 0 / 45%) 0% 25%,
+    transparent 0% 50%
+  );
+  background-size: 4px 4px;
+}
+
+/* ------------------------------------------------------------------------- */
+/* slider — a native <input type="range"> in the workstation skin            */
+/*                                                                           */
+/* Sunken groove track with a hard-stop accent fill up to the knob (set from */
+/* React as --slider-fill; two solid blocks, no soft blend) and a square     */
+/* beveled thumb. WebKit needs the runnable-track shim to opt out of the     */
+/* native look; Firefox does it with appearance + its own progress pseudo.   */
+/* ------------------------------------------------------------------------- */
+@utility retro-slider {
+  appearance: none;
+  height: 1.25rem;
+  background: transparent;
+
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    border: 1px solid var(--ink);
+    background:
+      linear-gradient(
+        to right,
+        var(--accent) var(--slider-fill, 0%),
+        var(--well) var(--slider-fill, 0%)
+      );
+    box-shadow: inset 1px 1px 0 0 var(--bevel-dark);
+  }
+
+  /* square raised knob, hand-centered over the 6px groove */
+  &::-webkit-slider-thumb {
+    appearance: none;
+    height: 14px;
+    width: 8px;
+    margin-top: -5px;
+    border: 1px solid var(--ink);
+    background: var(--surface);
+    box-shadow: var(--shadow-out);
+  }
+
+  &::-moz-range-track {
+    height: 4px;
+    border: 1px solid var(--ink);
+    background: var(--well);
+  }
+
+  &::-moz-range-progress {
+    height: 4px;
+    background: var(--accent);
+  }
+
+  &::-moz-range-thumb {
+    height: 14px;
+    width: 8px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    background: var(--surface);
+    box-shadow: var(--shadow-out);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    &::-webkit-slider-runnable-track,
+    &::-moz-range-track {
+      background: var(--surface-2);
+    }
+
+    &::-moz-range-progress {
+      background: var(--surface-2);
+    }
+
+    &::-webkit-slider-thumb,
+    &::-moz-range-thumb {
+      background: var(--surface-2);
+      box-shadow: none;
+      color: var(--ink-muted);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/* skeleton — placeholder shell in the Radix Themes manner: the wrapper      */
+/* takes the children's dimensions (they stay mounted but hidden) and the    */
+/* flat dither replaces their paint. Unlayered on purpose — the shell must   */
+/* win over whatever bevels the wrapped element itself carries.              */
+/* ------------------------------------------------------------------------- */
+.retro-skeleton {
+  border: 1px solid var(--ink) !important;
+  border-radius: 0 !important;
+  box-shadow: var(--shadow-in) !important;
+  outline: none !important;
+  color: transparent !important;
+  text-decoration-color: transparent !important;
+  background-color: var(--surface-2) !important;
+  /* our placeholder paint: the fine checkerboard dither (radix pulses
+     here; our waits are static) — it must survive the background-image
+     reset a foreign child's CSS might otherwise impose */
+  background-image: repeating-conic-gradient(
+    color-mix(in srgb, var(--ink) 7%, transparent) 0% 25%,
+    transparent 0% 50%
+  ) !important;
+  background-size: 4px 4px !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* content is laid out but invisible — the dimensions survive, the look
+   does not */
+.retro-skeleton > *,
+.retro-skeleton::before,
+.retro-skeleton::after {
+  visibility: hidden !important;
+}
+
+/* bare-text shells: line-height 0 + Arial so the tile is the same height
+   as the text it replaces (the metrics-bbox trick radix themes uses) */
+.retro-skeleton[data-inline-skeleton] {
+  line-height: 0;
+  font-family: Arial, sans-serif !important;
+}
+
+/* a bare <Skeleton /> stays a workable tile even un-sized: display:block
+   so width/height utilities mean anything, min-height so it is never
+   zero — min-height (not height) so consumer sizing still rules */
+.retro-skeleton:empty {
+  display: block;
+  min-height: 0.75rem;
+}
