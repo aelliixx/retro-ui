@@ -2259,6 +2259,50 @@ function ToastSection() {
             Push brief
           </Button>
         </Cell>
+        <Cell
+          label='tone="neutral" — the grey rail'
+          code={`toast.push({
+  title: "Paused",
+  description: "Nothing is syncing right now.",
+  tone: "neutral",
+  duration: 0,
+});`}
+        >
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.push({
+                title: "Paused",
+                description: "Nothing is syncing right now.",
+                tone: "neutral",
+                duration: 0,
+              })
+            }
+          >
+            Push neutral
+          </Button>
+        </Cell>
+        <Cell
+          label="a custom icon"
+          code={`toast.push({
+  title: "Saved to disk",
+  description: "C:\\\\TEMP\\\\notes.txt",
+  icon: <span aria-hidden="true">★</span>,
+});`}
+        >
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.push({
+                title: "Saved to disk",
+                description: "C:\\TEMP\\notes.txt",
+                icon: <span aria-hidden="true">★</span>,
+              })
+            }
+          >
+            Push starred
+          </Button>
+        </Cell>
       </div>
     </Section>
   );

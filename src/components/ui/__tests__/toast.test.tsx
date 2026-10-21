@@ -1,21 +1,34 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ToastProvider, useToast } from "@/components/ui/toast";
+import {
+  ToastProvider,
+  useToast,
+  type ToastPosition,
+  type ToastTone,
+} from "@/components/ui/toast";
 
 function PushButton({
   variant,
   duration,
+  tone,
+  icon,
 }: {
   variant?: "info" | "success" | "error";
   duration?: number;
+  tone?: ToastTone;
+  icon?: React.ReactNode;
 }) {
   const toast = useToast();
   return (
     <button
       type="button"
       onClick={() =>
-        toast[variant ?? "info"]("Saved", "The file is on disk.", { duration })
+        toast[variant ?? "info"]("Saved", "The file is on disk.", {
+          duration,
+          tone,
+          icon,
+        })
       }
     >
       push
@@ -26,9 +39,12 @@ function PushButton({
 function renderToasts(props: {
   variant?: "info" | "success" | "error";
   duration?: number;
+  tone?: ToastTone;
+  icon?: React.ReactNode;
+  position?: ToastPosition;
 }) {
   return render(
-    <ToastProvider>
+    <ToastProvider position={props.position}>
       <PushButton {...props} />
     </ToastProvider>,
   );
@@ -211,5 +227,112 @@ describe("Toast", () => {
     );
 
     consoleError.mockRestore();
+  });
+
+  describe("position", () => {
+    const region = () => screen.getByLabelText("Notifications");
+
+    it("sits in the bottom-left by default", () => {
+      renderToasts({ duration: 0 });
+
+      expect(region()).toHaveAttribute("data-position", "bottom-left");
+      expect(region()).toHaveClass("left-4");
+      expect(region()).toHaveClass("bottom-4");
+    });
+
+    it.each([
+      ["bottom-left", ["left-4", "bottom-4"]],
+      ["bottom-right", ["right-4", "bottom-4"]],
+      ["top-left", ["left-4", "top-4"]],
+      ["top-right", ["right-4", "top-4"]],
+    ] as const)("pins the stack to the %s corner", (position, classes) => {
+      renderToasts({ duration: 0, position });
+
+      expect(region()).toHaveAttribute("data-position", position);
+      for (const className of classes) {
+        expect(region()).toHaveClass(className);
+      }
+    });
+
+    it.each(["top-center", "bottom-center"] as const)(
+      "centres the stack along the %s edge",
+      (position) => {
+        renderToasts({ duration: 0, position });
+
+        expect(region()).toHaveAttribute("data-position", position);
+        expect(region()).toHaveClass("left-1/2");
+        expect(region()).toHaveClass("-translate-x-1/2");
+      },
+    );
+
+    it("lets the consumer override the placement", () => {
+      render(
+        <ToastProvider position="top-right" className="top-24 right-8">
+          <span>child</span>
+        </ToastProvider>,
+      );
+
+      // tailwind-merge: the consumer's corner wins
+      expect(region()).toHaveClass("top-24");
+      expect(region()).toHaveClass("right-8");
+      expect(region()).not.toHaveClass("top-4");
+    });
+  });
+
+  describe("tone and icon", () => {
+    const toast = () => document.querySelector('[data-slot="toast"]')!;
+
+    it("wears the variant's tone by default", () => {
+      renderToasts({ variant: "success", duration: 0 });
+      push();
+
+      expect(toast()).toHaveAttribute("data-tone", "success");
+      expect(toast().className).toContain("before:bg-success");
+    });
+
+    it("wears a tone of its own", () => {
+      renderToasts({ variant: "error", tone: "neutral", duration: 0 });
+      push();
+
+      // the tone paints the rail and the glyph, the variant keeps the role
+      expect(toast()).toHaveAttribute("data-tone", "neutral");
+      expect(toast().className).toContain("before:bg-ink-muted");
+      expect(toast()).toHaveAttribute("role", "alert");
+    });
+
+    it("shows the variant's glyph by default", () => {
+      renderToasts({ variant: "success", duration: 0 });
+      push();
+
+      // the check mark, in the tone's colour
+      expect(toast().querySelector("svg")).toBeInTheDocument();
+      expect(toast().querySelector("span")?.className).toContain(
+        "text-success",
+      );
+    });
+
+    it("shows a custom icon instead of the variant's glyph", () => {
+      renderToasts({
+        duration: 0,
+        icon: <span data-testid="custom-glyph">★</span>,
+      });
+      push();
+
+      expect(screen.getByTestId("custom-glyph")).toBeInTheDocument();
+      expect(toast().querySelector("svg")).not.toBeInTheDocument();
+    });
+
+    it("paints a custom icon with the tone", () => {
+      renderToasts({
+        duration: 0,
+        tone: "accent",
+        icon: <span data-testid="custom-glyph">★</span>,
+      });
+      push();
+
+      expect(screen.getByTestId("custom-glyph").parentElement).toHaveClass(
+        "text-accent",
+      );
+    });
   });
 });

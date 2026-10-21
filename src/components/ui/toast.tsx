@@ -35,17 +35,44 @@ import { cn } from "@/lib/utils";
 
 type ToastVariant = "info" | "success" | "error";
 
+/**
+ * The colour family of a toast — the glyph and the edge rail. Every tone
+ * is a design token, so a toast never hardcodes a colour; add a token for
+ * a brand hue rather than reaching past the system.
+ */
+type ToastTone = "accent" | "success" | "danger" | "neutral";
+
+/** where the stack sits in the viewport */
+type ToastPosition =
+  | "bottom-left"
+  | "bottom-right"
+  | "top-left"
+  | "top-right"
+  | "top-center"
+  | "bottom-center";
+
 type ToastOptions = {
   title: string;
   description?: string;
   /** "info" (accent), "success" (green) or "error" (danger) */
   variant?: ToastVariant;
+  /** colour for the glyph and the edge rail — defaults to the variant's */
+  tone?: ToastTone;
+  /** custom glyph, replacing the variant's */
+  icon?: React.ReactNode;
   /** ms before auto-dismiss; 0 = sticky until the ✕ key */
   duration?: number;
 };
 
-type ToastItem = Required<Pick<ToastOptions, "variant" | "duration">> &
-  Omit<ToastOptions, "variant" | "duration"> & { id: number };
+type ToastItem = {
+  id: number;
+  title: string;
+  description?: string;
+  variant: ToastVariant;
+  tone: ToastTone;
+  icon?: React.ReactNode;
+  duration: number;
+};
 
 type ToastPush = (options: ToastOptions) => number;
 
@@ -60,6 +87,31 @@ type ToastContextValue = {
   error: (title: string, description?: string, options?: Partial<ToastOptions>) => number;
 };
 
+/** the tone each variant wears unless the caller says otherwise */
+const VARIANT_TONE: Record<ToastVariant, ToastTone> = {
+  info: "accent",
+  success: "success",
+  error: "danger",
+};
+
+/** tone → (edge rail, glyph) — both plain design tokens */
+const TONE_CLASSES: Record<ToastTone, { rail: string; text: string }> = {
+  accent: { rail: "before:bg-accent", text: "text-accent" },
+  success: { rail: "before:bg-success", text: "text-success" },
+  danger: { rail: "before:bg-danger", text: "text-danger" },
+  neutral: { rail: "before:bg-ink-muted", text: "text-ink-muted" },
+};
+
+/** position → the corner/edge the stack is pinned to */
+const POSITION_CLASSES: Record<ToastPosition, string> = {
+  "bottom-left": "left-4 bottom-4",
+  "bottom-right": "right-4 bottom-4",
+  "top-left": "left-4 top-4",
+  "top-right": "right-4 top-4",
+  "top-center": "left-1/2 top-4 -translate-x-1/2",
+  "bottom-center": "left-1/2 bottom-4 -translate-x-1/2",
+};
+
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 function useToast() {
@@ -71,12 +123,18 @@ function useToast() {
 }
 
 type ToastProviderProps = {
-  /** class for the fixed bottom-corner stack */
+  /** class for the fixed stack */
   className?: string;
+  /** where the stack sits in the viewport */
+  position?: ToastPosition;
   children?: React.ReactNode;
 };
 
-function ToastProvider({ className, children }: ToastProviderProps) {
+function ToastProvider({
+  className,
+  position = "bottom-left",
+  children,
+}: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const nextId = useRef(1);
 
@@ -87,13 +145,16 @@ function ToastProvider({ className, children }: ToastProviderProps) {
   const push = useCallback(
     (options: ToastOptions) => {
       const id = nextId.current++;
+      const variant = options.variant ?? "info";
       setToasts((current) => [
         ...current,
         {
           id,
           title: options.title,
           description: options.description,
-          variant: options.variant ?? "info",
+          variant,
+          tone: options.tone ?? VARIANT_TONE[variant],
+          icon: options.icon,
           duration: options.duration ?? 5000,
         },
       ]);
@@ -121,9 +182,11 @@ function ToastProvider({ className, children }: ToastProviderProps) {
       {children}
       <div
         data-slot="toast-region"
+        data-position={position}
         aria-label="Notifications"
         className={cn(
-          "pointer-events-none fixed right-4 bottom-4 z-50 flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2",
+          "pointer-events-none fixed z-50 flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2",
+          POSITION_CLASSES[position],
           className,
         )}
       >
@@ -152,27 +215,29 @@ function Toast({
     return () => clearTimeout(timer);
   }, [item, onDismiss, hovered]);
 
+  const tone = TONE_CLASSES[item.tone];
+
   return (
     <div
       data-slot="toast"
       data-variant={item.variant}
+      data-tone={item.tone}
       data-hovered={hovered || undefined}
       role={item.variant === "error" ? "alert" : "status"}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       className={cn(
         "pointer-events-auto relative border border-ink bg-surface p-3 pr-9 text-ink shadow-out",
-        // the variant rail — a solid cut down the left edge
+        // the tone rail — a solid cut down the left edge
         'before:absolute before:inset-y-0 before:left-0 before:w-1 before:content-[""]',
-        item.variant === "error"
-          ? "before:bg-danger"
-          : item.variant === "success"
-            ? "before:bg-success"
-            : "before:bg-accent",
+        tone.rail,
       )}
     >
       <div className="flex items-start gap-2.5">
-        <Glyph variant={item.variant} />
+        {/* the glyph wears the tone; a custom icon replaces it entirely */}
+        <span className={cn("mt-0.5 shrink-0", tone.text)}>
+          {item.icon ?? <Glyph variant={item.variant} />}
+        </span>
         <div className="min-w-0">
           <p className="text-sm font-semibold">{item.title}</p>
           {item.description ? (
@@ -204,7 +269,6 @@ function Glyph({ variant }: { variant: ToastVariant }) {
         viewBox="0 0 16 16"
         width="16"
         height="16"
-        className="mt-0.5 shrink-0 text-danger"
       >
         <circle cx="8" cy="8" r="7" fill="currentColor" />
         <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
@@ -219,7 +283,6 @@ function Glyph({ variant }: { variant: ToastVariant }) {
         viewBox="0 0 16 16"
         width="16"
         height="16"
-        className="mt-0.5 shrink-0 text-success"
       >
         <circle cx="8" cy="8" r="7" fill="currentColor" />
         <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
@@ -233,7 +296,6 @@ function Glyph({ variant }: { variant: ToastVariant }) {
       viewBox="0 0 16 16"
       width="16"
       height="16"
-      className="mt-0.5 shrink-0 text-accent"
     >
       <circle cx="8" cy="8" r="7" fill="currentColor" />
       <circle cx="8" cy="8" r="5.5" fill="var(--surface)" />
@@ -244,4 +306,10 @@ function Glyph({ variant }: { variant: ToastVariant }) {
 }
 
 export { ToastProvider, useToast };
-export type { ToastOptions, ToastVariant, ToastProviderProps };
+export type {
+  ToastOptions,
+  ToastVariant,
+  ToastTone,
+  ToastPosition,
+  ToastProviderProps,
+};

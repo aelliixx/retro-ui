@@ -4,7 +4,11 @@ export const metadata = {
     "Notification balloons from the tray — they appear instantly, wait out their timer, and hold while you read them.",
 };
 
-import { ToastDemo } from "@/components/docs/demos/toast";
+import {
+  ToastDemo,
+  ToastIconAndTone,
+  ToastPositions,
+} from "@/components/docs/demos/toast";
 
 # Toast
 
@@ -19,11 +23,16 @@ leaving restarts the full duration — so a toast never dies while
 someone is reading it. The stack is a polite live region; `error`
 toasts assert with `role="alert"`.
 
+Where the stack sits is the provider's business — `position` pins it
+to a corner or an edge. The colour and the glyph belong to the
+toast: `tone` paints the edge rail and the icon, and `icon` replaces
+the icon outright.
+
 ## Demo
 
 <ToastDemo />
 
-Push a few — they stack bottom-right and age out on their own.
+Push a few — they stack bottom-left and age out on their own.
 
 ```tsx
 "use client";
@@ -80,15 +89,143 @@ function ToastTriggers() {
 }
 ```
 
+## Examples
+
+### Placement
+
+The stack is pinned by the provider. Pick a corner, or centre it
+along the top or bottom edge.
+
+<ToastPositions />
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+import {
+  Button,
+  ToastProvider,
+  useToast,
+  type ToastPosition,
+} from "@/components/ui";
+
+const POSITIONS: ToastPosition[] = [
+  "bottom-left",
+  "bottom-right",
+  "top-left",
+  "top-right",
+  "top-center",
+  "bottom-center",
+];
+
+export function ToastPositions() {
+  const [position, setPosition] = useState<ToastPosition>("bottom-left");
+
+  return (
+    <ToastProvider position={position}>
+      <PositionTriggers position={position} onPick={setPosition} />
+    </ToastProvider>
+  );
+}
+
+function PositionTriggers({
+  position,
+  onPick,
+}: {
+  position: ToastPosition;
+  onPick: (next: ToastPosition) => void;
+}) {
+  const toast = useToast();
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {POSITIONS.map((option) => (
+        <Button
+          key={option}
+          size="sm"
+          variant={option === position ? "primary" : "outline"}
+          onClick={() => {
+            onPick(option);
+            toast.info("Placed here", `The stack is pinned ${option}.`, {
+              duration: 0,
+            });
+          }}
+        >
+          {option}
+        </Button>
+      ))}
+    </div>
+  );
+}
+```
+
+### Icon and colour
+
+`tone` paints the edge rail and the icon — one of the four token
+families. `icon` swaps the glyph for anything you like.
+
+<ToastIconAndTone />
+
+```tsx
+"use client";
+
+import { Button, ToastProvider, useToast } from "@/components/ui";
+
+export function ToastIconAndTone() {
+  return (
+    <ToastProvider position="bottom-right">
+      <IconTriggers />
+    </ToastProvider>
+  );
+}
+
+function IconTriggers() {
+  const toast = useToast();
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button
+        size="sm"
+        onClick={() =>
+          toast.push({
+            title: "Saved to disk",
+            description: "C:\\TEMP\\notes.txt",
+            icon: <span aria-hidden="true">★</span>,
+          })
+        }
+      >
+        Custom icon
+      </Button>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() =>
+          toast.push({
+            title: "Paused",
+            description: "Nothing is syncing right now.",
+            tone: "neutral",
+            duration: 0,
+          })
+        }
+      >
+        Neutral tone
+      </Button>
+    </div>
+  );
+}
+```
+
 ## API reference
 
 ### ToastProvider
 
-Mount once per app; positions the fixed bottom-corner stack.
+Mount once per app; it owns the live region and pins the stack.
 
-| Prop      | Type            | Default     | Description |
-| --------- | --------------- | ----------- | ----------- |
-| className | string          | —           | Class for the fixed bottom-corner stack. |
+| Prop      | Type                                                                          | Default         | Description |
+| --------- | ----------------------------------------------------------------------------- | --------------- | ----------- |
+| position  | `"bottom-left" \| "bottom-right" \| "top-left" \| "top-right" \| "top-center" \| "bottom-center"` | `"bottom-left"` | Where the stack sits in the viewport. |
+| className | string                                                                        | —               | Class for the fixed stack; composes over the placement. |
 
 ### useToast
 
@@ -108,5 +245,7 @@ Returns the push surface:
 | ----------- | ------------------------------------ | -------------- | ----------- |
 | title       | string                               | —              | The headline. |
 | description | string                               | —              | The body line. |
-| variant     | `"info" \| "success" \| "error"`      | `"info"`       | Balloon tint. |
+| variant     | `"info" \| "success" \| "error"`      | `"info"`       | The balloon's meaning — it picks the icon and the live-region role. |
+| tone        | `"accent" \| "success" \| "danger" \| "neutral"` | the variant's | Colour of the edge rail and the icon. Every tone is a design token. |
+| icon        | ReactNode                            | —              | Custom glyph, replacing the variant's. It wears the tone. |
 | duration    | number                               | 5000           | Milliseconds before auto-dismiss; `0` = sticky until the ✕ key. |

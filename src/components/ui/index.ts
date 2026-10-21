@@ -27,7 +27,15 @@ export {
   TableCaption,
   type TableProps,
 } from "./table";
-export { ToastProvider, useToast, type ToastOptions, type ToastVariant } from "./toast";
+export {
+  ToastProvider,
+  useToast,
+  type ToastOptions,
+  type ToastVariant,
+  type ToastTone,
+  type ToastPosition,
+  type ToastProviderProps,
+} from "./toast";
 export { Toggle, type ToggleProps } from "./toggle";
 export { Input, inputVariants, type InputProps } from "./input";
 export { LoadingIcon, type LoadingIconProps } from "./loading-icon";
