@@ -14,6 +14,20 @@
 /* lives in utilities.css; the docs site's own styles are not here.          */
 /* ------------------------------------------------------------------------- */
 
+/* ------------------------------------------------------------------------- */
+/* the library's own classes must reach the consumer's Tailwind               */
+/*                                                                            */
+/* A consumer's Tailwind scans their own source — never node_modules — so   */
+/* every utility class the components use would go missing and the library   */
+/* would render unstyled. This points the scanner at the library itself.     */
+/*                                                                            */
+/* The path is relative to this file, and it works in both layouts: in the    */
+/* workspace this sits at src/styles/, so "../" is the component source;     */
+/* published, the same file sits at dist/styles/, so "../" is the compiled   */
+/* JavaScript. One path, both trees.                                         */
+/* ------------------------------------------------------------------------- */
+@source "../";
+
 /* the dark theme is a class, not a media query — the toggle owns it */
 @custom-variant dark (&:where(.dark, .dark *));
 
