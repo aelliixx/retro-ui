@@ -3,6 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "description": "Workspace root \u2014 the retro/ui component library and its documentation site.",
+  "license": "MIT",
+  "author": "aelliixx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aelliixx/retro-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aelliixx/retro-ui/issues"
+  },
+  "homepage": "https://github.com/aelliixx/retro-ui#readme",
   "workspaces": [
     "apps/*",
     "packages/*"

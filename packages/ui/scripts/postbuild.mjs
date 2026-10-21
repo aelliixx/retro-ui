@@ -41,12 +41,6 @@ for (const file of readdirSync(from)) {
   copyFileSync(join(from, file), join(styles, file));
 }
 
-// one entry point that pulls in both halves, at the dist root
-writeFileSync(
-  join(dist, "styles.css"),
-  `@import "./styles/tokens.css";\n@import "./styles/utilities.css";\n`,
-);
-
 /* ---------------------------------------------------------------- */
 /* explicit extensions in the emitted JavaScript                      */
 /* ---------------------------------------------------------------- */
