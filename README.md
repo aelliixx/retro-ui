@@ -84,9 +84,19 @@ and mapped into Tailwind v4 with
 shell) lives beside it in
 [`packages/ui/src/styles/utilities.css`](packages/ui/src/styles/utilities.css).
 
+The tokens are stacked in three layers: a **scale** (a ramp per color
+family — `--accent-1` … `--accent-13`), the **names** the components ask
+for (`--accent`, `--surface`), and the **Tailwind mapping**. The names
+are indirections into the scale, so re-branding a family is a change to
+the ramp and both themes follow.
+
 - **Light theme** — variables on `:root`
 - **Dark theme** — the same variables under `.dark` (class strategy, wired with
   `@custom-variant dark`)
+- **Cascade** — the library's rules sit in a `retro-ui` layer below
+  Tailwind's, so a consumer's utilities and plain CSS always win. The
+  library's stylesheet declares the order, so import it *before*
+  `tailwindcss`.
 - **Fonts** — `--font-sans` / `--font-mono` (Geist / Geist Mono by default),
   and an optional pixel accent `--font-pixel` (Silkscreen, used for the
   playground wordmark and section labels). Point them at anything to re-voice

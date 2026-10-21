@@ -161,6 +161,23 @@ const TOKENS = [
   "tooltip",
 ] as const;
 
+/* the accent ramp — the scale the semantic names point into */
+const ACCENT_RAMP = [
+  "accent-1",
+  "accent-2",
+  "accent-3",
+  "accent-4",
+  "accent-5",
+  "accent-6",
+  "accent-7",
+  "accent-8",
+  "accent-9",
+  "accent-10",
+  "accent-11",
+  "accent-12",
+  "accent-13",
+] as const;
+
 const TEXTURES = [
   { label: "bg-hatch", className: "bg-hatch" },
   { label: "bg-dither", className: "bg-dither" },
@@ -2386,6 +2403,25 @@ function TokensSection() {
             </span>
           </div>
         ))}
+      </div>
+
+      <div className="flex flex-col gap-1.5 pt-4">
+        <span className="font-mono text-[11px] text-ink-muted">
+          the scale — one ramp per family, and the names above point into it
+        </span>
+        <div className="flex w-full border border-ink">
+          {ACCENT_RAMP.map((step) => (
+            <div
+              key={step}
+              className="h-8 flex-1"
+              style={{ backgroundColor: `var(--${step})` }}
+              title={`--${step}`}
+            />
+          ))}
+        </div>
+        <span className="font-mono text-[11px] text-ink-muted">
+          --accent-1 … --accent-13
+        </span>
       </div>
 
       <div className="grid grid-cols-3 gap-4 pt-4 sm:max-w-sm">

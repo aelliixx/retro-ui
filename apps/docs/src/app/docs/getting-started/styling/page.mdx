@@ -7,13 +7,18 @@ export const metadata = {
 # Styling
 
 Everything the library paints resolves through design tokens; nothing
-hardcodes a color. Three layers make that work:
+hardcodes a color. Four layers make that work:
 
 | Layer | Lives in | Who edits it |
 | --- | --- | --- |
-| Semantic CSS variables | `:root` and `.dark` blocks | you, per theme |
+| The scale | `--accent-1` … `--accent-13` in `:root` | you, to re-brand a family |
+| Semantic CSS variables | `--accent`, `--surface` in `:root` / `.dark` | you, per theme |
 | Tailwind color mapping | `@theme inline` block | once, on install |
 | Utilities (bevels, textures, focus) | `@utility` rules | once, on install |
+
+The scale is a ramp per color family, fixed across themes; the names
+above it are indirections into that ramp. See
+[Theming](/docs/getting-started/theming) for the whole picture.
 
 ## The token vocabulary
 
@@ -40,6 +45,35 @@ Each flavor family follows one naming grammar: the base (mid), `-strong`
 (for text-grade contrast on light surfaces), `-ink` (text color that
 rides on the base), and `-soft` (a tint for hover/active fills).
 [Theming](/docs/getting-started/theming) shows how to add a family.
+
+## Cascade layers
+
+The library's own rules live in a `retro-ui` cascade layer, below
+Tailwind's. Two things follow from that:
+
+- **Your utilities win.** A `bg-surface` of yours beats the library's
+  `bg-surface`, whatever order the imports are in.
+- **Your plain CSS wins.** Unlayered rules always beat layered ones, so
+  a `.my-card { border-radius: 0 }` of yours needs no `!important`.
+
+The layer order is declared by the library's stylesheet, and it only
+counts if that stylesheet is imported *before* Tailwind's:
+
+```css
+/* app/globals.css */
+@import "@retro-ui/ui/styles.css";
+@import "tailwindcss";
+```
+
+Swap the two and the library's layer arrives too late to matter —
+Tailwind's layers are already fixed by then. That is the one ordering
+rule in the library, and it is the reason the import in the
+[Installation](/docs/getting-started/installation) guide puts the
+library first.
+
+The one exception is the Skeleton's placeholder shell, which stays
+unlayered on purpose: its `!important` flags are what make the shell
+beat the bevels of the element it wraps.
 
 ## Depth: two-tone bevels
 

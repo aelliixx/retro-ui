@@ -4,6 +4,12 @@
 /* The skin the components wear: the etched focus ring, the era's textures,  */
 /* the styled slider and the placeholder shell. Tokens live in tokens.css —  */
 /* these read them, so overriding a token re-skins everything.                */
+/*                                                                            */
+/* The @utility rules land in Tailwind's own `utilities` layer, which is     */
+/* where a consumer's utilities live too — so import the library's stylesheet */
+/* first and the consumer's classes are emitted later, and win. The           */
+/* placeholder shell below is deliberately unlayered: its !important flags    */
+/* are what make the shell beat the bevels of the element it wraps.          */
 /* ------------------------------------------------------------------------- */
 
 /* keyboard focus, the old way: a dotted rectangle drawn inside the control */

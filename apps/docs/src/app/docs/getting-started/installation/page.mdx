@@ -1,94 +1,79 @@
 export const metadata = {
   title: "Installation · retro/ui",
-  description: "Wiring the tokens and copying the components into a project.",
+  description: "Installing the package, wiring the stylesheet, and rendering your first component.",
 };
 
 # Installation
 
-retro/ui is a source-distributed library: you copy the component files
-into your project the era way — like checking the source off a floppy —
-and tailor them in place. There is no runtime to install beyond the
-few utilities below.
-
-The library itself lives in `packages/ui`; the documentation site you
-are reading is `apps/docs`.
-
-## Prerequisites
-
-- **React 19** and **Tailwind CSS v4** (CSS-first configuration — the
-  tokens below are `@theme` variables, not Tailwind 3 `theme.extend`
-  objects).
-- A globally imported stylesheet (e.g. `app/globals.css`) where the
-  token block lands.
-
-## 1. Install runtime dependencies
-
 ```sh
-npm install clsx tailwind-merge class-variance-authority
+npm install @retro-ui/ui
 ```
 
-`clsx` and `tailwind-merge` power composition; `cva` carries the
-`variants` used by Button, Card, Select and friends.
+`react`, `react-dom` and `tailwindcss` (v4) are peer dependencies. The
+library brings `clsx`, `tailwind-merge` and `class-variance-authority`
+with it.
 
-## 2. Paste the stylesheet into your global stylesheet
+## 1. Import the stylesheet
 
-The library ships two stylesheets, and both are meant to be imported
-from your own global CSS:
-
-- `packages/ui/src/styles/tokens.css` — the theming contract: the
-  `:root` / `.dark` variables, the `@theme inline` mapping that turns
-  each `--*` variable into a Tailwind colour (`text-ink`,
-  `bg-surface-2` …), the font stack, the bevel shadows, and the `dark`
-  variant.
-- `packages/ui/src/styles/utilities.css` — the component skin: the
-  etched focus ring, the era's textures, the styled slider, the
-  placeholder shell.
+The library ships its CSS as a stylesheet, meant to be imported into your
+global CSS — **before** Tailwind:
 
 ```css
 /* app/globals.css */
+@import "@retro-ui/ui/styles.css";
 @import "tailwindcss";
-@import "./styles/tokens.css";
-@import "./styles/utilities.css";
 ```
 
-Two things in `tokens.css` must travel together — see
-[Styling](/docs/getting-started/styling) for why:
+Two things in that stylesheet travel together, and both are needed:
 
-- the CSS variables in `:root` / `.dark` (the actual color values,
-  one value per theme), and
-- the `@theme inline` block that maps each `--*` variable into a
-  Tailwind color so `text-ink`, `bg-surface-2` and friends exist.
+- the CSS variables in `:root` / `.dark` (the colour values, one set per
+  theme) and the `@theme inline` block that maps each one into a Tailwind
+  colour, so `text-ink`, `bg-surface-2` and friends exist;
+- the cascade layer order. The library's own rules sit in a `retro-ui`
+  layer below Tailwind's, so your utilities and your plain CSS always
+  win — no `!important`, no import order to remember. The statement
+  only counts if it comes first, which is why the library goes first.
 
-To re-brand, override the variables after the import — the components
-follow:
+The order is the whole reason the two imports are not interchangeable:
+swap them and the layer statement arrives too late to matter.
 
-```css
-@import "./styles/tokens.css";
+If you would rather take the two halves separately, they are published
+on their own — `@retro-ui/ui/tokens.css` (the variables and the Tailwind
+mapping) and `@retro-ui/ui/utilities.css` (the component skin: the
+etched focus ring, the era's textures, the styled slider, the
+placeholder shell).
 
-:root {
-  --surface: #f4f4f8;
-  --accent: #7c3aed;
+## 2. Render something
+
+```tsx
+import { Button, Field, Input } from "@retro-ui/ui";
+
+export function Ready() {
+  return (
+    <Field label="Save name">
+      <Input defaultValue="untitled.txt" />
+      <Button variant="primary">Save</Button>
+    </Field>
+  );
 }
 ```
 
-## 3. Copy the components
+Every component takes a `className` and composes it with
+`tailwind-merge`, so your class always wins over the library's.
 
-Copy `packages/ui/src/components/ui/*.tsx` (plus the
-`packages/ui/src/lib/utils.ts` `cn()` helper) into your project.
-Keeping the barrel `packages/ui/src/components/ui/index.ts` makes
-imports read like the docs:
+## 3. Set the theme
 
-```sh
-src/
-├── components/
-│   └── ui/            # 32 components + barrel
-│       └── …
-├── lib/
-│   └── utils.ts       # cn() with tailwind-merge extensions
-└── styles/
-    ├── tokens.css     # the theming contract
-    └── utilities.css  # the component skin
+The dark theme is a class on `<html>`, not a media query — you own the
+switch:
+
+```tsx
+document.documentElement.classList.toggle("dark");
 ```
+
+Re-brand by overriding the variables; the components follow. See
+[Theming](/docs/getting-started/theming) for the full list and
+[Styling](/docs/getting-started/styling) for how the layers fit
+together.
 
 ## 4. Optional — the type stack
 
@@ -105,22 +90,29 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const silkscreen = Silkscreen({ variable: "--font-silkscreen", subsets: ["latin"], weight: ["400", "700"] });
 ```
 
-## 5. First render
+## Copy the source instead
 
-```tsx
-import { Button, Field, Input } from "@retro-ui/ui";
+The library is also distributed as source, for the era way — like
+checking the source off a floppy. Copy the component files and the
+`cn()` helper out of the repository into your own project and tailor
+them in place. The files use relative imports and no path aliases, so
+they work wherever you drop them:
 
-export function Ready() {
-  return (
-    <Field label="Save name">
-      <Input defaultValue="untitled.txt" />
-      <Button variant="primary">Save</Button>
-    </Field>
-  );
-}
+```sh
+src/
+├── components/
+│   └── ui/            # 32 components + barrel
+│       └── …
+├── lib/
+│   └── utils.ts       # cn() with tailwind-merge extensions
+└── styles/
+    ├── tokens.css     # the theming contract
+    └── utilities.css  # the component skin
 ```
 
-Set your theme with the [Theming](/docs/getting-started/theming)
-switcher. The docs you are reading right now are themselves built from
-the library — the sidebar tree, the drawer and the code wells are
+Keep the barrel `src/components/ui/index.ts` and the imports read like
+the docs.
+
+The docs you are reading right now are themselves built from the
+library — the sidebar tree, the drawer and the code wells are
 `ScrollArea`, `Dialog`, `Collapsible` and `Card` in working order.

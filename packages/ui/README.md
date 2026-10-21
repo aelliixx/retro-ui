@@ -21,10 +21,15 @@ npm install @retro-ui/ui
 Import the library's stylesheet into your global CSS, after Tailwind:
 
 ```css
-/* app/globals.css */
-@import "tailwindcss";
+/* app/globals.css — the library first, so its cascade layer order counts */
 @import "@retro-ui/ui/styles.css";
+@import "tailwindcss";
 ```
+
+The library's own rules sit in a `retro-ui` cascade layer below
+Tailwind's, so your utilities and your plain CSS always win — no
+`!important`, no import order to remember. The order is declared by the
+stylesheet, which is why it is imported first.
 
 Two files are published separately if you would rather take one at a time:
 `@retro-ui/ui/tokens.css` (the theming contract — the variables and the
@@ -78,6 +83,10 @@ and the whole library re-brands itself:
 
 The dark theme is a class on `<html>`, not a media query, so the consumer
 owns the switch.
+
+The colours sit on a scale: a ramp per family (`--accent-1` …
+`--accent-13`), and the names above are indirections into it. Override a
+ramp step to re-brand the family, and both themes follow.
 
 ## Components
 

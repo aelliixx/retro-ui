@@ -1,8 +1,19 @@
 /* ------------------------------------------------------------------------- */
 /* retro/ui — design tokens                                                  */
 /*                                                                           */
-/* Every color, font and depth value is a plain CSS variable. Override them  */
-/* in :root / .dark to re-brand the whole library without touching a single  */
+/* Three layers, from the bottom up:                                         */
+/*                                                                           */
+/*   the scale   — a ramp per family, pale at 1 and deep at the end. Fixed   */
+/*                 across themes: the light theme takes the deep end of the  */
+/*                 accent ramp, the dark theme the bright end.              */
+/*   the names   — what the components actually use: --accent, --surface,   */
+/*                 --ink. Each one points at a step of the scale, so a      */
+/*                 re-brand is a change to the ramp and both themes follow.  */
+/*   the mapping — @theme inline, which turns each name into a Tailwind    */
+/*                 colour so `bg-surface` and `text-ink-muted` exist.        */
+/*                                                                           */
+/* Every color, font and depth value is a plain CSS variable. Override them */
+/* in :root / .dark to re-brand the whole library without touching a single */
 /* component.                                                                */
 /*                                                                           */
 /* Depth is modeled the way 90s systems did it: two-tone bevels (a light     */
@@ -13,6 +24,25 @@
 /* imports, and it is what a consumer overrides. The component-level skin   */
 /* lives in utilities.css; the docs site's own styles are not here.          */
 /* ------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------- */
+/* the layer order                                                           */
+/*                                                                            */
+/* The library's own rules live in `retro-ui`, below Tailwind's layers, so  */
+/* a consumer's utilities and plain CSS always win — no import order to      */
+/* remember, no !important to add.                                            */
+/*                                                                            */
+/* The statement has to come before Tailwind's own, so import this           */
+/* stylesheet *first*:                                                       */
+/*                                                                            */
+/*     @import "@retro-ui/ui/styles.css";                                    */
+/*     @import "tailwindcss";                                                */
+/*                                                                            */
+/* The tokens sit in the same layer on purpose: a consumer's :root override */
+/* is unlayered, and unlayered always beats layered — so your override      */
+/* applies whether it comes before or after the import.                      */
+/* ------------------------------------------------------------------------- */
+@layer retro-ui, theme, base, components, utilities;
 
 /* ------------------------------------------------------------------------- */
 /* the library's own classes must reach the consumer's Tailwind               */
@@ -31,119 +61,207 @@
 /* the dark theme is a class, not a media query — the toggle owns it */
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  color-scheme: light;
+@layer retro-ui {
+  :root {
+    color-scheme: light;
 
-  /* surfaces */
-  --bg: #d9dde3; /* window silver */
-  --surface: #eaeef2; /* raised silver */
-  --surface-2: #ccd2da; /* pressed / sunken silver */
-  --well: #fcfdff; /* input interiors */
-  --desktop: #008080;
-  /* text cast on the desktop itself (hero + section headings) — the
-     silver desk has no AA-compliant muted, so meta copy lives in
-     surface chips, never raw on the canvas */
-  --desktop-ink: #ffffff;
+    /* ------------------------------------------------------------------ */
+    /* the scale — one ramp per family                                    */
+    /*                                                                     */
+    /* Fixed across themes, so "the accent" means the same colour in both. */
+    /* The themes pick different steps of the same ramp: light takes the   */
+    /* deep end, dark the bright end. Override a step to re-brand the      */
+    /* family — the names below follow.                                     */
+    /* ------------------------------------------------------------------ */
 
-  /* ink (text + hairline chrome) */
-  --ink: #171a20;
-  --ink-muted: #505863;
-  --border-muted: #b7bec9;
+    /* the accent family: a teal ramp */
+    --accent-1: #d7f5ef;
+    --accent-2: #d5ece8;
+    --accent-3: #99f6e4;
+    --accent-4: #5eead4;
+    --accent-5: #2dd4bf;
+    --accent-6: #14b8a6;
+    --accent-7: #0d9488;
+    --accent-8: #0f766e;
+    --accent-9: #0b5d57;
+    --accent-10: #134e4a;
+    --accent-11: #123f3a;
+    --accent-12: #0b3a35;
+    --accent-13: #052e2a;
 
-  /* accent — workstation teal */
-  --accent: #0f766e;
-  --accent-strong: #0b5d57;
-  --accent-ink: #ffffff;
-  --accent-soft: #d5ece8;
+    /* the danger family: a red ramp */
+    --danger-1: #fbe4e4;
+    --danger-2: #fca5a5;
+    --danger-3: #f87171;
+    --danger-4: #ef4444;
+    --danger-5: #dc2626;
+    --danger-6: #b91c1c;
+    --danger-7: #9c1a1c;
+    --danger-8: #7f1d1d;
+    --danger-9: #3b1412;
+    --danger-10: #2b0806;
 
-  /* danger */
-  --danger: #b91c1c;
-  --danger-strong: #9c1a1c;
-  --danger-ink: #ffffff;
-  --danger-soft: #fbe4e4;
+    /* the success family: a green ramp */
+    --success-1: #ddf3e1;
+    --success-2: #86efac;
+    --success-3: #4ade80;
+    --success-4: #22c55e;
+    --success-5: #16a34a;
+    --success-6: #15803d;
+    --success-7: #166534;
+    --success-8: #14532d;
+    --success-9: #123822;
+    --success-10: #073015;
 
-  /* success */
-  --success: #15803d;
-  --success-strong: #166534;
-  --success-ink: #ffffff;
-  --success-soft: #ddf3e1;
+    /* ------------------------------------------------------------------ */
+    /* the names — what the components use                                 */
+    /* ------------------------------------------------------------------ */
 
-  /* focus + selection */
-  --focus: #171a20;
-  --selection: #99f6e4;
-  --selection-ink: #0b3a35;
+    /* surfaces */
+    --bg: #d9dde3; /* window silver */
+    --surface: #eaeef2; /* raised silver */
+    --surface-2: #ccd2da; /* pressed / sunken silver */
+    --well: #fcfdff; /* input interiors */
+    --desktop: #008080;
+    /* text cast on the desktop itself (hero + section headings) — the
+       silver desk has no AA-compliant muted, so meta copy lives in
+       surface chips, never raw on the canvas */
+    --desktop-ink: #ffffff;
 
-  /* tooltip bubble — the classic softened yellow */
-  --tooltip: #ffffe1;
+    /* ink (text + hairline chrome) */
+    --ink: #171a20;
+    --ink-muted: #505863;
+    --border-muted: #b7bec9;
 
-  /* bevel edges — the two faces of every carve */
-  --bevel-light: #f8fafc;
-  --bevel-dark: #8d95a3;
-}
+    /* accent — workstation teal */
+    --accent: var(--accent-8);
+    --accent-strong: var(--accent-9);
+    --accent-ink: #ffffff;
+    --accent-soft: var(--accent-2);
 
-.dark {
-  color-scheme: dark;
+    /* danger */
+    --danger: var(--danger-6);
+    --danger-strong: var(--danger-7);
+    --danger-ink: #ffffff;
+    --danger-soft: var(--danger-1);
 
-  /* surfaces */
-  --bg: #12151c;
-  --surface: #1a1e28;
-  --surface-2: #10141b;
-  --well: #0b0e15;
-  --desktop: #053853;
-  --desktop-ink: #e9f6f2;
+    /* success */
+    --success: var(--success-6);
+    --success-strong: var(--success-7);
+    --success-ink: #ffffff;
+    --success-soft: var(--success-1);
 
-  /* ink */
-  --ink: #e7eaf1;
-  --ink-muted: #99a2b4;
-  --border-muted: #2d3446;
+    /* focus + selection */
+    --focus: #171a20;
+    --selection: var(--accent-3);
+    --selection-ink: var(--accent-12);
 
-  /* accent */
-  --accent: #2dd4bf;
-  --accent-strong: #5eead4;
-  --accent-ink: #052e2a;
-  --accent-soft: #123f3a;
+    /* tooltip bubble — the classic softened yellow */
+    --tooltip: #ffffe1;
 
-  /* danger */
-  --danger: #f87171;
-  --danger-strong: #fca5a5;
-  --danger-ink: #2b0806;
-  --danger-soft: #3b1412;
+    /* bevel edges — the two faces of every carve */
+    --bevel-light: #f8fafc;
+    --bevel-dark: #8d95a3;
+  }
 
-  /* success */
-  --success: #4ade80;
-  --success-strong: #86efac;
-  --success-ink: #073015;
-  --success-soft: #123822;
+  .dark {
+    color-scheme: dark;
 
-  /* focus + selection */
-  --focus: #e7eaf1;
-  --selection: #134e4a;
-  --selection-ink: #d7f5ef;
+    /* surfaces */
+    --bg: #12151c;
+    --surface: #1a1e28;
+    --surface-2: #10141b;
+    --well: #0b0e15;
+    --desktop: #053853;
+    --desktop-ink: #e9f6f2;
 
-  /* tooltip bubble */
-  --tooltip: #3d3a26;
+    /* ink */
+    --ink: #e7eaf1;
+    --ink-muted: #99a2b4;
+    --border-muted: #2d3446;
 
-  /* Bevel edges.
-     On a dark face a "shadow" cannot be darker than the face — the
-     surfaces here are already near-black, so a near-black shadow edge
-     vanishes (1.04–1.21:1 against --well/--surface-2/--surface) and
-     the whole 3D read collapses. So on dark, both faces of the bevel
-     sit *above* the surface: the highlight face is a clear rim, and
-     the shadow face is a dim gray — the same trick Windows' own
-     high-contrast black scheme used (ButtonHilight white, ButtonShadow
-     a mid gray on a black face).
+    /* accent — the same ramp, the bright end */
+    --accent: var(--accent-5);
+    --accent-strong: var(--accent-4);
+    --accent-ink: var(--accent-13);
+    --accent-soft: var(--accent-11);
 
-     The names still mean what they mean: --bevel-light is the lit
-     face, --bevel-dark the shadowed one. Only the direction of
-     "shadow" changes — on a light face it is darker than the surface,
-     on a dark face it is a dimmer tone above it. */
-  --bevel-light: #333c4c;
-  --bevel-dark: #55637f;
+    /* danger */
+    --danger: var(--danger-3);
+    --danger-strong: var(--danger-2);
+    --danger-ink: var(--danger-10);
+    --danger-soft: var(--danger-9);
+
+    /* success */
+    --success: var(--success-3);
+    --success-strong: var(--success-2);
+    --success-ink: var(--success-10);
+    --success-soft: var(--success-9);
+
+    /* focus + selection */
+    --focus: #e7eaf1;
+    --selection: var(--accent-10);
+    --selection-ink: var(--accent-1);
+
+    /* tooltip bubble */
+    --tooltip: #3d3a26;
+
+    /* Bevel edges.
+       On a dark face a "shadow" cannot be darker than the face — the
+       surfaces here are already near-black, so a near-black shadow edge
+       vanishes (1.04–1.21:1 against --well/--surface-2/--surface) and
+       the whole 3D read collapses. So on dark, both faces of the bevel
+       sit *above* the surface: the highlight face is a clear rim, and
+       the shadow face is a dim gray — the same trick Windows' own
+       high-contrast black scheme used (ButtonHilight white, ButtonShadow
+       a mid gray on a black face).
+
+       The names still mean what they mean: --bevel-light is the lit
+       face, --bevel-dark the shadowed one. Only the direction of
+       "shadow" changes — on a light face it is darker than the surface,
+       on a dark face it is a dimmer tone above it. */
+    --bevel-light: #333c4c;
+    --bevel-dark: #55637f;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* the base — the browser's own chrome, in the library's skin          */
+  /* ------------------------------------------------------------------ */
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--selection-ink);
+  }
+
+  /* beveled browser chrome, as far as CSS will take us */
+  html {
+    scrollbar-color: var(--surface) var(--surface-2);
+  }
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: var(--surface-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--surface);
+    border: 1px solid var(--ink);
+    box-shadow: var(--shadow-out);
+  }
+  ::-webkit-scrollbar-corner {
+    background-color: var(--surface-2);
+  }
 }
 
 /* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
    `border-ink`, `shadow-out`, `shadow-in` … exist. `inline` keeps the var()
-   reference at the point of use, so flipping .dark re-themes instantly. */
+   reference at the point of use, so flipping .dark re-themes instantly.
+
+   The scale is deliberately not mapped: the names above are the API, and
+   a raw step is reached with an arbitrary value —
+   `bg-[var(--accent-8)]` — rather than a utility that would collide with
+   the name it sits beside. */
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -183,31 +301,4 @@
     inset -2px -2px 0 0 var(--bevel-dark);
   --shadow-in: inset 2px 2px 0 0 var(--bevel-dark),
     inset -2px -2px 0 0 var(--bevel-light);
-}
-
-@layer base {
-  ::selection {
-    background-color: var(--selection);
-    color: var(--selection-ink);
-  }
-
-  /* beveled browser chrome, as far as CSS will take us */
-  html {
-    scrollbar-color: var(--surface) var(--surface-2);
-  }
-  ::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: var(--surface-2);
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--surface);
-    border: 1px solid var(--ink);
-    box-shadow: var(--shadow-out);
-  }
-  ::-webkit-scrollbar-corner {
-    background-color: var(--surface-2);
-  }
 }

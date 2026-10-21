@@ -11,6 +11,48 @@ matter of the token values — never of the components. There is one
 whole set of values for light (`:root`) and one for dark (`.dark`), and
 the components read whichever is active.
 
+## Three layers
+
+The tokens are stacked, and each layer has one job:
+
+| Layer | What it holds | Who edits it |
+| --- | --- | --- |
+| the scale | a ramp per color family — `--accent-1` … `--accent-13` | you, to re-brand a family |
+| the names | the roles the components ask for — `--accent`, `--surface` | you, per theme |
+| the mapping | `@theme inline`, turning each name into a Tailwind color | once, on install |
+
+The names are indirections through the scale. The light theme's accent
+is a step of the teal ramp, and so is the dark theme's — the light one
+takes the deep end, the dark one the bright end:
+
+```css
+:root {
+  --accent-1: #d7f5ef;   /* the ramp: pale at 1, deep at 13 */
+  --accent-8: #0f766e;   /* the deep end */
+  --accent-9: #0b5d57;
+
+  --accent: var(--accent-8);        /* the name the components ask for */
+  --accent-strong: var(--accent-9);
+  --accent-soft: var(--accent-2);
+}
+
+.dark {
+  --accent: var(--accent-5);        /* the same ramp, the bright end */
+  --accent-strong: var(--accent-4);
+  --accent-soft: var(--accent-11);
+}
+```
+
+Because the ramp is fixed across themes, "the accent" means the same
+color in both — and re-branding the family is a change to the ramp,
+which both themes follow.
+
+The neutral tokens — `--surface`, `--ink`, `--bevel-light` — have no
+ramp: they are surfaces and edges, and their names already say what
+they are.
+
+## The values
+
 ```css
 :root {
   --surface: #f4f2ea;
@@ -58,23 +100,29 @@ Anything that reads `document.documentElement.classList` can join.
 
 ## Adding a color family
 
-New families follow the token grammar: a base plus `-strong`, `-ink`
-and `-soft`, declared in *both* themes, and mapped once so Tailwind
-utilities exist:
+New families follow the token grammar: a ramp, then a base plus
+`-strong`, `-ink` and `-soft` pointing into it, declared in *both*
+themes, and mapped once so Tailwind utilities exist:
 
 ```css
 :root {
-  --success: #15803d;
-  --success-strong: #14532d;
+  /* the ramp */
+  --success-1: #ddf3e1;
+  --success-6: #15803d;
+  --success-7: #166534;
+
+  /* the names */
+  --success: var(--success-6);
+  --success-strong: var(--success-7);
   --success-ink: #eafff1;
-  --success-soft: #d5ecdf;
+  --success-soft: var(--success-1);
 }
 
 .dark {
-  --success: #4ade80;
-  --success-strong: #86efac;
-  --success-ink: #052e1a;
-  --success-soft: #1d3a29;
+  --success: var(--success-3);
+  --success-strong: var(--success-2);
+  --success-ink: var(--success-10);
+  --success-soft: var(--success-9);
 }
 
 @theme inline {
@@ -98,6 +146,20 @@ either per theme or conditionally, e.g. a brand accent:
   --accent: #a5cf02; /* acid green, the incline brand way */
 }
 ```
+
+Or re-brand the whole family by moving the ramp — one change, both
+themes follow:
+
+```css
+:root {
+  --accent-8: #4d7c0f; /* the step the light theme's accent reads */
+  --accent-5: #84cc16; /* and the one the dark theme reads */
+}
+```
+
+The library's rules sit in a `retro-ui` cascade layer below Tailwind's,
+so your overrides win whether they come before or after the import —
+see [Styling](/docs/getting-started/styling).
 
 Two cautions:
 

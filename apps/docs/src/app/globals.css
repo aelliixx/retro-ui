@@ -1,8 +1,8 @@
-@import "tailwindcss";
+/* the library first: its stylesheet declares the cascade layer order, and
+   the statement only counts if it comes before Tailwind's own */
+@import "@retro-ui/ui/styles.css";
 
-/* the library: tokens (the theming contract) and the component utilities */
-@import "@retro-ui/ui/tokens.css";
-@import "@retro-ui/ui/utilities.css";
+@import "tailwindcss";
 
 @layer base {
   body {
