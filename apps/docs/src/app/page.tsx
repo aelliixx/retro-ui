@@ -220,7 +220,7 @@ const STEPS = [
     href: "/docs/getting-started/installation",
     step: "01",
     title: "Install",
-    blurb: "Wire tokens, copy components.",
+    blurb: "The package, and the stylesheet.",
   },
   {
     href: "/docs/getting-started/styling",
@@ -270,7 +270,7 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* hero */}
         <section className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 pt-16 pb-14 text-center sm:px-6 sm:pt-20">
-          <p className={EYEBROW}>React · Tailwind v4 · copy the source</p>
+          <p className={EYEBROW}>React · Tailwind v4 · MIT</p>
           <h1 className="max-w-2xl text-4xl font-bold tracking-tight text-desktop-ink sm:text-5xl">
             Straight out of 1994.
           </h1>
@@ -286,10 +286,45 @@ export default function LandingPage() {
             <Link href="/docs" className={buttonVariants({ variant: "primary", size: "lg" })}>
               Read the docs
             </Link>
-            <Link href="/playground" className={buttonVariants({ variant: "outline", size: "lg" })}>
+            <Link
+              href="/playground"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                // a face, not a hole: the outline button's ink on the teal
+                // desktop is 3.65:1, and a real button on the era desk had
+                // a grey face anyway
+                "bg-surface",
+              )}
+            >
               Open the playground
             </Link>
           </div>
+
+          {/* the install — one command, then one stylesheet */}
+          <div className="mt-2 flex w-full max-w-xl flex-col items-center gap-2">
+            <div className="flex w-full items-stretch border border-ink bg-well shadow-in">
+              <span
+                aria-hidden="true"
+                className="select-none border-r border-ink bg-surface-2 px-2.5 py-1.5 font-mono text-xs text-ink-muted"
+              >
+                $
+              </span>
+              <code className="block flex-1 overflow-x-auto px-3 py-1.5 font-mono text-xs text-ink">
+                npm install @retro-ui/ui
+              </code>
+            </div>
+            <p className="m-0 text-xs leading-5 text-desktop-ink">
+              then import the stylesheet — the{" "}
+              <Link
+                href="/docs/getting-started/installation"
+                className="text-desktop-ink underline decoration-dotted underline-offset-2 hover:bg-accent-soft hover:text-ink"
+              >
+                installation guide
+              </Link>{" "}
+              has the two lines
+            </p>
+          </div>
+
           <p className="border border-ink bg-surface px-2 py-0.5 font-mono text-xs leading-none text-ink shadow-in">
             {COMPONENT_COUNT} components · works with your tokens from day one
           </p>
@@ -326,15 +361,15 @@ export default function LandingPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="flex flex-col gap-4">
               <p className={EYEBROW}>Start in five minutes</p>
-              <h2 className={cn(DESKTOP_TITLE, "pb-1")}>Copy in. Ship out.</h2>
+              <h2 className={cn(DESKTOP_TITLE, "pb-1")}>Install. Ship out.</h2>
               <p className={cn(DESKTOP_LEAD, "m-0")}>
-                The library is distributed as source: paste the tokens,
-                drop the components in, and they build like they grew
-                there. No runtime to adopt, no client to fight.
+                One install and one stylesheet: pull the package in, point
+                Tailwind at the tokens, and the components build like they
+                grew there. No runtime to adopt, no client to fight.
               </p>
               <div className="border border-ink bg-well p-3 font-mono text-xs shadow-in">
                 <code className="block overflow-x-auto text-ink">
-                  npm install clsx tailwind-merge class-variance-authority
+                  npm install @retro-ui/ui
                 </code>
               </div>
               <div>
