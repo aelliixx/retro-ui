@@ -28,8 +28,10 @@ export default defineConfig({
 
   expect: {
     toHaveScreenshot: {
-      // a stray antialiased pixel is not a visual change
-      maxDiffPixelRatio: 0.005,
+      // any pixel that moved is a change — a one-step colour shift on a
+      // two-pixel bevel edge is 0.2% of a section, and it is still a change
+      maxDiffPixelRatio: 0,
+      threshold: 0,
       // the hourglass is parked, but nothing else should be mid-animation
       animations: "disabled",
     },
