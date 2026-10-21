@@ -29,7 +29,11 @@ decorative, so that is what the library revives:
 - **Two-tone bevels instead of drop shadows.** Depth is communicated
   with a light edge top-left and a dark edge bottom-right
   (`shadow-out` for raised, `shadow-in` for wells), carried from tokens
-  `--bevel-light` / `--bevel-dark`. No gradients, no blur.
+  `--bevel-light` / `--bevel-dark`. No gradients, no blur. On a dark
+  face a shadow cannot be darker than the face, so in the dark theme
+  both edges sit above the surface — the lit face is a clear rim and
+  the shadow face a dim gray, the way Windows' own high-contrast
+  black scheme did it.
 - **Square corners everywhere.** The engine is full of 1px black
   hairlines; nothing gets a radius.
 - **Textures as chrome.** Hatched title bars (`bg-hatch`), the

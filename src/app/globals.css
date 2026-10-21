@@ -106,9 +106,22 @@
   /* tooltip bubble */
   --tooltip: #3d3a26;
 
-  /* bevel edges */
-  --bevel-light: #333c4c;
-  --bevel-dark: #05070c;
+  /* Bevel edges.
+     On a dark face a "shadow" cannot be darker than the face — the
+     surfaces here are already near-black, so a near-black shadow edge
+     vanishes (1.04–1.21:1 against --well/--surface-2/--surface) and
+     the whole 3D read collapses. So on dark, both faces of the bevel
+     sit *above* the surface: the highlight face is a clear rim, and
+     the shadow face is a dim gray — the same trick Windows' own
+     high-contrast black scheme used (ButtonHilight white, ButtonShadow
+     a mid gray on a black face).
+
+     The names still mean what they mean: --bevel-light is the lit
+     face, --bevel-dark the shadowed one. Only the direction of
+     "shadow" changes — on a light face it is darker than the surface,
+     on a dark face it is a dimmer tone above it. */
+  --bevel-light: #55637f;
+  --bevel-dark: #333c4c;
 }
 
 /* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
