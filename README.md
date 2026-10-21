@@ -47,6 +47,31 @@ The suite runs on [happy-dom](https://github.com/capricorn86/happy-dom) and
 uses [Testing Library](https://testing-library.com) queries, so the tests
 assert on what a user (or a screen reader) can actually reach.
 
+## Deploying the docs
+
+The site is a static export (`output: "export"`), so it deploys as
+static files. [`vercel.json`](vercel.json) at the repository root
+describes the build:
+
+```json
+{
+  "framework": null,
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "apps/docs/out",
+  "cleanUrls": true
+}
+```
+
+Set the project's **Root Directory** to the repository root — the
+install has to cover the whole workspace, because the site imports
+`@retro-ui/ui` from it — and leave the framework preset alone; the
+manifest says `null`, which tells Vercel to serve the export rather
+than build a server.
+
+`cleanUrls` drops the `.html` from the URLs, so `/docs/components/badge`
+serves `docs/components/badge.html`.
+
 ## Visual tests
 
 happy-dom draws nothing, so the suite cannot see whether a component
