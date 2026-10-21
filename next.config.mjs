@@ -7,6 +7,20 @@ const nextConfig = {
   partialPrefetching: true,
   // docs pages are .mdx on the filesystem
   pageExtensions: ["ts", "tsx", "mdx"],
+  // `/docs` is one page — the Introduction.
+  //
+  // This is a routing rule, not a page that calls redirect(): with
+  // cacheComponents on, the "instant" validation pass renders the route
+  // ahead of time, and a component whose only job is to redirect throws
+  // NEXT_REDIRECT there — which Next reports as
+  // "Could not validate `instant` because an error prevented the target
+  // segment from rendering" the first time the route is hit in dev.
+  // A rule below never renders anything, so it cannot fail that way.
+  async redirects() {
+    return [
+      { source: "/docs", destination: "/docs/introduction", permanent: false },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {
