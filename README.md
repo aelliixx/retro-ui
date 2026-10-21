@@ -44,6 +44,35 @@ The suite runs on [happy-dom](https://github.com/capricorn86/happy-dom) and
 uses [Testing Library](https://testing-library.com) queries, so the tests
 assert on what a user (or a screen reader) can actually reach.
 
+## Visual tests
+
+happy-dom draws nothing, so the suite cannot see whether a component
+*looks* right. The visual tests do: they screenshot the playground — one
+per section, light and dark — and compare each against a stored
+baseline.
+
+```bash
+npm run test:visual                        # the whole suite
+npm run test:visual -- --update-snapshots  # accept the new look
+```
+
+They run against the **exported** site, not the dev server: a
+production build is what a visitor gets, and its CSS is what the
+baselines are made of. The web server is rebuilt for every run, so a
+test can never pass against a stale export.
+
+Two things in the playground move on their own, and both are pinned:
+the hourglass (the library honours `prefers-reduced-motion`, which the
+config sets) and the live copy-job demo (a progress bar that ticks —
+the clock is frozen so it never advances).
+
+The baselines live in
+`apps/docs/tests/visual/playground.spec.ts-snapshots/`, one file per
+section per theme per platform. A changed baseline is a changed
+library: read the diff before committing it. A guard test fails when
+the playground grows a section the list does not know about, so a new
+component cannot slip past unphotographed.
+
 ## How theming works
 
 Every color is a plain CSS variable declared in
