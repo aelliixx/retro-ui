@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { COMPONENT_COUNT } from "@/lib/component-count";
-import { docGroups, docNeighbors, docPageLabel, docPages } from "@/lib/docs-nav";
+import { closestDocPage, docGroups, docNeighbors, docPageLabel, docPages } from "@/lib/docs-nav";
 
 const components = docGroups.find((group) => group.id === "components")!;
 
@@ -52,6 +52,22 @@ describe("docs navigation", () => {
 
   it("finds the label of a page below a doc route", () => {
     expect(docPageLabel("/docs/components/pagination/extra")).toBe("Pagination");
+  });
+
+  it("does not let the docs root claim every page below it", () => {
+    // /docs is the Introduction, and every other page lives under it —
+    // the closest match has to win, or the Introduction labels the lot
+    expect(docPageLabel("/docs")).toBe("Introduction");
+    expect(docPageLabel("/docs/components/pagination")).toBe("Pagination");
+    expect(docPageLabel("/docs/getting-started/styling")).toBe("Styling");
+  });
+
+  it("finds the closest page for a path", () => {
+    expect(closestDocPage("/docs")?.href).toBe("/docs");
+    expect(closestDocPage("/docs/components/pagination")?.href).toBe(
+      "/docs/components/pagination",
+    );
+    expect(closestDocPage("/nowhere")).toBeUndefined();
   });
 
   it("returns an empty label outside the docs", () => {

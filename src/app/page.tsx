@@ -283,7 +283,7 @@ export default function LandingPage() {
             that lets your className win.
           </p>
           <div className="mt-1 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/docs/introduction" className={buttonVariants({ variant: "primary", size: "lg" })}>
+            <Link href="/docs" className={buttonVariants({ variant: "primary", size: "lg" })}>
               Read the docs
             </Link>
             <Link href="/playground" className={buttonVariants({ variant: "outline", size: "lg" })}>
@@ -396,7 +396,7 @@ export default function LandingPage() {
       <footer className="sticky bottom-0 z-40 border-t border-ink bg-surface-2">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-4 py-1.5 sm:px-6">
           <Link
-            href="/docs/introduction"
+            href="/docs"
             className="no-underline flex items-center gap-2 border border-ink bg-surface px-3 py-1 shadow-out hover:bg-surface-2"
           >
             <span

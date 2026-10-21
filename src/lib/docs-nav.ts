@@ -60,7 +60,7 @@ export const docGroups: DocGroup[] = [
     id: "overview",
     label: "Overview",
     pages: [
-      { href: "/docs/introduction", label: "Introduction" },
+      { href: "/docs", label: "Introduction" },
     ],
   },
   {
@@ -95,10 +95,22 @@ export function docNeighbors(href: string): {
   };
 }
 
+/**
+ * the doc page a path belongs to
+ *
+ * A route can sit under another route — /docs is the Introduction, and
+ * every other page lives below it — so the closest match wins, or the
+ * Introduction would claim every page in the tree.
+ */
+export function closestDocPage(pathname: string): DocPage | undefined {
+  return docPages
+    .filter(
+      (page) => pathname === page.href || pathname.startsWith(`${page.href}/`),
+    )
+    .sort((a, b) => b.href.length - a.href.length)[0];
+}
+
 /** label of the page a given path belongs to ("" when outside the docs) */
 export function docPageLabel(pathname: string): string {
-  return (
-    docPages.find((page) => page.href === pathname || pathname.startsWith(`${page.href}/`))
-      ?.label ?? ""
-  );
+  return closestDocPage(pathname)?.label ?? "";
 }

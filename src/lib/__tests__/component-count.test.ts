@@ -111,9 +111,7 @@ describe("the count across the site", () => {
   });
 
   it("is used by the introduction", () => {
-    expect(read("src", "app", "docs", "introduction", "page.mdx")).toContain(
-      "COMPONENT_COUNT",
-    );
+    expect(read("src", "app", "docs", "page.mdx")).toContain("COMPONENT_COUNT");
   });
 
   it("matches the count in the installation notes", () => {

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-import { docGroups } from "@/lib/docs-nav";
+import { closestDocPage, docGroups } from "@/lib/docs-nav";
 
 /**
  * The docs navigation tree — shared by the desktop sidebar and the mobile
@@ -17,6 +17,12 @@ import { docGroups } from "@/lib/docs-nav";
 export function DocTree({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
 
+  // A route can sit under another route — /docs is the Introduction, and
+  // every other page lives below it — so only the closest match counts as
+  // the active page. Without this the Introduction would light up on
+  // every page in the tree.
+  const activeHref = closestDocPage(pathname)?.href;
+
   return (
     <nav aria-label="Documentation" className="flex flex-col gap-5">
       {docGroups.map((group) => (
@@ -25,9 +31,7 @@ export function DocTree({ onNavigate }: { onNavigate?: () => void }) {
             {group.label}
           </h2>
           {group.pages.map((page) => {
-            const active =
-              pathname === page.href ||
-              pathname.startsWith(`${page.href}/`);
+            const active = page.href === activeHref;
             return (
               <Link
                 key={page.href}
