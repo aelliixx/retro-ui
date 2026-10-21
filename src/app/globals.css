@@ -120,8 +120,8 @@
      face, --bevel-dark the shadowed one. Only the direction of
      "shadow" changes — on a light face it is darker than the surface,
      on a dark face it is a dimmer tone above it. */
-  --bevel-light: #55637f;
-  --bevel-dark: #333c4c;
+  --bevel-light: #333c4c;
+  --bevel-dark: #55637f;
 }
 
 /* Map tokens into Tailwind so utilities like `bg-surface`, `text-ink-muted`,
