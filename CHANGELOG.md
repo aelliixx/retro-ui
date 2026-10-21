@@ -4,10 +4,12 @@ All notable changes to retro/ui, newest first. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 project follows [semantic versioning](https://semver.org/).
 
-## Unreleased
+## 0.5.0
 
 ### Added
 
+- **Badge, AspectRatio, Status and Pagination** — four more components.
+  Status came out of Avatar and carries a label of its own.
 - **The toast can be placed** — `position` on the provider puts the
   stack in any corner or at the top and bottom centre, and each toast
   carries its own `tone` and `icon`.
@@ -31,13 +33,6 @@ project follows [semantic versioning](https://semver.org/).
 - The NavigationMenu's panel is positioned when it opens.
 - The library's classes reach the browser again — Tailwind never scans
   `node_modules`, so the package's stylesheet declares its own source.
-
-## 0.5.0
-
-### Added
-
-- **Badge, AspectRatio, Status and Pagination** — four more components.
-  Status came out of Avatar and carries a label of its own.
 
 ## 0.4.0
 
