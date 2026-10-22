@@ -1,0 +1,106 @@
+# Test the library on every push to main, and publish it if the tests pass.
+#
+# The version is the gate. `packages/ui/package.json` carries the version
+# to publish; if that version is already on npm there is nothing to do,
+# and the publish is skipped. Bump the version in that file when there
+# is a release to make — the house rule is that versions move at
+# milestones, not on every commit.
+#
+# Authentication is one of two things:
+#
+#   - a repository secret `NPM_TOKEN` holding a granular access token
+#     created with --bypass-2fa (npm requires 2FA for every publish),
+#     or
+#   - npm's trusted publishing, with no secret at all: the workflow's
+#     OIDC identity is exchanged for a short-lived token. Set the
+#     trusted publisher up on npmjs.com (package → Settings → Trusted
+#     Publisher → GitHub Actions, repository and workflow filename).
+
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test the library
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # the visual suite is not run here: its baselines are per-platform,
+      # and a GitHub runner rasterises text differently than the machine
+      # that made them. Run it locally with "npm run test:visual".
+      - name: Test
+        run: npm test
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build the package
+        run: npm run build:ui
+
+      - name: Pack it
+        run: npm pack --workspace @retroui/ui --pack-destination "$RUNNER_TEMP"
+
+      - name: Build the docs
+        run: npm run build
+
+  publish:
+    name: Publish to npm
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # the provenance attestation is signed with the workflow's identity
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build the package
+        run: npm run build:ui
+
+      - name: Has this version been published already?
+        id: version
+        run: |
+          version=$(node -p "require('./packages/ui/package.json').version")
+          if npm view "@retroui/ui@$version" version >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "@retroui/ui@$version is already on npm — nothing to publish."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "@retroui/ui@$version is new — publishing it."
+          fi
+
+      - name: Publish
+        if: steps.version.outputs.published == 'false'
+        working-directory: packages/ui
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # the manifest carries publishConfig.access: public, and npm's
+        # own prepublishOnly builds the package first
+        run: npm publish --provenance

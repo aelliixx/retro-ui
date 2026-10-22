@@ -82,6 +82,23 @@ A scoped package needs `publishConfig.access: "public"` in its
 manifest, or it defaults to restricted and the publish is refused.
 This one has it.
 
+[`.github/workflows/publish.yml`](.github/workflows/publish.yml) runs
+on every push to `main`: it installs, tests, lints, type-checks, packs
+the package and builds the docs, and only then publishes. The version
+in `packages/ui/package.json` is the gate — if that version is already
+on npm there is nothing to do and the publish is skipped. Bump the
+version in that file when there is a release to make.
+
+Authentication is one of two things: a repository secret `NPM_TOKEN`
+holding a granular access token created with `--bypass-2fa` (npm
+requires 2FA for every publish), or npm's trusted publishing, which
+needs no secret at all — the workflow's OIDC identity is exchanged for
+a short-lived token, and the trusted publisher is set up on npmjs.com
+under the package's Settings.
+
+The publish carries a provenance attestation, so npmjs.com shows it
+came from this workflow.
+
 npm also requires two-factor authentication for every publish, and
 there are two ways to satisfy it:
 
