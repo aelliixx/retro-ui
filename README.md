@@ -22,10 +22,17 @@ apps/docs/      the documentation site and playground
 ```
 
 ```bash
-npm run dev   # landing at http://localhost:3000 → playground at /playground · docs at /docs
-npm test      # component test suite (vitest + testing-library, happy-dom)
-npm run build # the docs site, statically exported
+npm run dev        # landing at http://localhost:3000 → playground at /playground · docs at /docs
+npm test           # component test suite (vitest + testing-library, happy-dom)
+npm run typecheck  # the whole workspace, types included
+npm run build      # the docs site, statically exported
 ```
+
+`npm run typecheck` generates the docs app's route types first
+(`next typegen`) — they are build artifacts, gitignored, and the app
+uses them for `LayoutProps` and the other typed-route helpers. On a
+fresh checkout they do not exist, and without them the type check
+fails on names it has never heard of.
 
 The changelog lives in [`CHANGELOG.md`](CHANGELOG.md) — the docs page at
 `/docs/changelog` renders that file rather than keeping a second copy.

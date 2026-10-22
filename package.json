@@ -25,7 +25,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='packages/*/src/**' --coverage.include='apps/*/src/**' --coverage.reporter=text",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run typegen --workspace @retroui/docs && tsc --noEmit",
     "build:ui": "npm run build --workspace @retroui/ui",
     "test:visual": "npm run test:visual --workspace @retroui/docs --",
     "verify:publish": "node scripts/verify-publish.mjs"
