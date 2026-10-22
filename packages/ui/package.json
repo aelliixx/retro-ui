@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/aelliixx/retro-ui/issues"
   },
-  "homepage": "https://github.com/aelliixx/retro-ui#readme",
+  "homepage": "https://retroui.aelliixx.com",
   "sideEffects": [
     "**/*.css"
   ],

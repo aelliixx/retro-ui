@@ -1,10 +1,15 @@
-# Test the library on every push to main, and publish it if the tests pass.
+# Test the library, and publish it when a release is cut.
 #
-# The version is the gate. `packages/ui/package.json` carries the version
-# to publish; if that version is already on npm there is nothing to do,
-# and the publish is skipped. Bump the version in that file when there
-# is a release to make — the house rule is that versions move at
-# milestones, not on every commit.
+# The work happens on `dev`; `main` only moves when there is a release
+# to make, and a merge of `dev` into `main` is that release. So the
+# tests run on every push to either branch and on every pull request,
+# and the publish happens only when `main` is updated.
+#
+# The version is the second gate. `packages/ui/package.json` carries the
+# version to publish; if that version is already on npm there is
+# nothing to do, and the publish is skipped. Bump the version in that
+# file when there is a release to make — the house rule is that versions
+# move at milestones, not on every commit.
 #
 # Authentication is one of two things:
 #
@@ -20,7 +25,9 @@ name: Publish
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
   workflow_dispatch:
 
 permissions:
@@ -65,6 +72,9 @@ jobs:
   publish:
     name: Publish to npm
     needs: test
+    # main only: dev is where the work happens, and merging dev into
+    # main is the release
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: read

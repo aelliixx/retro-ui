@@ -89,12 +89,20 @@ A scoped package needs `publishConfig.access: "public"` in its
 manifest, or it defaults to restricted and the publish is refused.
 This one has it.
 
-[`.github/workflows/publish.yml`](.github/workflows/publish.yml) runs
-on every push to `main`: it installs, tests, lints, type-checks, packs
-the package and builds the docs, and only then publishes. The version
-in `packages/ui/package.json` is the gate — if that version is already
-on npm there is nothing to do and the publish is skipped. Bump the
-version in that file when there is a release to make.
+[`.github/workflows/publish.yml`](.github/workflows/publish.yml) is
+both the CI and the release pipeline:
+
+- **the work happens on `dev`** — pushes and pull requests to `dev`
+  run the tests, the lint, the type check, the package build and the
+  docs build;
+- **`main` only moves for a release** — merging `dev` into `main` is
+  the release, and that is the only thing that publishes.
+
+Two gates stand between a commit and npm. The version in
+`packages/ui/package.json` decides whether there is anything to
+publish — if that version is already on npm, the publish is skipped —
+and the publish itself waits on the tests. So a release is a version
+bump in that file, plus a merge.
 
 Authentication is one of two things: a repository secret `NPM_TOKEN`
 holding a granular access token created with `--bypass-2fa` (npm
@@ -148,6 +156,10 @@ install has to cover the whole workspace, because the site imports
 `@retroui/ui` from it — and leave the framework preset alone; the
 manifest says `null`, which tells Vercel to serve the export rather
 than build a server.
+
+With the production branch on `main`, a push to `dev` gets a preview
+URL and only `main` reaches the custom domain — so the docs can be
+reviewed before a release puts them live.
 
 `cleanUrls` drops the `.html` from the URLs, so `/docs/components/badge`
 serves `docs/components/badge.html`.
