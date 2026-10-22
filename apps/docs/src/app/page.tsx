@@ -47,6 +47,8 @@ const DESKTOP_LEAD = "text-base leading-7 text-desktop-ink";
 const DESKTOP_TITLE = "text-2xl font-bold tracking-tight text-desktop-ink";
 const LEAD = "text-base leading-7 text-ink-muted";
 const SECTION_TITLE = "text-2xl font-bold tracking-tight text-ink";
+const NAV_LINK =
+  "font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink";
 const CARD_TEXT = "text-sm leading-6 text-ink-muted";
 
 /* small desk glyphs — 16px ink line art, one per feature card */
@@ -248,20 +250,15 @@ export default function LandingPage() {
             </span>
           </Link>
           <nav aria-label="Landing" className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/docs"
-              className={cn(
-                "font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink",
-              )}
-            >
+            <Link href="/docs" className={cn(NAV_LINK)}>
               Docs
             </Link>
-            <Link
-              href="/playground"
-              className="font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink"
-            >
+            <Link href="/playground" className={NAV_LINK}>
               Playground
             </Link>
+            <a href="https://github.com/aelliixx/retro-ui/" className={NAV_LINK}>
+              GitHub
+            </a>
             <ThemeToggle />
           </nav>
         </div>
