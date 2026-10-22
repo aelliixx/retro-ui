@@ -10,8 +10,8 @@ export function GitHubMark({ className }: { className?: string }) {
       fill="currentColor"
       strokeWidth={0}
       viewBox="0 0 496 512"
-      height="14"
-      width="14"
+      height="18"
+      width="18"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
