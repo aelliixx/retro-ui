@@ -2457,12 +2457,6 @@ export function PlaygroundPage() {
             <CardTitle className="min-w-0 truncate">
               retro/ui — component playground
             </CardTitle>
-            <a
-              href="https://github.com/aelliixx/retro-ui/"
-              className="font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink"
-            >
-              GitHub
-            </a>
             <ThemeToggle />
           </CardHeader>
 
