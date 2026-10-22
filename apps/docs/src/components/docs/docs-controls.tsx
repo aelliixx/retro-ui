@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { Button, Dialog, ScrollArea } from "@retroui/ui";
+import { GitHubMark } from "@/components/github-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 import { DocTree } from "./docs-tree";
@@ -21,9 +22,11 @@ export function DocsTitlebarControls() {
     <div className="flex items-center gap-3">
       <a
         href="https://github.com/aelliixx/retro-ui/"
-        className="font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink"
+        aria-label="GitHub"
+        title="GitHub"
+        className="text-ink-muted no-underline hover:text-ink"
       >
-        GitHub
+        <GitHubMark />
       </a>
       <ThemeToggle />
       <Button

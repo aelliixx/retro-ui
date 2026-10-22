@@ -24,6 +24,7 @@ import {
   TabsTrigger,
   buttonVariants,
 } from "@retroui/ui";
+import { GitHubMark } from "@/components/github-mark";
 import { GroupBox } from "@/components/group-box";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@retroui/ui";
@@ -49,6 +50,7 @@ const LEAD = "text-base leading-7 text-ink-muted";
 const SECTION_TITLE = "text-2xl font-bold tracking-tight text-ink";
 const NAV_LINK =
   "font-mono text-xs uppercase tracking-[0.14em] text-ink-muted no-underline hover:text-ink";
+const NAV_ICON_LINK = "text-ink-muted no-underline hover:text-ink";
 const CARD_TEXT = "text-sm leading-6 text-ink-muted";
 
 /* small desk glyphs — 16px ink line art, one per feature card */
@@ -256,8 +258,13 @@ export default function LandingPage() {
             <Link href="/playground" className={NAV_LINK}>
               Playground
             </Link>
-            <a href="https://github.com/aelliixx/retro-ui/" className={NAV_LINK}>
-              GitHub
+            <a
+              href="https://github.com/aelliixx/retro-ui/"
+              aria-label="GitHub"
+              title="GitHub"
+              className={NAV_ICON_LINK}
+            >
+              <GitHubMark />
             </a>
             <ThemeToggle />
           </nav>
