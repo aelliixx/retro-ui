@@ -47,6 +47,37 @@ The suite runs on [happy-dom](https://github.com/capricorn86/happy-dom) and
 uses [Testing Library](https://testing-library.com) queries, so the tests
 assert on what a user (or a screen reader) can actually reach.
 
+## Publishing
+
+The package is `@retro-ui/ui`. Before it goes out, check it the way a
+consumer will meet it:
+
+```bash
+npm run verify:publish
+```
+
+That builds the library, packs it, and installs the **tarball** — the
+same bytes npm would serve — into a scratch Next app, then builds it
+and looks at the result: the exports resolve from `node_modules`, the
+types are found, the `"use client"` directives survive, the stylesheet
+reaches the consumer's Tailwind, the library's cascade layer lands
+below Tailwind's, and a primary button actually paints the accent
+colour. It takes about ten seconds and leaves the scratch app behind
+so you can poke at it.
+
+A dry run tells you what would be uploaded; this tells you whether it
+works:
+
+```bash
+npm publish --dry-run --workspace @retro-ui/ui
+```
+
+What neither can check is the part that lives on npm's side: whether
+the account may publish to the `retro-ui` scope, and whether the name
+is still free. Publishing needs two-factor authentication, and a
+scoped package needs `publishConfig.access: "public"` or it defaults
+to restricted and the publish is refused.
+
 ## Deploying the docs
 
 The site is a static export (`output: "export"`), so it deploys as

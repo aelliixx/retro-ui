@@ -27,7 +27,8 @@
     "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='packages/*/src/**' --coverage.include='apps/*/src/**' --coverage.reporter=text",
     "typecheck": "tsc --noEmit",
     "build:ui": "npm run build --workspace @retro-ui/ui",
-    "test:visual": "npm run test:visual --workspace @retro-ui/docs --"
+    "test:visual": "npm run test:visual --workspace @retro-ui/docs --",
+    "verify:publish": "node scripts/verify-publish.mjs"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
