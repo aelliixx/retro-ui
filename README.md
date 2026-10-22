@@ -49,7 +49,7 @@ assert on what a user (or a screen reader) can actually reach.
 
 ## Publishing
 
-The package is `@retro-ui/ui`. Before it goes out, check it the way a
+The package is `@retroui/ui`. Before it goes out, check it the way a
 consumer will meet it:
 
 ```bash
@@ -69,14 +69,39 @@ A dry run tells you what would be uploaded; this tells you whether it
 works:
 
 ```bash
-npm publish --dry-run --workspace @retro-ui/ui
+npm publish --dry-run --workspace @retroui/ui
 ```
 
 What neither can check is the part that lives on npm's side: whether
-the account may publish to the `retro-ui` scope, and whether the name
-is still free. Publishing needs two-factor authentication, and a
-scoped package needs `publishConfig.access: "public"` or it defaults
-to restricted and the publish is refused.
+the account may publish to the `retroui` scope, and whether the name
+is still free.
+
+## Publishing to npm
+
+A scoped package needs `publishConfig.access: "public"` in its
+manifest, or it defaults to restricted and the publish is refused.
+This one has it.
+
+npm also requires two-factor authentication for every publish, and
+there are two ways to satisfy it:
+
+```sh
+# interactively — enable 2FA on the account, then publish
+npm profile enable-2fa auth-and-writes
+npm publish --workspace @retroui/ui     # prompts for the OTP
+```
+
+```sh
+# non-interactively — a token created with the bypass
+npm token create --name retroui-publish \
+  --orgs retroui --orgs-permission read-write --bypass-2fa
+npm publish --workspace @retroui/ui
+```
+
+The bypass is fixed **at token creation** — a token that has access
+to the scope but was created without it cannot be retrofitted, and
+npm will keep asking for 2FA. For CI, npm's trusted publishing
+(OIDC) avoids tokens altogether.
 
 ## Deploying the docs
 
@@ -96,7 +121,7 @@ describes the build:
 
 Set the project's **Root Directory** to the repository root — the
 install has to cover the whole workspace, because the site imports
-`@retro-ui/ui` from it — and leave the framework preset alone; the
+`@retroui/ui` from it — and leave the framework preset alone; the
 manifest says `null`, which tells Vercel to serve the export rather
 than build a server.
 

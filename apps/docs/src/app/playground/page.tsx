@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { PlaygroundPage } from "@/components/playground";
-import { COMPONENT_COUNT } from "@retro-ui/ui";
+import { COMPONENT_COUNT } from "@retroui/ui";
 
 export const metadata: Metadata = {
   title: "Playground · retro/ui",

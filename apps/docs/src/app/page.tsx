@@ -23,11 +23,11 @@ import {
   TabsList,
   TabsTrigger,
   buttonVariants,
-} from "@retro-ui/ui";
+} from "@retroui/ui";
 import { GroupBox } from "@/components/group-box";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { cn } from "@retro-ui/ui";
-import { COMPONENT_COUNT } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
+import { COMPONENT_COUNT } from "@retroui/ui";
 
 export const metadata: Metadata = {
   title: "retro/ui — 90s UI components, modern engineering",
@@ -310,7 +310,7 @@ export default function LandingPage() {
                 $
               </span>
               <code className="block flex-1 overflow-x-auto px-3 py-1.5 font-mono text-xs text-ink">
-                npm install @retro-ui/ui
+                npm install @retroui/ui
               </code>
             </div>
             <p className="m-0 text-xs leading-5 text-desktop-ink">
@@ -369,7 +369,7 @@ export default function LandingPage() {
               </p>
               <div className="border border-ink bg-well p-3 font-mono text-xs shadow-in">
                 <code className="block overflow-x-auto text-ink">
-                  npm install @retro-ui/ui
+                  npm install @retroui/ui
                 </code>
               </div>
               <div>

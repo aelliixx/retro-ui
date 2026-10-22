@@ -1,4 +1,4 @@
-import { cn } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
 
 /**
  * The docs demo bench — every demo on a component doc page renders

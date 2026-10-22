@@ -1,6 +1,6 @@
 /* the library first: its stylesheet declares the cascade layer order, and
    the statement only counts if it comes before Tailwind's own */
-@import "@retro-ui/ui/styles.css";
+@import "@retroui/ui/styles.css";
 
 @import "tailwindcss";
 

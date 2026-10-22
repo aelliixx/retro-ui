@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Checkbox } from "@retro-ui/ui";
+import { Checkbox } from "@retroui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**

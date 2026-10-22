@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Toggle } from "@retro-ui/ui";
+import { Toggle } from "@retroui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@retro-ui/ui";
+import { Card, CardContent, CardHeader, CardTitle } from "@retroui/ui";
 
 import { DocsTitlebarControls } from "@/components/docs/docs-controls";
 import { DocPager } from "@/components/docs/docs-pager";

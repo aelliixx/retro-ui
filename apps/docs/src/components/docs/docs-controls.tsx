@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Button, Dialog, ScrollArea } from "@retro-ui/ui";
+import { Button, Dialog, ScrollArea } from "@retroui/ui";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 import { DocTree } from "./docs-tree";

@@ -1,5 +1,5 @@
 {
-  "name": "@retro-ui/ui",
+  "name": "@retroui/ui",
   "version": "0.5.0",
   "description": "React + Tailwind components styled after 90s desktop UIs \u2014 carved group boxes, sunken input wells and hatched title bars, rebuilt with modern tokens.",
   "license": "MIT",

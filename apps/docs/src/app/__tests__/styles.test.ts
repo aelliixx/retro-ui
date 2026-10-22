@@ -26,7 +26,7 @@ const tokens = readFileSync(tokensPath, "utf8");
 
 describe("the docs stylesheet", () => {
   it("imports the library's stylesheet", () => {
-    expect(globals).toContain('@import "@retro-ui/ui/styles.css"');
+    expect(globals).toContain('@import "@retroui/ui/styles.css"');
   });
 
   it("imports the library before Tailwind", () => {
@@ -34,7 +34,7 @@ describe("the docs stylesheet", () => {
     // statement only counts if it comes first — swap the two and the
     // library's layer lands above Tailwind's, where a consumer's
     // utilities no longer win
-    const library = globals.indexOf('@import "@retro-ui/ui/styles.css"');
+    const library = globals.indexOf('@import "@retroui/ui/styles.css"');
     const tailwind = globals.indexOf('@import "tailwindcss"');
 
     expect(library).toBeGreaterThan(-1);

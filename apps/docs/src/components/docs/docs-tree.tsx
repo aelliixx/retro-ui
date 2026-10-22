@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { cn } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
 
 import { closestDocPage, docGroups } from "@/lib/docs-nav";
 

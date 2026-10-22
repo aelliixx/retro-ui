@@ -7,7 +7,7 @@ import {
   ToastProvider,
   useToast,
   type ToastPosition,
-} from "@retro-ui/ui";
+} from "@retroui/ui";
 
 import { DemoStage } from "@/components/docs/demo-stage";
 

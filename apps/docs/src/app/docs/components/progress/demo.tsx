@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Progress, Slider } from "@retro-ui/ui";
+import { Progress, Slider } from "@retroui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**

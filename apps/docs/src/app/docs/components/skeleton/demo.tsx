@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Button, Skeleton, Switch } from "@retro-ui/ui";
+import { Button, Skeleton, Switch } from "@retroui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**

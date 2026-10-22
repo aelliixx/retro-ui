@@ -15,7 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": docs,
-      "@retro-ui/ui": `${ui}/index.ts`,
+      "@retroui/ui": `${ui}/index.ts`,
     },
   },
   test: {

@@ -35,7 +35,7 @@
 /* The statement has to come before Tailwind's own, so import this           */
 /* stylesheet *first*:                                                       */
 /*                                                                            */
-/*     @import "@retro-ui/ui/styles.css";                                    */
+/*     @import "@retroui/ui/styles.css";                                    */
 /*     @import "tailwindcss";                                                */
 /*                                                                            */
 /* The tokens sit in the same layer on purpose: a consumer's :root override */

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { cn } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
 
 describe("cn", () => {
   it("joins class names", () => {

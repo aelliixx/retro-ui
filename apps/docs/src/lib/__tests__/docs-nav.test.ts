@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { COMPONENT_COUNT } from "@retro-ui/ui";
+import { COMPONENT_COUNT } from "@retroui/ui";
 import { closestDocPage, docGroups, docNeighbors, docPageLabel, docPages } from "@/lib/docs-nav";
 
 const components = docGroups.find((group) => group.id === "components")!;

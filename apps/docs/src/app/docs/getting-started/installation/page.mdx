@@ -6,7 +6,7 @@ export const metadata = {
 # Installation
 
 ```sh
-npm install @retro-ui/ui
+npm install @retroui/ui
 ```
 
 `react`, `react-dom` and `tailwindcss` (v4) are peer dependencies. The
@@ -20,7 +20,7 @@ global CSS — **before** Tailwind:
 
 ```css
 /* app/globals.css */
-@import "@retro-ui/ui/styles.css";
+@import "@retroui/ui/styles.css";
 @import "tailwindcss";
 ```
 
@@ -38,15 +38,15 @@ The order is the whole reason the two imports are not interchangeable:
 swap them and the layer statement arrives too late to matter.
 
 If you would rather take the two halves separately, they are published
-on their own — `@retro-ui/ui/tokens.css` (the variables and the Tailwind
-mapping) and `@retro-ui/ui/utilities.css` (the component skin: the
+on their own — `@retroui/ui/tokens.css` (the variables and the Tailwind
+mapping) and `@retroui/ui/utilities.css` (the component skin: the
 etched focus ring, the era's textures, the styled slider, the
 placeholder shell).
 
 ## 2. Render something
 
 ```tsx
-import { Button, Field, Input } from "@retro-ui/ui";
+import { Button, Field, Input } from "@retroui/ui";
 
 export function Ready() {
   return (

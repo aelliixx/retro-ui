@@ -26,10 +26,10 @@
       "@/*": [
         "./apps/docs/src/*"
       ],
-      "@retro-ui/ui": [
+      "@retroui/ui": [
         "./packages/ui/src/index.ts"
       ],
-      "@retro-ui/ui/*": [
+      "@retroui/ui/*": [
         "./packages/ui/src/*"
       ]
     }

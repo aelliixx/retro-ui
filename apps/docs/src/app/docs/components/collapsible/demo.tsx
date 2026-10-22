@@ -8,7 +8,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Input,
-} from "@retro-ui/ui";
+} from "@retroui/ui";
 import { DemoStage } from "@/components/docs/demo-stage";
 
 /**

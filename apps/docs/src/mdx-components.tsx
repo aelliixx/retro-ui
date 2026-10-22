@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 
-import { cn } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
 
 /**
  * Global MDX element mapping — the docs' hand-styled prose (no

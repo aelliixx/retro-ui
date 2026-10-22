@@ -1,5 +1,5 @@
 {
-  "name": "@retro-ui/docs",
+  "name": "@retroui/docs",
   "version": "0.0.0",
   "private": true,
   "description": "The retro/ui documentation site and playground.",
@@ -14,7 +14,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.4.2",
-    "@retro-ui/ui": "*",
+    "@retroui/ui": "*",
     "@shikijs/rehype": "^4.5.0",
     "next": "16.4.2",
     "react": "19.3.0",

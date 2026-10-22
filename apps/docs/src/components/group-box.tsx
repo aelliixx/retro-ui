@@ -1,4 +1,4 @@
-import { cn } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
 
 /**
  * The carved group box — a raised fieldset with the magic-type legend

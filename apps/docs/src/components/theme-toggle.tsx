@@ -2,8 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 
-import { Button } from "@retro-ui/ui";
-import { cn } from "@retro-ui/ui";
+import { Button } from "@retroui/ui";
+import { cn } from "@retroui/ui";
 
 /**
  * Light/dark switcher. Persists the explicit choice in localStorage under

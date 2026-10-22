@@ -1,4 +1,4 @@
-# @retro-ui/ui
+# @retroui/ui
 
 React + Tailwind components styled after 90s desktop UIs — carved group
 boxes, sunken input wells, hatched title bars and honest two-tone bevels —
@@ -11,7 +11,7 @@ peer dependencies, and a stylesheet you import once.
 ## Install
 
 ```sh
-npm install @retro-ui/ui
+npm install @retroui/ui
 ```
 
 `react`, `react-dom` and `tailwindcss` (v4) are peer dependencies.
@@ -22,7 +22,7 @@ Import the library's stylesheet into your global CSS, after Tailwind:
 
 ```css
 /* app/globals.css — the library first, so its cascade layer order counts */
-@import "@retro-ui/ui/styles.css";
+@import "@retroui/ui/styles.css";
 @import "tailwindcss";
 ```
 
@@ -32,8 +32,8 @@ Tailwind's, so your utilities and your plain CSS always win — no
 stylesheet, which is why it is imported first.
 
 Two files are published separately if you would rather take one at a time:
-`@retro-ui/ui/tokens.css` (the theming contract — the variables and the
-`@theme inline` mapping) and `@retro-ui/ui/utilities.css` (the component
+`@retroui/ui/tokens.css` (the theming contract — the variables and the
+`@theme inline` mapping) and `@retroui/ui/utilities.css` (the component
 skin — the etched focus ring, the era's textures, the styled slider).
 
 The stylesheet declares its own source, so Tailwind picks up the class names
@@ -42,7 +42,7 @@ the components use without any extra configuration.
 ## Use
 
 ```tsx
-import { Button, Card, CardContent, CardHeader, CardTitle } from "@retro-ui/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle } from "@retroui/ui";
 
 export function Example() {
   return (

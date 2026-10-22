@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { COMPONENT_COUNT } from "@retro-ui/ui";
+import { COMPONENT_COUNT } from "@retroui/ui";
 import { docGroups } from "@/lib/docs-nav";
 
 // the workspace root — vitest runs from here, and the library lives in
@@ -86,7 +86,7 @@ describe("the component barrel", () => {
   });
 
   it("re-exports every component's runtime symbols", async () => {
-    const barrelModule = await import("@retro-ui/ui");
+    const barrelModule = await import("@retroui/ui");
 
     for (const file of componentFiles) {
       const componentModule = modules[`/packages/ui/src/components/ui/${file}.tsx`];

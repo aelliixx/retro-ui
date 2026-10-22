@@ -70,12 +70,12 @@ import {
   ToastProvider,
   Tooltip,
   useToast,
-} from "@retro-ui/ui";
-import { buttonVariants } from "@retro-ui/ui";
+} from "@retroui/ui";
+import { buttonVariants } from "@retroui/ui";
 import { GroupBox } from "@/components/group-box";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { cn } from "@retro-ui/ui";
-import { COMPONENT_COUNT } from "@retro-ui/ui";
+import { cn } from "@retroui/ui";
+import { COMPONENT_COUNT } from "@retroui/ui";
 
 /* ------------------------------------------------------------------------- */
 /* playground helpers                                                        */
@@ -210,7 +210,7 @@ function Intro() {
           Read the docs
         </Link>
       </div>
-      <CodeWell>{`import { Button, Card, Field, Input } from "@retro-ui/ui";`}</CodeWell>
+      <CodeWell>{`import { Button, Card, Field, Input } from "@retroui/ui";`}</CodeWell>
     </section>
   );
 }

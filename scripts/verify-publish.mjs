@@ -42,11 +42,11 @@ const CSS_CHECKS = [
 ];
 
 console.log("1. building the package");
-run("npm", ["run", "build", "--workspace", "@retro-ui/ui"], root);
+run("npm", ["run", "build", "--workspace", "@retroui/ui"], root);
 
 console.log("\n2. packing it — this is the tarball npm would serve");
 const scratch = mkdtempSync(join(tmpdir(), "retro-ui-verify-"));
-run("npm", ["pack", "--workspace", "@retro-ui/ui", "--pack-destination", scratch], root);
+run("npm", ["pack", "--workspace", "@retroui/ui", "--pack-destination", scratch], root);
 // the tarball is named after the package and its version — find it
 // rather than spelling it out, so a version bump does not break this
 const tarball = readdirSync(scratch).find((file) => file.endsWith(".tgz"));
@@ -69,7 +69,7 @@ writeFileSync(
       private: true,
       scripts: { build: "next build" },
       dependencies: {
-        "@retro-ui/ui": `file:${tarballPath}`,
+        "@retroui/ui": `file:${tarballPath}`,
         next: "16.4.2",
         react: "19.3.0",
         "react-dom": "19.3.0",
@@ -123,7 +123,7 @@ writeFileSync(
 // the library first — its stylesheet declares the cascade layer order
 writeFileSync(
   join(app, "app", "globals.css"),
-  '/* the library first: its stylesheet declares the cascade layer order */\n@import "@retro-ui/ui/styles.css";\n@import "tailwindcss";\n',
+  '/* the library first: its stylesheet declares the cascade layer order */\n@import "@retroui/ui/styles.css";\n@import "tailwindcss";\n',
 );
 
 writeFileSync(
@@ -154,7 +154,7 @@ import {
   Input,
   ToastProvider,
   useToast,
-} from "@retro-ui/ui";
+} from "@retroui/ui";
 
 export function Demo() {
   return (

@@ -18,16 +18,16 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @retro-ui/docs",
-    "build": "npm run build --workspace @retro-ui/docs",
-    "start": "npm run start --workspace @retro-ui/docs",
+    "dev": "npm run dev --workspace @retroui/docs",
+    "build": "npm run build --workspace @retroui/docs",
+    "start": "npm run start --workspace @retroui/docs",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.include='packages/*/src/**' --coverage.include='apps/*/src/**' --coverage.reporter=text",
     "typecheck": "tsc --noEmit",
-    "build:ui": "npm run build --workspace @retro-ui/ui",
-    "test:visual": "npm run test:visual --workspace @retro-ui/docs --",
+    "build:ui": "npm run build --workspace @retroui/ui",
+    "test:visual": "npm run test:visual --workspace @retroui/docs --",
     "verify:publish": "node scripts/verify-publish.mjs"
   },
   "devDependencies": {
